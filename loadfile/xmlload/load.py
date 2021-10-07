@@ -16,7 +16,7 @@ def update_products_xml(json_datafile):
 
     # trade_place.save()
     # trade_place_list.save()
-    trade_place_list = TradePlaceList()
+    # trade_place_list = TradePlaceList()
 
     for i in range(len(data_json["TradePlaceList"]["TradePlace"])):
         for tradelists in data_json["TradePlaceList"]["TradePlace"][i]["TradeList"]:
@@ -1156,6 +1156,7 @@ def update_products_xml(json_datafile):
                         # body.set_bidding_invitation = set_bidding_invitation
                 except Exception as ex:
                     print(ex)
+
                     # sleep(5)
                 try:
                     first_name = \
@@ -1494,17 +1495,21 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                ###########################################################################
+                if attach.file_name is not None:
+                    attach.save()
                 try:
 
                     if lot.lot_number is not None:
+
                         lot.save()
+                        lot_info.save()
                         lot_list.lot = lot
                         print(lot_list)
-                        sleep(5)
-                        lot_list.save()
+
                 except Exception as ex:
                     print(ex, "lotlist")
-                    sleep(5)
+                    # sleep(5)
+                lot_list.save()
                 try:
                     if debtor_person.first_name is not None:
                         debtor_person.save()
@@ -1555,13 +1560,13 @@ def update_products_xml(json_datafile):
                         winner_company.save()
                 except:
                     pass
-                try:
-                    if attach.file_name is not None:
-                        attach.save()
-                except Exception as ex:
-                    print(ex)
-                    print("attach")
-                    sleep(5)
+                # try:
+                #     if attach.file_name is not None:
+                #         attach.save()
+                # except Exception as ex:
+                #     print(ex)
+                #     print("attach")
+                #     # sleep(5)
 
                 try:
                     print(lot_list)
@@ -1573,11 +1578,11 @@ def update_products_xml(json_datafile):
                 except Exception as ex:
                     print(ex)
                     print("start")
-                    sleep(5)
+                    # sleep(5)
 
                 try:
                     if application_session_statistic.trade_id is not None:
-                        application_session_statistic.lot_list = lot_list
+                        # application_session_statistic.lot_list = lot_list
                         application_session_statistic.attach = attach
                         application_session_statistic.save()
                         set_application_session_statistic.application_session_statistic = application_session_statistic
@@ -1614,8 +1619,8 @@ def update_products_xml(json_datafile):
                     pass
                 try:
                     if success_trade_result.price is not None:
-                        success_trade_result.winner_company = winner_company
-                        success_trade_result.winner_person = winner_person
+                        # success_trade_result.winner_company = winner_company
+                        # success_trade_result.winner_person = winner_person
                         success_trade_result.save()
                 except:
                     pass
@@ -1674,7 +1679,7 @@ def update_products_xml(json_datafile):
                 # if bidding_invitation.trade_id is not None:
                 try:
                     if bidding_fail.trade_id is not None:
-                        bidding_fail.lot_list = lot_list
+                        # bidding_fail.lot_list = lot_list
                         bidding_fail.save()
                         set_bidding_fail.bidding_fail = bidding_fail
                         set_bidding_fail.save()
@@ -1682,7 +1687,7 @@ def update_products_xml(json_datafile):
                     pass
                 try:
                     if bidding_end.trade_id is not None:
-                        bidding_end.lot_list = lot_list
+                        # bidding_end.lot_list = lot_list
                         bidding_end.save()
                         set_bidding_end.bidding_end = bidding_end
                         set_bidding_end.save()
@@ -1690,7 +1695,7 @@ def update_products_xml(json_datafile):
                     pass
                 try:
                     if bidding_cancel.trade_id is not None:
-                        bidding_cancel.lot_list = lot_list
+                        # bidding_cancel.lot_list = lot_list
                         bidding_cancel.save()
                         set_bidding_cancel.bidding_cancel = bidding_cancel
                         set_bidding_cancel.save()
@@ -1699,7 +1704,7 @@ def update_products_xml(json_datafile):
 
                 try:
                     if application_session_end.trade_id is not None:
-                        application_session_end.lot_list = lot_list
+                        # application_session_end.lot_list = lot_list
                         application_session_end.save()
                         set_application_session_end.application_session_end = application_session_end
                         set_application_session_end.save()
@@ -1723,9 +1728,9 @@ def update_products_xml(json_datafile):
                 body.set_bidding_fail = set_bidding_fail
                 body.set_bidding_end = set_bidding_end
                 body.set_bidding_cancel = set_bidding_cancel
-                body.set_application_session_start = set_application_session_start
+                # body.set_application_session_start = set_application_session_start
                 body.set_application_session_end = set_application_session_end
-                body.set_application_session_statistic = set_application_session_statistic
+                # body.set_application_session_statistic = set_application_session_statistic
                 body.save()
                 envelope_model.body = body
                 # envelope_model.body = body_model
@@ -1896,6 +1901,7 @@ def update_products_xml(json_datafile):
                     set_bidding_result = SetBiddingResult()
                     buyer_company = BuyerCompany()
                     buyer_person = BuyerPerson()
+                    bidding_start = BiddingStart()
 
                     try:
                         id_efrsb = trade["Trade"]["@ID_EFRSB"]
@@ -2321,10 +2327,15 @@ def update_products_xml(json_datafile):
                         print("price", price)
                     except:
                         pass
-                    if success_trade_result.price is not None:
-                        success_trade_result.winner_company = winner_company
-                        success_trade_result.winner_person = winner_person
-                        success_trade_result.save()
+                    # try:
+                    #     if success_trade_result.price is not None:
+                    #         success_trade_result.winner_company = winner_company
+                    #         success_trade_result.winner_person = winner_person
+                    #         success_trade_result.save()
+                    # except Exception as ex:
+                    #     print(ex)
+                    #     print("tradres")
+                    #     sleep(5)
                     # WinnerCompanyEnd
                     try:
                         full_name = \
@@ -2332,10 +2343,10 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['FailureTradeResult'][
                                 "BuyerCompany"]["@FullName"]
                         buyer_company.full_name = full_name
+                        # buyer_company.save()
                         print("BuyerCompany FullName", full_name)
                     except:
                         pass
-
                     try:
                         short_name = \
                             envelope["SetBiddingResult"]["BiddingResult"][
@@ -2889,19 +2900,19 @@ def update_products_xml(json_datafile):
                     except:
                         pass
 
-                    try:
-                        result = envelope["SetApplicationSessionStatistic"][
-                            "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"][
-                            "ApplicationData"]
-                        for i in range(len(result)):
-                            if type(result[i]) == type({}):
-                                result = result[i]["@Result"]
-                                application_dataa.result = result
-                                application_dataa.save()
-                        print("result", result)
-
-                    except:
-                        pass
+                    # try:
+                    #     result = envelope["SetApplicationSessionStatistic"][
+                    #         "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"][
+                    #         "ApplicationData"]
+                    #     for i in range(len(result)):
+                    #         if type(result[i]) == type({}):
+                    #             result = result[i]["@Result"]
+                    #             application_dataa.result = result
+                    #             application_dataa.save()
+                    #     print("result", result)
+                    #
+                    # except:
+                    #     pass
                     try:
                         filename = \
                             envelope["SetApplicationSessionStatistic"]["ApplicationSessionStatistic"][
@@ -2961,7 +2972,9 @@ def update_products_xml(json_datafile):
                     # message_model.save()
                     # body_model.save()
                     # if buyer_company.full_name is not None:
-                    buyer_company.save()
+                    if attach.file_name is not None:
+                        attach.save()
+                    # buyer_company.save()
                     if failure_trade_result.substantiation is not None:
                         failure_trade_result.buyer_company = buyer_company
                         failure_trade_result.save()
@@ -2973,18 +2986,18 @@ def update_products_xml(json_datafile):
                     if application_list.applications_data is not None:
                         application_list.save()
                     # envelope_model.body = body_model
-                    try:
-                        if attach.file_name is not None:
-                            attach.save()
-                    except Exception as ex:
-                        print(ex)
-                        print("ATTACH")
-                        sleep(5)
+                    # try:
+                    #     if attach.file_name is not None:
+                    #         attach.save()
+                    # except Exception as ex:
+                    #     print(ex)
+                    #     print("ATTACH")
+                    #     # sleep(5)/
 
-                    success_trade_result.winner_company = winner_company
-                    success_trade_result.winner_person = winner_person
-                    if success_trade_result.price is not None:
-                        success_trade_result.save()
+                    # success_trade_result.winner_company = winner_company
+                    # success_trade_result.winner_person = winner_person
+                    # if success_trade_result.price is not None:
+                    #     success_trade_result.save()
                     if lot_info.lot_number is not None:
                         lot_info.save()
                     if lot.lot_number is not None:
@@ -2995,6 +3008,8 @@ def update_products_xml(json_datafile):
                     if bidding_start.trade_id is not None:
                         bidding_start.lot_list = lot_list
                         bidding_start.save()
+                        set_bidding_start.bidding_start = bidding_start
+
 
                     if trade_info.auction_type is not None:
                         trade_info.attach = attach
@@ -3009,10 +3024,15 @@ def update_products_xml(json_datafile):
                     # print("create bidding fail in list")
                     # sleep(5)
                     # success_trade_result.save()
-                    if success_trade_result.price is not None:
-                        success_trade_result.winner_company = winner_company
-                        success_trade_result.winner_person = winner_person
-                        success_trade_result.save()
+                    try:
+                        if success_trade_result.price is not None:
+                            success_trade_result.winner_company = winner_company
+                            success_trade_result.winner_person = winner_person
+                            success_trade_result.save()
+                    except Exception as ex:
+                        print(ex)
+                        print("SUCCESSTRADE")
+                        sleep(5)
                     if bidding_proccess_info.trade_id is not None:
                         bidding_proccess_info.price_info = price_info
                         bidding_proccess_info.save()
@@ -3052,36 +3072,44 @@ def update_products_xml(json_datafile):
                     except Exception as ex:
                         print(ex)
                         print( "in LIST")
+                        # sleep(5
+                        # )
+
+                    try:
+                        body.set_bidding_proccess_info = set_bidding_proccess_info
+                        body.set_bidding_fail = set_bidding_fail
+                        body.set_bidding_end = set_bidding_end
+                        body.set_bidding_cancel = set_bidding_cancel
+                        body.set_application_session_start = set_application_session_start
+                        body.set_application_session_end = set_application_session_end
+                        body.set_application_session_statistic = set_application_session_statistic
+                        body.save()
+                        envelope_model.body = body
+                        envelope_model.save()
+
+                        message_model.id = id
+                        message_model.envelope = envelope_model
+                        message_model.save()
+                        trade_model.message = message_model
+                        trade_model.save()
+                        trade_list.trade = trade_model
+                        trade_list.save()
+                        inn = trade_places_inn[j]
+                        trade_place.inn = inn
+                        j+=1
+                        trade_place.trade_list = trade_list
+                        trade_list.save()
+                        trade_place.save()
+                        trade_place_list.trade_place = trade_place
+                        trade_place_list.save()
+                    except Exception as ex:
+                        print(ex)
+                        print("BODY")
                         sleep(5)
-
-                    body.set_bidding_proccess_info = set_bidding_proccess_info
-                    body.set_bidding_fail = set_bidding_fail
-                    body.set_bidding_end = set_bidding_end
-                    body.set_bidding_cancel = set_bidding_cancel
-                    body.set_application_session_start = set_application_session_start
-                    body.set_application_session_end = set_application_session_end
-                    body.set_application_session_statistic = set_application_session_statistic
-                    body.save()
-                    envelope_model.body = body
-                    envelope_model.save()
-
-                    message_model.id = id
-                    message_model.envelope = envelope_model
-                    message_model.save()
-                    trade_model.message = message_model
-                    trade_model.save()
-                    trade_list.trade = trade_model
-                    trade_list.save()
-                    inn = trade_places_inn[j]
-                    trade_place.inn = inn
-                    trade_place.trade_list = trade_list
-                    trade_list.save()
-                    trade_place.save()
-                    trade_place_list.trade_place = trade_place
-                    trade_place_list.save()
 
                     print("InFor___________________________")
 
         except Exception as ex:
             print(ex)
-        print("into db")
+        print("END OF")
+        sleep(5)
