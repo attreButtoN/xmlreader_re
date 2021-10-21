@@ -26,7 +26,7 @@ class AdditionalInfo(models.Model):
         return self.nil
 
 
-class AnullmentMessage(models.Model):
+class AnnullmentMessage(models.Model):
     event_time = models.DateTimeField(null=True, blank=True, verbose_name="EventTime")
     trade_id = models.TextField(null=True, blank=True, verbose_name="TradeId")
     id_annulment = models.IntegerField(
@@ -377,7 +377,7 @@ class ContractInfo(models.Model):
         verbose_name="ContractNumber",
     )
     nil = models.BooleanField(null=True, blank=True, verbose_name="nil")
-    date_contract = models.DateTimeField(
+    date_contract = models.DateField(
         null=True, blank=True, verbose_name="DateContract"
     )
     price = models.FloatField(null=True, blank=True, verbose_name="Price")
@@ -479,7 +479,7 @@ class Participant(models.Model):
 
 class SetAnnulment(models.Model):
     annulment_message = models.ForeignKey(
-        AnullmentMessage, null=True, on_delete=models.CASCADE, verbose_name="AnnulmentMessage"
+        AnnullmentMessage, null=True, on_delete=models.CASCADE, verbose_name="AnnulmentMessage"
     )
 
     def __str__(self):
@@ -704,7 +704,7 @@ class ApplicationSessionStart(models.Model):
 class ApplicationSessionStatistic(models.Model):
     trade_id = models.TextField(null=True, blank=True, verbose_name="TradeId")
     event_time = models.DateTimeField(null=True, blank=True, verbose_name="EventTime")
-    date_begin = models.DateTimeField(null=True, blank=True, verbose_name="DateBegin")
+    date_begin = models.DateField(null=True, blank=True, verbose_name="DateBegin")
     lot_list = models.ForeignKey(
         LotList, null=True, on_delete=models.CASCADE, verbose_name="LotList", blank=True,
     )
