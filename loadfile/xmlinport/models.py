@@ -8,15 +8,18 @@ class Document(models.Model):
 
 class Sro(models.Model):
     sro_id = models.BigIntegerField(blank=True, null=True)
-    sro_name = models.CharField(max_length=512, blank=False, verbose_name="SroName")
+    sro_name = models.CharField(max_length=512, blank=True, verbose_name="SroName")
     sro_registry_number = models.CharField(
-        max_length=30, blank=False, verbose_name="SroRegistryNumber"
+        max_length=30, blank=True, verbose_name="SroRegistryNumber"
     )
-    ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRN")
-    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
+    ogrn = models.CharField(max_length=13, null=True, blank=True, verbose_name="OGRN")
+    inn = models.CharField(max_length=10, null=True, blank=True, verbose_name="INN")
     legal_address = models.CharField(
         max_length=1024, blank=True, verbose_name="LegalAddress"
     )
+    name = models.TextField(null=True, blank=True, verbose_name="Name")
+
+    address = models.TextField(blank=True, null=True, verbose_name="Address")
 
 
 class AdditionalInfo(models.Model):
@@ -63,14 +66,14 @@ class ApplicationData(models.Model):
 
 class ArbitrManager(models.Model):
     inn = models.TextField(max_length=12, null=True, blank=True, verbose_name="INN")
-    sro = models.ForeignKey(Sro, blank=False, null=True, on_delete=models.CASCADE)
+    sro = models.ForeignKey(Sro, blank=True, null=True, on_delete=models.CASCADE)
     first_name = models.CharField(
-        max_length=50, blank=False, null=True, verbose_name="FirstName"
+        max_length=50, blank=True, null=True, verbose_name="FirstName"
     )
     last_name = models.CharField(
-        max_length=50, blank=False, null=True, verbose_name="LastName"
+        max_length=50, blank=True, null=True, verbose_name="LastName"
     )
-    sro_name = models.TextField(blank=True,null=True)
+    sro_name = models.TextField(blank=True, null=True)
     middle_name = models.CharField(max_length=50, blank=True, verbose_name="MiddleName")
     reg_num = models.CharField(
         max_length=30, null=True, blank=True, verbose_name="RegNum"
@@ -80,7 +83,8 @@ class ArbitrManager(models.Model):
     correspodence_address = models.CharField(
         max_length=300, blank=True, null=True, verbose_name="CorrespodenceAddress"
     )
-    fio = models.TextField(blank=True,null=True)
+    fio = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return f"{self.inn} {self.sro} {self.first_name} {self.last_name} {self.middle_name}{self.reg_num}"
 
@@ -261,7 +265,7 @@ class ParticipantCompany(models.Model):
     full_name = models.TextField(null=True, blank=True, verbose_name="Phone")
     short_name = models.TextField(null=True, blank=True, verbose_name="ShortName")
     inn = models.TextField(null=True, blank=True, verbose_name="INN")
-    ogrn = models.TextField(null=True, blank=False, verbose_name="ORGN")
+    ogrn = models.TextField(null=True, blank=True, verbose_name="ORGN")
     price_offer = models.FloatField(blank=True, null=True, verbose_name="PriceOffer")
 
     def __str__(self):
@@ -1068,6 +1072,7 @@ class Envelope(models.Model):
     def __str__(self):
         return f"{self.body}"
 
+
 class BankruptSupervisoryPerson(models.Model):
     bankrupt_supervisory_person = models.TextField(blank=True, null=True)
     responsibility_amount = models.FloatField(blank=True, null=True)
@@ -1081,6 +1086,8 @@ class BankruptSupervisoryPerson(models.Model):
 class BankruptSupervisoryPersons(models.Model):
     bankrupt_supervisory_person = models.ForeignKey(BankruptSupervisoryPerson, null=True, blank=True,
                                                     on_delete=models.CASCADE)
+
+
 class Message(models.Model):
     envelope = models.ForeignKey(
         Envelope, null=True, on_delete=models.CASCADE, verbose_name="Envelope"
@@ -1088,7 +1095,8 @@ class Message(models.Model):
     # w3_org_2003_05_soap_envelope_envelope = models.ForeignKey(Envelope, on_delete=models.CASCADE,
     #
     #                                                          verbose_name="Envelope")
-    bankrupt_supervisory_persons = models.ForeignKey(BankruptSupervisoryPersons,blank=True,null=True,on_delete=models.CASCADE)
+    bankrupt_supervisory_persons = models.ForeignKey(BankruptSupervisoryPersons, blank=True, null=True,
+                                                     on_delete=models.CASCADE)
 
     def __str__(self):
         return (
@@ -1126,176 +1134,178 @@ class TradePlaceList(models.Model):
 
 
 class GetMessageContent(models.Model):
-    id = models.IntegerField(primary_key=True, blank=False, null=False, verbose_name="Идентификатор сообщения в ЕФРСБ")
+    get_message_content_id = models.IntegerField(null=True, blank=True, verbose_name="Идентификатор сообщения в ЕФРСБ")
 
 
 class GetDebtorMessagesContentForPeriodByIdBankrupt(models.Model):
-    IdBankrupt = models.IntegerField(primary_key=True, blank=False, null=False, verbose_name="Идентификатор должника")
+    id_Bankrupt = models.BigIntegerField(blank=True, null=True, verbose_name="Идентификатор должника")
     startDate = models.DateTimeField(blank=True, null=True, verbose_name="Дата начала периода")
 
 
 class FirmTradeOrganizer(models.Model):
-    full_name = models.CharField(max_length=1024, blank=False, verbose_name="FullName")
-    short_name = models.CharField(max_length=512, blank=False, verbose_name="ShortName")
-    post_address = models.CharField(max_length=300, blank=False, verbose_name="PostAddress")
-    legal_address = models.CharField(max_length=300, blank=False, verbose_name="LegalAddress")
-    ogrn = models.CharField(max_length=13, blank=False, verbose_name="OGRN")
-    inn = models.CharField(max_length=10, blank=False, verbose_name="INN")
-    okpo = models.CharField(max_length=8, blank=False, verbose_name="OKPO")
+    full_name = models.CharField(max_length=1024, blank=True, verbose_name="FullName")
+    short_name = models.CharField(max_length=512, blank=True, verbose_name="ShortName")
+    post_address = models.CharField(max_length=300, blank=True, verbose_name="PostAddress")
+    legal_address = models.CharField(max_length=300, blank=True, verbose_name="LegalAddress")
+    ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRN")
+    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
+    okpo = models.CharField(max_length=8, blank=True, verbose_name="OKPO")
 
 
 class FirmTradeOrganizerAgent(models.Model):
-    first_name = models.CharField(max_length=50, blank=False, verbose_name="FirstName")
-    middle_name = models.CharField(max_length=50, blank=False, verbose_name="MiddleName")
-    last_name = models.CharField(max_length=50, blank=False, verbose_name="LastName")
-    firm_trade_organizer = models.ForeignKey(FirmTradeOrganizer, blank=False, verbose_name="FirmTradeOrganizer",
+    first_name = models.CharField(max_length=50, blank=True, verbose_name="FirstName")
+    middle_name = models.CharField(max_length=50, blank=True, verbose_name="MiddleName")
+    last_name = models.CharField(max_length=50, blank=True, verbose_name="LastName")
+    firm_trade_organizer = models.ForeignKey(FirmTradeOrganizer, blank=True, verbose_name="FirmTradeOrganizer",
                                              on_delete=models.CASCADE)
 
 
 class SroInfo(models.Model):
-    inn = models.CharField(max_length=15, blank=False, verbose_name="INN")
-    name = models.CharField(max_length=512, blank=False, verbose_name="Name")
-    ogrn = models.CharField(max_length=13, blank=False, verbose_name="OGRN")
-    legal_address = models.CharField(max_length=1024, blank=False, verbose_name="LegalAddress")
-    post_address = models.CharField(max_length=1024, blank=False, verbose_name="PostAddress")
+    inn = models.CharField(max_length=15, blank=True, verbose_name="INN")
+    name = models.CharField(max_length=512, blank=True, verbose_name="Name")
+    ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRN")
+    legal_address = models.CharField(max_length=1024, blank=True, verbose_name="LegalAddress")
+    post_address = models.CharField(max_length=1024, blank=True, verbose_name="PostAddress")
 
 
 class OperatorSro(models.Model):
-    first_name = models.CharField(max_length=50, blank=False, verbose_name="FirstName")
-    middle_name = models.CharField(max_length=50, blank=False, verbose_name="MiddleName")
-    last_name = models.CharField(max_length=50, blank=False, verbose_name="LastName")
-    sro_info = models.ForeignKey(SroInfo, blank=False, verbose_name="SroInfo", on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50, blank=True, verbose_name="FirstName")
+    middle_name = models.CharField(max_length=50, blank=True, verbose_name="MiddleName")
+    last_name = models.CharField(max_length=50, blank=True, verbose_name="LastName")
+    sro_info = models.ForeignKey(SroInfo, blank=True, verbose_name="SroInfo", on_delete=models.CASCADE)
 
 
 class PersonTradeOrganizer(models.Model):
-    first_name = models.CharField(max_length=50, blank=False, verbose_name="FirstName")
-    middle_name = models.CharField(max_length=50, blank=False, verbose_name="MiddleName")
-    last_name = models.CharField(max_length=50, blank=False, verbose_name="LastName")
-    address = models.CharField(max_length=300, blank=False, verbose_name="Address")
-    inn = models.CharField(max_length=12, blank=False, verbose_name="INN")
-    ogrnip = models.CharField(max_length=15, blank=False, verbose_name="OGRNIP")
+    first_name = models.CharField(max_length=50, blank=True, verbose_name="FirstName")
+    middle_name = models.CharField(max_length=50, blank=True, verbose_name="MiddleName")
+    last_name = models.CharField(max_length=50, blank=True, verbose_name="LastName")
+    address = models.CharField(max_length=300, blank=True, verbose_name="Address")
+    inn = models.CharField(max_length=12, blank=True, verbose_name="INN")
+    ogrnip = models.CharField(max_length=15, blank=True, verbose_name="OGRNIP")
 
 
 class ForeignSystem(models.Model):
-    name = models.CharField(max_length=256, blank=False, verbose_name="Name")
+    name = models.CharField(max_length=256, blank=True, verbose_name="Name")
 
 
 class Operator(models.Model):
-    first_name = models.CharField(max_length=50, blank=False, verbose_name="FirstName")
+    first_name = models.CharField(max_length=50, blank=True, verbose_name="FirstName")
     middle_name = models.CharField(max_length=50, blank=True, verbose_name="MiddleName")
-    last_name = models.CharField(max_length=50, blank=False, verbose_name="LastName")
-    organization_name = models.CharField(max_length=50, blank=False, verbose_name="OrganizationName")
-    organization_department_name = models.CharField(max_length=200, blank=False,
+    last_name = models.CharField(max_length=50, blank=True, verbose_name="LastName")
+    organization_name = models.CharField(max_length=50, blank=True, verbose_name="OrganizationName")
+    organization_department_name = models.CharField(max_length=200, blank=True,
                                                     verbose_name="OrganizationDepartmentName")
 
 
 class FnsDepartment(models.Model):
-    name = models.CharField(max_length=250, blank=False, verbose_name="Name")
-    inn = models.CharField(max_length=12, blank=False, verbose_name="INN")
+    name = models.CharField(max_length=250, blank=True, verbose_name="Name")
+    inn = models.CharField(max_length=12, blank=True, verbose_name="INN")
 
 
 class Person(models.Model):
-    first_name = models.CharField(max_length=50, blank=False, verbose_name="FirstName")
+    first_name = models.CharField(max_length=50, blank=True, verbose_name="FirstName")
     middle_name = models.CharField(max_length=50, blank=True, verbose_name="MiddleName")
-    last_name = models.CharField(max_length=50, blank=False, verbose_name="LastName")
-    inn = models.CharField(max_length=12, blank=False, verbose_name="INN")
+    last_name = models.CharField(max_length=50, blank=True, verbose_name="LastName")
+    inn = models.CharField(max_length=12, blank=True, verbose_name="INN")
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=1024, blank=False, verbose_name="Name")
-    ogrn = models.CharField(max_length=13, blank=False, verbose_name="OGRN")
-    inn = models.CharField(max_length=10, blank=False, verbose_name="INN")
+    name = models.CharField(max_length=1024, blank=True, verbose_name="Name")
+    ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRN")
+    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
 
 
 class Fio(models.Model):
-    first_name = models.CharField(max_length=50, blank=False, verbose_name="FirstName")
+    first_name = models.CharField(max_length=50, blank=True, verbose_name="FirstName")
     middle_name = models.CharField(max_length=50, blank=True, verbose_name="MiddleName")
-    last_name = models.CharField(max_length=50, blank=False, verbose_name="LastName")
+    last_name = models.CharField(max_length=50, blank=True, verbose_name="LastName")
 
 
 class Publisher_Arbitr_Manager_v2(models.Model):
-    fio = models.ForeignKey(Fio, on_delete=models.CASCADE, blank=False)
-    inn = models.CharField(max_length=12, blank=False, verbose_name="INN")
-    snils = models.CharField(max_length=11, blank=False, verbose_name="SNILS")
+    fio = models.ForeignKey(Fio, null=True, on_delete=models.CASCADE, blank=True)
+    inn = models.CharField(max_length=12, blank=True, verbose_name="INN")
+    snils = models.CharField(max_length=11, blank=True, verbose_name="SNILS")
     ogrnip = models.CharField(max_length=15, blank=True, verbose_name="OGRNIP")
-    correspondence_address = models.CharField(max_length=300, blank=False, verbose_name="Correspondence Address")
-    sro = models.ForeignKey(Sro, on_delete=models.CASCADE, blank=True)
+    correspondence_address = models.CharField(max_length=300, blank=True, verbose_name="Correspondence Address")
+    sro = models.ForeignKey(Sro, null=True, on_delete=models.CASCADE, blank=True)
 
 
 class Publisher_Arbitr_Manager_Sro_v2(models.Model):
-    name = models.CharField(max_length=512, blank=False, verbose_name="Name")
-    ogrn = models.CharField(max_length=13, blank=False, verbose_name="OGRN")
-    inn = models.CharField(max_length=10, blank=False, verbose_name="INN")
-    address = models.CharField(max_length=1024, blank=False, verbose_name="Address")
+    name = models.CharField(max_length=512, blank=True, verbose_name="Name")
+    ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRN")
+    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
+    address = models.CharField(max_length=1024, blank=True, verbose_name="Address")
 
 
 class Publisher_FirmTrade_Organizer_v2(models.Model):
-    name = models.CharField(max_length=1024, blank=False, verbose_name="Name")
-    ogrn = models.CharField(max_length=13, blank=False, verbose_name="OGRN")
-    inn = models.CharField(max_length=10, blank=False, verbose_name="INN")
+    name = models.CharField(max_length=1024, blank=True, verbose_name="Name")
+    ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRN")
+    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
 
 
 class Publisher_PersonTrade_Organizer_v2(models.Model):
-    fio = models.ForeignKey(Fio, on_delete=models.CASCADE, blank=False)
-    inn = models.CharField(max_length=12, blank=False, verbose_name="INN")
+    fio = models.ForeignKey(Fio, on_delete=models.CASCADE, blank=True)
+    inn = models.CharField(max_length=12, blank=True, verbose_name="INN")
     ogrnip = models.CharField(max_length=15, blank=True, verbose_name="OGRNIP")
 
 
 class Publisher_Company_v2(models.Model):
-    name = models.CharField(max_length=512, blank=False, verbose_name="Name")
+    name = models.CharField(max_length=512, blank=True, verbose_name="Name")
     ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRNIP")
-    inn = models.CharField(max_length=10, blank=False, verbose_name="INN")
+    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
 
 
 class Publisher_Person_v2(models.Model):
-    fio = models.ForeignKey(Fio, on_delete=models.CASCADE, blank=False)
-    inn = models.CharField(max_length=12, blank=False, verbose_name="INN")
+    fio = models.ForeignKey(Fio, on_delete=models.CASCADE, blank=True)
+    inn = models.CharField(max_length=12, blank=True, verbose_name="INN")
 
 
 class Publisher_CentralBankRf_v2(models.Model):
-    name = models.CharField(max_length=512, blank=False, verbose_name="Name")
+    name = models.CharField(max_length=512, blank=True, verbose_name="Name")
     ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRNIP")
-    inn = models.CharField(max_length=10, blank=False, verbose_name="INN")
+    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
 
 
 class Publisher_Asv_v2(models.Model):
-    name = models.CharField(max_length=512, blank=False, verbose_name="Name")
+    name = models.CharField(max_length=512, blank=True, verbose_name="Name")
     ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRNIP")
-    inn = models.CharField(max_length=10, blank=False, verbose_name="INN")
+    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
 
 
 class Publisher_FnsDepartment_v2(models.Model):
-    name = models.CharField(max_length=512, blank=False, verbose_name="Name")
+    name = models.CharField(max_length=512, blank=True, verbose_name="Name")
     ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRNIP")
-    inn = models.CharField(max_length=10, blank=False, verbose_name="INN")
+    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
 
 
 class Publisher_Efrsb_v2(models.Model):
-    name = models.CharField(max_length=512, blank=False, verbose_name="Name")
+    name = models.CharField(max_length=512, blank=True, verbose_name="Name")
 
 
 class Publisher_Mfc_v2(models.Model):
-    name = models.CharField(max_length=512, blank=False, verbose_name="Name")
+    name = models.CharField(max_length=512, blank=True, verbose_name="Name")
     ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRNIP")
-    inn = models.CharField(max_length=10, blank=False, verbose_name="INN")
+    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
 
 
 class Publisher(models.Model):
-    publisher = models.CharField(max_length=30, blank=False, verbose_name="Publisher")  # xsi:type
-    publisher_arbitr_manager_v2 = models.ForeignKey(Publisher_Arbitr_Manager_v2, on_delete=models.CASCADE, blank=True)
+    xsi_type = models.CharField(max_length=30, blank=True,null=True, verbose_name="Publisher")  # xsi:type
+    publisher_arbitr_manager_v2 = models.ForeignKey(Publisher_Arbitr_Manager_v2, on_delete=models.CASCADE,null=True, blank=True)
     publisher_arbitr_manager_sro_v2 = models.ForeignKey(Publisher_Arbitr_Manager_Sro_v2, on_delete=models.CASCADE,
-                                                        blank=True)
+                                                        blank=True, null=True)
     publisher_firmtrade_organizer_v2 = models.ForeignKey(Publisher_FirmTrade_Organizer_v2, on_delete=models.CASCADE,
-                                                         blank=True)
+                                                         blank=True, null=True)
     publisher_persontrade_organizer_v2 = models.ForeignKey(Publisher_PersonTrade_Organizer_v2, on_delete=models.CASCADE,
-                                                           blank=True)
-    publisher_company_v2 = models.ForeignKey(Publisher_Company_v2, on_delete=models.CASCADE, blank=True)
-    publisher_person_v2 = models.ForeignKey(Publisher_Person_v2, on_delete=models.CASCADE, blank=True)
-    publisher_centralbankrf_v2 = models.ForeignKey(Publisher_CentralBankRf_v2, on_delete=models.CASCADE, blank=True)
-    publisher_asv_v2 = models.ForeignKey(Publisher_Asv_v2, on_delete=models.CASCADE, blank=True)
-    publisher_fnsdepartment_v2 = models.ForeignKey(Publisher_FnsDepartment_v2, on_delete=models.CASCADE, blank=True)
-    publisher_efrsb_v2 = models.ForeignKey(Publisher_Efrsb_v2, on_delete=models.CASCADE, blank=True)
-    publisher_mfc_v2 = models.ForeignKey(Publisher_Mfc_v2, on_delete=models.CASCADE, blank=True)
+                                                           blank=True, null=True)
+    publisher_company_v2 = models.ForeignKey(Publisher_Company_v2, on_delete=models.CASCADE, blank=True, null=True)
+    publisher_person_v2 = models.ForeignKey(Publisher_Person_v2, on_delete=models.CASCADE, blank=True, null=True)
+    publisher_centralbankrf_v2 = models.ForeignKey(Publisher_CentralBankRf_v2, on_delete=models.CASCADE, blank=True,
+                                                   null=True)
+    publisher_asv_v2 = models.ForeignKey(Publisher_Asv_v2, on_delete=models.CASCADE, blank=True, null=True)
+    publisher_fnsdepartment_v2 = models.ForeignKey(Publisher_FnsDepartment_v2, on_delete=models.CASCADE, blank=True,
+                                                   null=True)
+    publisher_efrsb_v2 = models.ForeignKey(Publisher_Efrsb_v2, on_delete=models.CASCADE, blank=True, null=True)
+    publisher_mfc_v2 = models.ForeignKey(Publisher_Mfc_v2, on_delete=models.CASCADE, blank=True, null=True)
 
 
 class NameHistoryItem(models.Model):
@@ -1303,12 +1313,12 @@ class NameHistoryItem(models.Model):
 
 
 class BankruptPerson(models.Model):
-    insolvent_catrory_name = models.CharField(max_length=100, blank=False, verbose_name="InsolventCategoryName")
-    first_name = models.CharField(max_length=50, blank=False, verbose_name="FirstName")
+    insolvent_catrory_name = models.CharField(max_length=100, blank=True, verbose_name="InsolventCategoryName")
+    first_name = models.CharField(max_length=50, blank=True, verbose_name="FirstName")
     middle_name = models.CharField(max_length=50, blank=True, verbose_name="MiddleName")
-    last_name = models.CharField(max_length=50, blank=False, verbose_name="LastName")
-    ogrnip = models.CharField(max_length=15, blank=False, verbose_name="OGRNIP")
-    address = models.CharField(max_length=300, blank=False, verbose_name="Address")
+    last_name = models.CharField(max_length=50, blank=True, verbose_name="LastName")
+    ogrnip = models.CharField(max_length=15, blank=True, verbose_name="OGRNIP")
+    address = models.CharField(max_length=300, blank=True, verbose_name="Address")
     inn = models.CharField(max_length=12, blank=True, verbose_name="INN")
     snils = models.CharField(max_length=11, blank=True, verbose_name="SNILS")
     birth_date = models.DateTimeField(blank=True, verbose_name="BirthDate")
@@ -1317,14 +1327,14 @@ class BankruptPerson(models.Model):
 
 
 class BankruptFirm(models.Model):
-    insolvent_catrory_name = models.CharField(max_length=100, blank=False, verbose_name="InsolventCategoryName")
+    insolvent_catrory_name = models.CharField(max_length=100, blank=True, verbose_name="InsolventCategoryName")
     inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
-    full_name = models.CharField(max_length=1024, blank=False, verbose_name="FullName")
-    short_name = models.CharField(max_length=512, blank=False, verbose_name="ShortName")
-    post_address = models.CharField(max_length=300, blank=False, verbose_name="PostAddress")
-    legal_addres = models.CharField(max_length=300, blank=False, verbose_name="LegalAddress")
-    ogrn = models.CharField(max_length=13, blank=False, verbose_name="OGRN")
-    okpo = models.CharField(max_length=8, blank=False, verbose_name="OKPO")
+    full_name = models.CharField(max_length=1024, blank=True, verbose_name="FullName")
+    short_name = models.CharField(max_length=512, blank=True, verbose_name="ShortName")
+    post_address = models.CharField(max_length=300, blank=True, verbose_name="PostAddress")
+    legal_addres = models.CharField(max_length=300, blank=True, verbose_name="LegalAddress")
+    ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRN")
+    okpo = models.CharField(max_length=8, blank=True, verbose_name="OKPO")
 
 
 class BankruptInfo(models.Model):
@@ -1337,28 +1347,28 @@ class BankruptInfo(models.Model):
 
 
 class Category(models.Model):
-    code = models.TextField(blank=False)
-    description = models.TextField(blank=False)
+    code = models.TextField(blank=True)
+    description = models.TextField(blank=True)
 
 
 class Bankrupt_Company_v2(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=False)
-    name = models.CharField(max_length=1024, blank=False, verbose_name="Name")
-    ogrn = models.CharField(max_length=13, blank=False, verbose_name="OGRNIP")
-    inn = models.CharField(max_length=10, blank=False, verbose_name="INN")
-    address = models.CharField(max_length=300, blank=False, verbose_name="Address")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True)
+    name = models.CharField(max_length=1024, blank=True, verbose_name="Name")
+    ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRNIP")
+    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
+    address = models.CharField(max_length=300, blank=True, verbose_name="Address")
 
 
 class FioHistory(models.Model):
-    fio = models.ForeignKey(Fio, on_delete=models.CASCADE, blank=False)
+    fio = models.ForeignKey(Fio, on_delete=models.CASCADE, blank=True)
 
 
 class Bankrupt_Person_v2(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=False)
-    fio = models.ForeignKey(Fio, on_delete=models.CASCADE, blank=False)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True)
+    fio = models.ForeignKey(Fio, on_delete=models.CASCADE, blank=True)
     inn = models.CharField(max_length=12, blank=True, verbose_name="INN")
     snils = models.CharField(max_length=11, blank=True, verbose_name="SNILS")
-    address = models.CharField(max_length=300, blank=False, verbose_name="Address")
+    address = models.CharField(max_length=300, blank=True, verbose_name="Address")
     birth_date = models.DateTimeField(blank=True, verbose_name="BirthDate")
     birth_place = models.CharField(max_length=300, blank=True, verbose_name="BirthPlace")
     fio_history = models.ForeignKey(FioHistory, on_delete=models.CASCADE, verbose_name="FioHistory")
@@ -1380,9 +1390,9 @@ class Bankrupt(models.Model):
 
 
 class MessageUrl(models.Model):
-    url_name = models.TextField(blank=False)
-    url = models.TextField(blank=False)
-    download_size = models.CharField(max_length=15, blank=False)
+    url_name = models.TextField(blank=True)
+    url = models.TextField(blank=True)
+    download_size = models.CharField(max_length=15, blank=True)
 
 
 class MessageURLList(models.Model):
@@ -1580,6 +1590,7 @@ class PurchaserInfo(models.Model):
     ogrn = models.TextField(blank=True, null=True, verbose_name="OGRN")
     inn = models.TextField(blank=True, null=True, verbose_name="INN")
 
+
 class SaleContractInfo(models.Model):
     type_sale_contract_info = models.TextField(blank=True, null=True)
     lot_number = models.IntegerField(blank=True, null=True)
@@ -1590,8 +1601,10 @@ class SaleContractInfo(models.Model):
     conclusion_date = models.DateTimeField(blank=True, null=True)
     property_purchase_price = models.FloatField(blank=True, null=True)
 
+
 class Contracts(models.Model):
     contracts = models.ForeignKey(SaleContractInfo, blank=True, null=True, on_delete=models.CASCADE)
+
 
 class SaleContractResult(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
@@ -1600,12 +1613,15 @@ class SaleContractResult(models.Model):
     price = models.FloatField(blank=True, null=True)
     failure_winner_info = models.ForeignKey(FailureWinnerInfo, on_delete=models.CASCADE, null=True, blank=True)
     purchaser_info = models.ForeignKey(PurchaserInfo, blank=True, null=True, on_delete=models.CASCADE)
+
+
 class SaleContractResult2(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    id_auction_message = models.BigIntegerField(blank=True,null=True)
-    trade_place_name = models.TextField(blank=True,null=True)
-    trade_number = models.TextField(blank=True,null=True)
-    contracts = models.ForeignKey(Contracts,blank=True,null=True,on_delete=models.CASCADE)
+    id_auction_message = models.BigIntegerField(blank=True, null=True)
+    trade_place_name = models.TextField(blank=True, null=True)
+    trade_number = models.TextField(blank=True, null=True)
+    contracts = models.ForeignKey(Contracts, blank=True, null=True, on_delete=models.CASCADE)
+
 
 class Committee(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
@@ -1644,9 +1660,6 @@ class PerformanceCreditOrg(models.Model):
 
 class BuyingProperty(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-
-
-
 
 
 class PersonForResponsibility(models.Model):
@@ -1764,9 +1777,6 @@ class DeclarationPersonDamages(models.Model):
                                                            blank=True, null=True)
 
 
-
-
-
 class SetContractResult2(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
     id_auction_message = models.BigIntegerField(blank=True, null=True)
@@ -1814,11 +1824,13 @@ class ViewDraftRestructuringPlan(models.Model):
     place_of_acquaintance = models.TextField(blank=True, null=True)
     included_registry_requirements_not_satisfied = models.BooleanField(blank=True, null=True)
 
+
 class ViewExecRestructuringPlan(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    date_end_restructuring_plan_execution = models.DateTimeField(blank=True,null=True)
+    date_end_restructuring_plan_execution = models.DateTimeField(blank=True, null=True)
     place_of_acquaintance = models.TextField(blank=True, null=True)
     included_registry_requirements_not_satisfied = models.BooleanField(blank=True, null=True)
+
 
 class LandPlot(models.Model):
     cadastral_number = models.TextField(blank=True, null=True)
@@ -1835,279 +1847,367 @@ class UncompletedBuildingProject(models.Model):
     address = models.TextField(blank=True, null=True, verbose_name="Address")
     additional_info = models.TextField(blank=True, null=True, verbose_name="AdditionalInfo")
 
+
 class CancelAuctionTradeResult(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    id_cancelled_message = models.BigIntegerField(blank=True,null=True)
-    cancellation_reason = models.TextField(blank=True,null=True)
+    id_cancelled_message = models.BigIntegerField(blank=True, null=True)
+    cancellation_reason = models.TextField(blank=True, null=True)
+
 
 class CancelDeliberateBankruptcy(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
     id_changed_message = models.BigIntegerField(blank=True, null=True)
     cancellation_reason = models.TextField(blank=True, null=True)
 
+
 class ChangeAuction(models.Model):
-    #Auction!!!
+    # Auction!!!
     id_changed_message = models.BigIntegerField(blank=True, null=True)
     change_reason = models.TextField(blank=True, null=True)
 
+
 class DeliberateBankruptcy(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    deliberate_bankruptcy_signs = models.TextField(blank=True,null=True)
-    deliberate_signs_not_searched_reason = models.TextField(blank=True,null=True)
-    fake_bankruptcy_signs = models.TextField(blank=True,null=True)
-    fake_signs_not_searched_reason = models.TextField(blank=True,null=True)
+    deliberate_bankruptcy_signs = models.TextField(blank=True, null=True)
+    deliberate_signs_not_searched_reason = models.TextField(blank=True, null=True)
+    fake_bankruptcy_signs = models.TextField(blank=True, null=True)
+    fake_signs_not_searched_reason = models.TextField(blank=True, null=True)
+
 
 class ChangeDeliberateBankruptcy(models.Model):
-    id_cancelled_message = models.BigIntegerField(blank=True,null=True)
+    id_cancelled_message = models.BigIntegerField(blank=True, null=True)
+
 
 class ReducingSizeShareCapital(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    charter_capital_sum = models.FloatField(blank=True,null=True)
-    normative_act_add_option_date = models.DateTimeField(blank=True,null=True)
-    increase_capital_decision_cancelled = models.BooleanField(blank=True,null=True)
+    charter_capital_sum = models.FloatField(blank=True, null=True)
+    normative_act_add_option_date = models.DateTimeField(blank=True, null=True)
+    increase_capital_decision_cancelled = models.BooleanField(blank=True, null=True)
 
 
 class SelectionPurchaserAssets(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
 
+
 class EstimatesCurrentExpenses(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
+
 
 class OrderAndTimingCalculations(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
 
+
 class InformationAboutBankruptcy(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
+
 
 class EstimatesAndUnsoldAssets(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
 
+
 class RemainingAssetsAndRight(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
+
+
 class CreditOrganizationInfo(models.Model):
     name = models.TextField(blank=True, null=True, verbose_name="Name")
     address = models.TextField(blank=True, null=True, verbose_name="Address")
     inn = models.TextField(blank=True, null=True, verbose_name="INN")
     ogrn = models.TextField(blank=True, null=True, verbose_name="OGRN")
-    acquirer_liabilities_classification_criteria = models.TextField(blank=True,null=True)
-    transferred_liabilities_obtaining_order = models.TextField(blank=True,null=True)
+    acquirer_liabilities_classification_criteria = models.TextField(blank=True, null=True)
+    transferred_liabilities_obtaining_order = models.TextField(blank=True, null=True)
+
+
 class CreditOrganizations(models.Model):
-    credit_organization = models.ForeignKey(CreditOrganizationInfo,blank=True,null=True,on_delete=models.CASCADE)
+    credit_organization = models.ForeignKey(CreditOrganizationInfo, blank=True, null=True, on_delete=models.CASCADE)
+
+
 class TransferAssets(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
     credit_organizations = models.ForeignKey(CreditOrganizations, blank=True, null=True, on_delete=models.CASCADE)
 
+
 class ImpendingTransferAssets(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    credit_organizations = models.ForeignKey(CreditOrganizations,blank=True,null=True,on_delete=models.CASCADE)
+    credit_organizations = models.ForeignKey(CreditOrganizations, blank=True, null=True, on_delete=models.CASCADE)
+
 
 class InsuranceOrganization(models.Model):
     name = models.TextField(blank=True, null=True, verbose_name="Name")
     address = models.TextField(blank=True, null=True, verbose_name="Address")
     inn = models.TextField(blank=True, null=True, verbose_name="INN")
     ogrn = models.TextField(blank=True, null=True, verbose_name="OGRN")
+
+
 class TransferInsurancePortfolio(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    expected_delivery_date = models.DateTimeField(blank=True,null=True)
-    portfolio_transfer_reason = models.TextField(blank=True,null=True)
-    authority_limitation_info = models.TextField(blank=True,null=True)
-    insurance_organizaion = models.ForeignKey(InsuranceOrganization,blank=True,null=True,on_delete=models.CASCADE)
-    bik = models.TextField(blank=True,null=True)
+    expected_delivery_date = models.DateTimeField(blank=True, null=True)
+    portfolio_transfer_reason = models.TextField(blank=True, null=True)
+    authority_limitation_info = models.TextField(blank=True, null=True)
+    insurance_organizaion = models.ForeignKey(InsuranceOrganization, blank=True, null=True, on_delete=models.CASCADE)
+    bik = models.TextField(blank=True, null=True)
+
+
 class BankOpenAccountDebtor(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
     name = models.TextField(blank=True, null=True, verbose_name="Name")
     inn = models.TextField(blank=True, null=True, verbose_name="INN")
     ogrn = models.TextField(blank=True, null=True, verbose_name="OGRN")
+
+
 class ProcedureGrantingIndemnity(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    property_indemnity_offer = models.TextField(blank=True,null=True)
-    property_familiarization_procedure = models.TextField(blank=True,null=True)
-    consest_application_period = models.TextField(blank=True,null=True)
+    property_indemnity_offer = models.TextField(blank=True, null=True)
+    property_familiarization_procedure = models.TextField(blank=True, null=True)
+    consest_application_period = models.TextField(blank=True, null=True)
+
 
 class RightUnsoldAsset(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
 
+
 class TransferResponsibilitiesFund(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
+
 
 class ExtensionAdministration(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
 
+
 class MeetingParticipantsBuilding(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    meeting_date = models.DateTimeField(blank=True,null=True)
-    meeting_site = models.TextField(blank=True,null=True)
-    notice = models.TextField(blank=True,null=True)
-    materials_familiarization_order = models.TextField(blank=True,null=True)
+    meeting_date = models.DateTimeField(blank=True, null=True)
+    meeting_site = models.TextField(blank=True, null=True)
+    notice = models.TextField(blank=True, null=True)
+    materials_familiarization_order = models.TextField(blank=True, null=True)
+
 
 class MeetingPartBuildResult(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
 
+
 class PartBuildMonetaryClaim(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    arbitral_court = models.TextField(blank=True,null=True)
-    consequences = models.TextField(blank=True,null=True)
+    arbitral_court = models.TextField(blank=True, null=True)
+    consequences = models.TextField(blank=True, null=True)
+
 
 class StartSettlement(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    settlement_start_date = models.DateTimeField(blank=True,null=True)
+    settlement_start_date = models.DateTimeField(blank=True, null=True)
+
 
 class ProcessInventoryDebtor(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
 
+
 class Rebuttal(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    id_rebutted_message = models.BigIntegerField(blank=True,null=True)
+    id_rebutted_message = models.BigIntegerField(blank=True, null=True)
+
 
 class CreditorChoiceRightSubsidiary(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    subsidiary_message_id = models.BigIntegerField(blank=True,null=True)
-    subsidiary_act_date = models.DateTimeField(blank=True,null=True)
+    subsidiary_message_id = models.BigIntegerField(blank=True, null=True)
+    subsidiary_act_date = models.DateTimeField(blank=True, null=True)
+
 
 class AccessionDeclarationSubsidiary(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    declaration_person_subsidiary_message_id = models.BigIntegerField(blank=True,null=True)
+    declaration_person_subsidiary_message_id = models.BigIntegerField(blank=True, null=True)
+
+
 class Court(models.Model):
-    name = models.TextField(blank=True,null=True)
-    code = models.TextField(blank=True,null=True)
+    name = models.TextField(blank=True, null=True)
+    code = models.TextField(blank=True, null=True)
+
 
 class DisqualificationArbitrationManager(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    duration = models.TextField(blank=True,null=True)
-    reason = models.TextField(blank=True,null=True)
-    arbitr_manager = models.ForeignKey(ArbitrManager,null=True,blank=True,on_delete=models.CASCADE)
+    duration = models.TextField(blank=True, null=True)
+    reason = models.TextField(blank=True, null=True)
+    arbitr_manager = models.ForeignKey(ArbitrManager, null=True, blank=True, on_delete=models.CASCADE)
 
-    court = models.ForeignKey(Court,blank=True,null=True,on_delete=models.CASCADE)
+    court = models.ForeignKey(Court, blank=True, null=True, on_delete=models.CASCADE)
+
 
 class DisqualificationArbitrationManager2(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    reason = models.TextField(blank=True,null=True)
-    date_begin = models.DateTimeField(blank=True,null=True)
-    arbitr_manager = models.ForeignKey(ArbitrManager,null=True,blank=True,on_delete=models.CASCADE)
-    court = models.ForeignKey(Court,blank=True,null=True,on_delete=models.CASCADE)
-    duration = models.TextField(blank=True,null=True)
+    reason = models.TextField(blank=True, null=True)
+    date_begin = models.DateTimeField(blank=True, null=True)
+    arbitr_manager = models.ForeignKey(ArbitrManager, null=True, blank=True, on_delete=models.CASCADE)
+    court = models.ForeignKey(Court, blank=True, null=True, on_delete=models.CASCADE)
+    duration = models.TextField(blank=True, null=True)
+
 
 class Duration(models.Model):
-    year = models.IntegerField(blank=True,null=True)
-    month = models.IntegerField(blank=True,null=True)
-    day = models.IntegerField(blank=True,null=True)
+    year = models.IntegerField(blank=True, null=True)
+    month = models.IntegerField(blank=True, null=True)
+    day = models.IntegerField(blank=True, null=True)
+
 
 class ChangeEstimatesCurrentExpenses(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    id_changed_message = models.BigIntegerField(blank=True,null=True)
+    id_changed_message = models.BigIntegerField(blank=True, null=True)
+
 
 class DeclarationPersonSubsidiaryInfoMessages(models.Model):
-    message = models.ForeignKey(Message,null=True,blank=True,on_delete=models.CASCADE)
+    message = models.ForeignKey(Message, null=True, blank=True, on_delete=models.CASCADE)
+
 
 class ActPersonSubsidiary2(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    declaration_person_subsidiary_info_message = models.ForeignKey(DeclarationPersonSubsidiaryInfoMessages,blank=True,null=True,on_delete=models.CASCADE)
+    declaration_person_subsidiary_info_message = models.ForeignKey(DeclarationPersonSubsidiaryInfoMessages, blank=True,
+                                                                   null=True, on_delete=models.CASCADE)
+
+
 class Report(models.Model):
-    number = models.TextField(blank=True,null=True)
-    date = models.DateTimeField(blank=True,null=True)
+    number = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(blank=True, null=True)
+
 
 class Appraiser(models.Model):
-    fio = models.ForeignKey(Fio,blank=True,null=True,on_delete=models.CASCADE)
-    inn = models.TextField(blank=True,null=True)
-    snils= models.TextField(blank=True,null=True)
-    sro = models.ForeignKey(Sro,blank=True,null=True,on_delete=models.CASCADE)
+    fio = models.ForeignKey(Fio, blank=True, null=True, on_delete=models.CASCADE)
+    inn = models.TextField(blank=True, null=True)
+    snils = models.TextField(blank=True, null=True)
+    sro = models.ForeignKey(Sro, blank=True, null=True, on_delete=models.CASCADE)
+
+
 class Appraisers(models.Model):
-    appraiser = models.ForeignKey(Appraiser,blank=True,null=True,on_delete=models.CASCADE)
+    appraiser = models.ForeignKey(Appraiser, blank=True, null=True, on_delete=models.CASCADE)
+
+
 class Classifier(models.Model):
-    code  = models.TextField(blank=True,null=True)
-    name = models.TextField(blank=True,null=True)
+    code = models.TextField(blank=True, null=True)
+    name = models.TextField(blank=True, null=True)
+
+
 class ObjectOfAssessment(models.Model):
-    classifier = models.ForeignKey(Classifier,blank=True,null=True,on_delete=models.CASCADE)
-    description = models.TextField(blank=True,null=True)
-    date_of_assessment = models.DateTimeField(blank=True,null=True)
-    mark_value = models.FloatField(blank=True,null=True)
-    balance_value = models.FloatField(blank=True,null=True)
+    classifier = models.ForeignKey(Classifier, blank=True, null=True, on_delete=models.CASCADE)
+    description = models.TextField(blank=True, null=True)
+    date_of_assessment = models.DateTimeField(blank=True, null=True)
+    mark_value = models.FloatField(blank=True, null=True)
+    balance_value = models.FloatField(blank=True, null=True)
+
 
 class Expert(models.Model):
     fio = models.ForeignKey(Fio, blank=True, null=True, on_delete=models.CASCADE)
     inn = models.TextField(blank=True, null=True)
     snils = models.TextField(blank=True, null=True)
     sro = models.ForeignKey(Sro, blank=True, null=True, on_delete=models.CASCADE)
+
+
 class Experts(models.Model):
-    expert = models.ForeignKey(Expert,blank=True,null=True,on_delete=models.CASCADE)
+    expert = models.ForeignKey(Expert, blank=True, null=True, on_delete=models.CASCADE)
+
+
 class ExpertDecision(models.Model):
-    number = models.TextField(blank=True,null=True)
-    date = models.DateTimeField(blank=True,null=True)
-    result = models.TextField(blank=True,null=True)
-    experts = models.ForeignKey(Experts,blank=True,null=True,on_delete=models.CASCADE)
+    number = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(blank=True, null=True)
+    result = models.TextField(blank=True, null=True)
+    experts = models.ForeignKey(Experts, blank=True, null=True, on_delete=models.CASCADE)
+
+
 class ObjectsOfAssessment(models.Model):
-    object_of_assessment = models.ForeignKey(ObjectOfAssessment,blank=True,null=True,on_delete=models.CASCADE)
+    object_of_assessment = models.ForeignKey(ObjectOfAssessment, blank=True, null=True, on_delete=models.CASCADE)
+
 
 class AssessmentReport(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    report = models.ForeignKey(Report,blank=True,null=True,on_delete=models.CASCADE)
-    reason = models.TextField(blank=True,null=True)
-    appraisers = models.ForeignKey(Appraisers,null=True,blank=True,on_delete=models.CASCADE)
-    objects_of_assessment = models.ForeignKey(ObjectsOfAssessment,blank=True,null=True,on_delete=models.CASCADE)
-    expert_decision = models.ForeignKey(ExpertDecision,blank=True,null=True,on_delete=models.CASCADE)
+    report = models.ForeignKey(Report, blank=True, null=True, on_delete=models.CASCADE)
+    reason = models.TextField(blank=True, null=True)
+    appraisers = models.ForeignKey(Appraisers, null=True, blank=True, on_delete=models.CASCADE)
+    objects_of_assessment = models.ForeignKey(ObjectsOfAssessment, blank=True, null=True, on_delete=models.CASCADE)
+    expert_decision = models.ForeignKey(ExpertDecision, blank=True, null=True, on_delete=models.CASCADE)
+
 
 class ActPersonSubsidiaryInfoMessages(models.Model):
-    message = models.ForeignKey(Message,null=True,blank=True,on_delete=models.CASCADE)
+    message = models.ForeignKey(Message, null=True, blank=True, on_delete=models.CASCADE)
+
 
 class ActReviewPersonSubsidiary2(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    act_person_subsidiary_info_messages = models.ForeignKey(ActPersonSubsidiaryInfoMessages,blank=True,null=True,on_delete=models.CASCADE)
+    act_person_subsidiary_info_messages = models.ForeignKey(ActPersonSubsidiaryInfoMessages, blank=True, null=True,
+                                                            on_delete=models.CASCADE)
+
+
 class MonetaryObligation(models.Model):
-    creditor_name = models.TextField(blank=True,null=True)
+    creditor_name = models.TextField(blank=True, null=True)
     creditor_region = models.TextField(blank=True, null=True)
     creditor_location = models.TextField(blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     basis = models.TextField(blank=True, null=True)
-    total_sum = models.FloatField(blank=True,null=True)
+    total_sum = models.FloatField(blank=True, null=True)
     debt_sum = models.FloatField(blank=True, null=True)
     penalty_sum = models.FloatField(blank=True, null=True)
+
+
 class Bank(models.Model):
-    name = models.TextField(blank=True,null=True)
-    bank_identifier = models.IntegerField(blank=True,null=True)
+    name = models.TextField(blank=True, null=True)
+    bank_identifier = models.IntegerField(blank=True, null=True)
+
 
 class OblegatoryPayment(models.Model):
-    name = models.TextField(blank=True,null=True)
+    name = models.TextField(blank=True, null=True)
     sum = models.FloatField(blank=True, null=True)
     penalty_sum = models.FloatField(blank=True, null=True)
+
+
 class OblegatoryPayments(models.Model):
-    obligatory_payment = models.ForeignKey(OblegatoryPayment,blank=True,null=True,on_delete=models.CASCADE)
+    obligatory_payment = models.ForeignKey(OblegatoryPayment, blank=True, null=True, on_delete=models.CASCADE)
+
 
 class MonetaryObligations(models.Model):
-    monetary_obligation = models.ForeignKey(MonetaryObligation,blank=True,null=True,on_delete=models.CASCADE)
-class ReturnOfApplicationOnExtrajudicialBankruptcy(models.Model):
-     date = models.DateTimeField(blank=True, null=True)
-     no_return_of_enforcement_documen = models.BooleanField(blank=True,null=True)
-     active_enforcement_proceeding = models.BooleanField(blank=True,null=True)
-class CreditorsNonFromEntrepreneurship(models.Model):
-    monetary_obligations = models.ForeignKey(MonetaryObligations,blank=True,null=True,on_delete=models.CASCADE)
-    obligatory_payment = models.ForeignKey(OblegatoryPayment,blank=True,null=True,on_delete=models.CASCADE)
-    non_monetary_obligations = models.TextField(blank=True,null=True)
-class Banks(models.Model):
-    bank = models.ForeignKey(Bank,blank=True,null=True,on_delete=models.CASCADE)
-class CreditorsFromEntrepreneurship(models.Model):
-    monetary_obligations = models.ForeignKey(MonetaryObligations,blank=True,null=True,on_delete=models.CASCADE)
-    obligatory_payment = models.ForeignKey(OblegatoryPayment,blank=True,null=True,on_delete=models.CASCADE)
-    non_monetary_obligations = models.TextField(blank=True,null=True)
-class StartOfExtrajudicialBankruptcy(models.Model):
-    creditors_non_from_entrepreneurship = models.ForeignKey(CreditorsNonFromEntrepreneurship,blank=True,null=True,on_delete=models.CASCADE)
-    is_individual_entrepreneur = models.BooleanField(blank=True,null=True)
-    creditors_from_entrepreneurship = models.ForeignKey(CreditorsFromEntrepreneurship,blank=True,null=True,on_delete=models.CASCADE)
-    banks = models.ForeignKey(Banks,blank=True,null=True,on_delete=models.CASCADE)
+    monetary_obligation = models.ForeignKey(MonetaryObligation, blank=True, null=True, on_delete=models.CASCADE)
 
+
+class ReturnOfApplicationOnExtrajudicialBankruptcy(models.Model):
+    date = models.DateTimeField(blank=True, null=True)
+    no_return_of_enforcement_documen = models.BooleanField(blank=True, null=True)
+    active_enforcement_proceeding = models.BooleanField(blank=True, null=True)
+
+
+class CreditorsNonFromEntrepreneurship(models.Model):
+    monetary_obligations = models.ForeignKey(MonetaryObligations, blank=True, null=True, on_delete=models.CASCADE)
+    obligatory_payment = models.ForeignKey(OblegatoryPayment, blank=True, null=True, on_delete=models.CASCADE)
+    non_monetary_obligations = models.TextField(blank=True, null=True)
+
+
+class Banks(models.Model):
+    bank = models.ForeignKey(Bank, blank=True, null=True, on_delete=models.CASCADE)
+
+
+class CreditorsFromEntrepreneurship(models.Model):
+    monetary_obligations = models.ForeignKey(MonetaryObligations, blank=True, null=True, on_delete=models.CASCADE)
+    obligatory_payment = models.ForeignKey(OblegatoryPayment, blank=True, null=True, on_delete=models.CASCADE)
+    non_monetary_obligations = models.TextField(blank=True, null=True)
+
+
+class StartOfExtrajudicialBankruptcy(models.Model):
+    creditors_non_from_entrepreneurship = models.ForeignKey(CreditorsNonFromEntrepreneurship, blank=True, null=True,
+                                                            on_delete=models.CASCADE)
+    is_individual_entrepreneur = models.BooleanField(blank=True, null=True)
+    creditors_from_entrepreneurship = models.ForeignKey(CreditorsFromEntrepreneurship, blank=True, null=True,
+                                                        on_delete=models.CASCADE)
+    banks = models.ForeignKey(Banks, blank=True, null=True, on_delete=models.CASCADE)
 
 
 class UncompletedBuildingProjects(models.Model):
     uncompleted_building_project = models.ForeignKey(UncompletedBuildingProject, blank=True, null=True,
                                                      on_delete=models.CASCADE)
+
+
 class TerminationOfExtrajudicialBankruptcy(models.Model):
-    start_of_extrajudicial_bankruptcy_message_number = models.BigIntegerField(blank=True,null=True)
-    property_status_changed = models.BooleanField(blank=True,null=True)
-    court_decision_issued = models.BooleanField(blank=True,null=True)
-    other_reason = models.TextField(blank=True,null=True)
+    start_of_extrajudicial_bankruptcy_message_number = models.BigIntegerField(blank=True, null=True)
+    property_status_changed = models.BooleanField(blank=True, null=True)
+    court_decision_issued = models.BooleanField(blank=True, null=True)
+    other_reason = models.TextField(blank=True, null=True)
+
 
 class CompletionOfExtrajudicialBankruptcy(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    start_of_extrajudicial_bankruptcy_message_number = models.BigIntegerField(blank=True,null=True)
+    start_of_extrajudicial_bankruptcy_message_number = models.BigIntegerField(blank=True, null=True)
+
 
 class TransferOwnershipRealEstate(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
@@ -2188,7 +2288,7 @@ class MessageTypes(models.Model):
     meeting = models.ForeignKey(Meeting, null=True, blank=True, on_delete=models.CASCADE)
     meeting_result = models.ForeignKey(MeetingResult, null=True, blank=True, on_delete=models.CASCADE)
     trade_result = models.ForeignKey(TradeResult, null=True, blank=True, on_delete=models.CASCADE)
-    other = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,related_name="Other")
+    other = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE, related_name="Other")
     appoint_administration = models.ForeignKey(AppointAdministration, null=True, blank=True, on_delete=models.CASCADE)
     change_administration = models.ForeignKey(ChangeAdministration, null=True, blank=True, on_delete=models.CASCADE)
     termination_administration = models.ForeignKey(TerminationAdministraion, blank=True, null=True,
@@ -2205,17 +2305,24 @@ class MessageTypes(models.Model):
     sale_contract_result = models.ForeignKey(SaleContractResult, blank=True, null=True, on_delete=models.CASCADE)
     sale_contract_result2 = models.ForeignKey(SaleContractResult2, blank=True, null=True, on_delete=models.CASCADE)
     committee = models.ForeignKey(Committee, blank=True, null=True, on_delete=models.CASCADE)
-    committee_result = models.ForeignKey(Other, blank=True, null=True, on_delete=models.CASCADE,related_name="committee_result_other")
+    committee_result = models.ForeignKey(Other, blank=True, null=True, on_delete=models.CASCADE,
+                                         related_name="committee_result_other")
     sale_order_pledged_property = models.ForeignKey(SaleOrderPledgedProperty, null=True, blank=True,
                                                     on_delete=models.CASCADE)
     receiving_creditor_demand = models.ForeignKey(ReceivingCreditorDemand, null=True, blank=True,
                                                   on_delete=models.CASCADE)
-    demand_announcement = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,related_name="demand_announcement_other")
-    court_assert_acceptance = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,related_name="court_assert_acceptance_other")
-    financial_state_information = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,related_name="financial_state_information_other")
-    bank_payment = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,related_name="bank_payment_other")
-    assert_returning = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,related_name="assert_returning_other")
-    court_acceptance_statement = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,related_name="court_acceptance_statement_other")
+    demand_announcement = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,
+                                            related_name="demand_announcement_other")
+    court_assert_acceptance = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,
+                                                related_name="court_assert_acceptance_other")
+    financial_state_information = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,
+                                                    related_name="financial_state_information_other")
+    bank_payment = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,
+                                     related_name="bank_payment_other")
+    assert_returning = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,
+                                         related_name="assert_returning_other")
+    court_acceptance_statement = models.ForeignKey(Other, null=True, blank=True, on_delete=models.CASCADE,
+                                                   related_name="court_acceptance_statement_other")
     deliberate_bankruptcy = models.ForeignKey(DeliberateBankruptcy, null=True, blank=True, on_delete=models.CASCADE)
     intention_credit_org = models.ForeignKey(IntentionCreditOrg, null=True, blank=True, on_delete=models.CASCADE)
     liabilities_creditor_org = models.ForeignKey(LiabilitiesCreditOrg, null=True, blank=True, on_delete=models.CASCADE)
@@ -2273,7 +2380,8 @@ class MessageTypes(models.Model):
     transfer_assets = models.ForeignKey(TransferAssets, blank=True, null=True, on_delete=models.CASCADE)
     transfer_insurance_portfolio = models.ForeignKey(TransferInsurancePortfolio, blank=True, null=True,
                                                      on_delete=models.CASCADE)
-    bank_open_accout_debtor = models.ForeignKey(BankOpenAccountDebtor, null=True, blank=True, on_delete=models.CASCADE,related_name="bank_open_accout_debtor")
+    bank_open_accout_debtor = models.ForeignKey(BankOpenAccountDebtor, null=True, blank=True, on_delete=models.CASCADE,
+                                                related_name="bank_open_accout_debtor")
     procedure_granting_indemnity = models.ForeignKey(BankOpenAccountDebtor, null=True, blank=True,
                                                      on_delete=models.CASCADE)
     right_unsold_asset = models.ForeignKey(RightUnsoldAsset, null=True, blank=True, on_delete=models.CASCADE)
@@ -2315,23 +2423,24 @@ class MessageTypes(models.Model):
 
 class MessageInfo(models.Model):
     message_type = models.TextField(blank=True, null=True, verbose_name="Message Type")
-    message_types = models.ForeignKey(MessageTypes, on_delete=models.CASCADE, blank=False)
+    message_types = models.ForeignKey(MessageTypes, on_delete=models.CASCADE, blank=True)
 
 
 class MessageData(models.Model):
-    number = models.CharField(max_length=30, blank=True, verbose_name="Номер сообщения")
-    case_number = models.CharField(max_length=60, blank=True, verbose_name="Номер судебного дела")
-    publish_data = models.DateTimeField(blank=False, verbose_name="Дата публикации")
-    bankruptid = models.IntegerField(blank=True, verbose_name="BankruptId")
-    message_guid = models.CharField(max_length=32, blank=False, verbose_name="MessageGUID")
-    publisher_info = models.ForeignKey(PublisherInfo, blank=True, on_delete=models.CASCADE,
+    id_message_data = models.BigIntegerField(blank=True, null=True)
+    number = models.CharField(max_length=30, null=True, blank=True, verbose_name="Номер сообщения")
+    case_number = models.CharField(max_length=60, null=True, blank=True, verbose_name="Номер судебного дела")
+    publish_date = models.DateTimeField(blank=True,null=True, verbose_name="Дата публикации")
+    bankruptid = models.IntegerField(blank=True, null=True, verbose_name="BankruptId")
+    message_guid = models.CharField(max_length=32, null=True,blank=True, verbose_name="MessageGUID")
+    publisher_info = models.ForeignKey(PublisherInfo,null=True, blank=True, on_delete=models.CASCADE,
                                        verbose_name="PublisherInfo")
-    publisher = models.ForeignKey(Publisher, blank=True, on_delete=models.CASCADE, verbose_name="Publsher")
-    message_info = models.ForeignKey(MessageInfo, blank=True, on_delete=models.CASCADE, verbose_name="MessageInfo")
-    bankrupt_info = models.ForeignKey(BankruptInfo, blank=True, on_delete=models.CASCADE,
+    publisher = models.ForeignKey(Publisher, null=True, blank=True, on_delete=models.CASCADE, verbose_name="Publsher")
+    message_info = models.ForeignKey(MessageInfo, null=True, blank=True, on_delete=models.CASCADE, verbose_name="MessageInfo")
+    bankrupt_info = models.ForeignKey(BankruptInfo, null=True, blank=True, on_delete=models.CASCADE,
                                       verbose_name="BankruptInfo")
-    bankrupt = models.ForeignKey(Bankrupt, blank=True, on_delete=models.CASCADE, verbose_name="Bankrupt")
-    file_info_list = models.ForeignKey(FileInfoList, blank=True, on_delete=models.CASCADE,
+    bankrupt = models.ForeignKey(Bankrupt, null=True, blank=True, on_delete=models.CASCADE, verbose_name="Bankrupt")
+    file_info_list = models.ForeignKey(FileInfoList, null=True, blank=True, on_delete=models.CASCADE,
                                        verbose_name='FileInfoList')
-    message_url_list = models.ForeignKey(MessageURLList, blank=True, on_delete=models.CASCADE,
+    message_url_list = models.ForeignKey(MessageURLList, null=True, blank=True, on_delete=models.CASCADE,
                                          verbose_name="MessageURLList")

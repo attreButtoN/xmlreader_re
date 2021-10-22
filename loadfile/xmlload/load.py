@@ -35,7 +35,7 @@ def update_products_xml(json_datafile):
     try:
         for k in range(len(data_json["TradePlaceList"]["TradePlace"]["TradeList"])):
             try:
-                tradelists=data_json["TradePlaceList"]["TradePlace"]["TradeList"][k]
+                tradelists = data_json["TradePlaceList"]["TradePlace"]["TradeList"][k]
 
                 trades_list.append(tradelists)
                 inn = data_json["TradePlaceList"]["TradePlace"]["@INN"]
@@ -46,16 +46,7 @@ def update_products_xml(json_datafile):
     except Exception as ex:
         print(ex)
         print("second")
-        # print(len(trade_places_inn))
-        # print(len(trades_list), "))))))))))))
-    # print(len(trade_places_inn))
-    # print(len(trades_list))
-    # print(len(trade_places_inn))
-    # print(trades_list[0])
-    # exit()
-    # print(len(trades_list), ")
-    # )))))))))))))")
-    # sleep(30)
+
     j = -1
     for trade in trades_list:
         print(type(trades_list))
@@ -67,7 +58,7 @@ def update_products_xml(json_datafile):
 
         # print(trade)
         # sleep(5)
-        j+=1
+        j += 1
 
         try:
             print("do ifa")
@@ -143,7 +134,6 @@ def update_products_xml(json_datafile):
                 set_annulment = SetAnnulment()
                 buyer_company = BuyerCompany()
                 buyer_person = BuyerPerson()
-
 
                 try:
                     id_efrsb = trade["Trade"]["@ID_EFRSB"]
@@ -245,7 +235,6 @@ def update_products_xml(json_datafile):
                 except:
                     pass
 
-
                 try:
                     trade_id = envelope["SetBiddingFail"]["BiddingFail"][
                         "@TradeId"]
@@ -260,7 +249,7 @@ def update_products_xml(json_datafile):
                         "@TradeId"]
                     bidding_proccess_info.trade_id = trade_id
                     print("TradeId", trade_id)
-                    print("_"*50)
+                    print("_" * 50)
                 except:
                     pass
                 try:
@@ -274,7 +263,6 @@ def update_products_xml(json_datafile):
                 try:
                     trade_id = envelope["SetApplicationSessionEnd"]["ApplicationSessionEnd"]["@TradeId"]
                     application_session_end.trade_id = trade_id
-
 
                     # print('tradeid', trade_id)
 
@@ -294,7 +282,6 @@ def update_products_xml(json_datafile):
                     # print("eventtimeEnd", event_time2)
                 except:
                     pass
-
 
                 try:
                     trade_id = envelope["SetBiddingResult"]["BiddingResult"][
@@ -414,7 +401,7 @@ def update_products_xml(json_datafile):
                         envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
                             "ContractInfo"][
                             "DateContract"]
-                    if len(date_contract.split("+"))>1:
+                    if len(date_contract.split("+")) > 1:
                         date_contract = date_contract.split("+")[0]
                     contract_info.date_contract = date_contract
                     # print("DateContract", date_contract)
@@ -545,7 +532,7 @@ def update_products_xml(json_datafile):
                     date_begin = envelope["SetApplicationSessionStatistic"][
                         "ApplicationSessionStatistic"][
                         "DateBegin"]
-                    if len(date_begin.split("+"))>1:
+                    if len(date_begin.split("+")) > 1:
                         date_begin = date_begin.split("+")[0]
                     application_session_statistic.date_begin = date_begin
                     # print("DateBegin", date_begin)
@@ -728,7 +715,8 @@ def update_products_xml(json_datafile):
                     print(filename)
                     # print("FileName", filename)
 
-                except:pass
+                except:
+                    pass
 
                 try:
                     Type = envelope["SetBiddingInvitation"][
@@ -954,9 +942,9 @@ def update_products_xml(json_datafile):
                     # print("DebtorOGRN", ogrn)
                 except:
                     pass
-                #Annulment
+                # Annulment
                 try:
-                    trade_id= envelope["SetAnnulment"]["AnnulmentMessage"]["@TradeId"]
+                    trade_id = envelope["SetAnnulment"]["AnnulmentMessage"]["@TradeId"]
                     annulment.trade_id = trade_id
                     # print("BiddingInvitationTradeID", trade_id)
                 except:
@@ -1267,10 +1255,9 @@ def update_products_xml(json_datafile):
                             "ns1:Lot"][
                             "ns1:StepPrice"]["@xsi:nil"]
 
-
-                    step_price_model.nil= json.loads(nil)
+                    step_price_model.nil = json.loads(nil)
                     print(step_price_model.nil)
-                    print("<"*50)
+                    print("<" * 50)
 
                 except:
                     pass
@@ -1279,7 +1266,7 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
                             "Lot"][
                             "StepPrice"]["@xsi:nil"]
-                    step_price_model.nil=json.loads(nil)
+                    step_price_model.nil = json.loads(nil)
                     print(step_price_model.nil)
                     print("<" * 50)
 
@@ -1413,7 +1400,7 @@ def update_products_xml(json_datafile):
                 # except:
                 #     pass
 
-                    # sleep(5)
+                # sleep(5)
                 try:
                     first_name = \
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"]["DebtorPerson"][
@@ -1771,7 +1758,7 @@ def update_products_xml(json_datafile):
                     if attach.file_name is not None:
                         attach.save()
                 except Exception as ex:
-                    print("Attach EX"*50)
+                    print("Attach EX" * 50)
                     print(ex)
                 try:
                     if step_price_model.nil is not None:
@@ -1806,7 +1793,6 @@ def update_products_xml(json_datafile):
                             lot = Lot()
                             lot_list = LotList()
                             trade_info = TradeInfo()
-
 
                             try:
                                 auction_type = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
@@ -1887,7 +1873,7 @@ def update_products_xml(json_datafile):
                                     envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
                                         "Lot"][lot_i][
                                         "StepPrice"]["@xsi:nil"]
-                                step_price_model.nil= json.loads(nil)
+                                step_price_model.nil = json.loads(nil)
 
 
                             except:
@@ -1956,9 +1942,7 @@ def update_products_xml(json_datafile):
 
                 except Exception as ex:
                     print(ex)
-                    print("lot list type ex"*50)
-
-
+                    print("lot list type ex" * 50)
 
                 try:
                     if debtor_person.first_name is not None:
@@ -2017,7 +2001,6 @@ def update_products_xml(json_datafile):
                         if lot_info.lot_number is not None:
                             application_session_start.lot_list = lot_list
 
-
                         application_session_start.save()
                         set_application_session_start.application_session_start = application_session_start
                         set_application_session_start.save()
@@ -2072,7 +2055,7 @@ def update_products_xml(json_datafile):
                         trade_info.save()
                 except Exception as ex:
                     print(ex)
-                    print("EXCEPTION"*50)
+                    print("EXCEPTION" * 50)
 
                 try:
                     if buyer_person.first_name is not None:
@@ -2183,7 +2166,7 @@ def update_products_xml(json_datafile):
                         body.set_annulment = set_annulment
                 except Exception as ex:
                     print(ex)
-                    print(":"*50)
+                    print(":" * 50)
                 try:
                     if bidding_end.trade_id is not None:
                         # lot_list.save()
@@ -2521,7 +2504,6 @@ def update_products_xml(json_datafile):
                     except:
                         pass
 
-
                     try:
                         envfor = message["soap:Envelope"]
                         envelopefor = envfor
@@ -2589,7 +2571,7 @@ def update_products_xml(json_datafile):
                         trade_id = envelope["SetBiddingEnd"]["BiddingEnd"][
                             "@TradeId"]
                         bidding_end.trade_id = trade_id
-                        print("BiddingEND"*50, trade_id)
+                        print("BiddingEND" * 50, trade_id)
                     except:
                         pass
                     try:
@@ -2599,7 +2581,7 @@ def update_products_xml(json_datafile):
                         # print("TradeId", trade_id)
                     except:
                         pass
-                    #Annulment
+                    # Annulment
                     try:
                         trade_id = envelope["SetAnnulment"]["AnnulmentMessage"]["@TradeId"]
                         annulment.trade_id = trade_id
@@ -2822,7 +2804,7 @@ def update_products_xml(json_datafile):
                     except Exception as ex:
                         print(ex)
 
-                        print("SUB"*50)
+                        print("SUB" * 50)
 
                     try:
                         substantiation = \
@@ -3068,7 +3050,7 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     ##_
-                    #participantCompany
+                    # participantCompany
                     try:
                         full_name = \
                             envelope["SetBiddingResult"]["BiddingResult"][
@@ -3076,7 +3058,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantCompany']["@FullName"]
                         participant_company.full_name = full_name
                         print(full_name)
-                        print("F"*50)
+                        print("F" * 50)
                         # print(first_name)
 
                     except:
@@ -4200,7 +4182,7 @@ def update_products_xml(json_datafile):
                             print(">" * 50)
                     except Exception as ex:
                         print(ex)
-                        print(">"*50)
+                        print(">" * 50)
 
                     try:
                         if success_trade_result.price is not None:
@@ -4225,7 +4207,7 @@ def update_products_xml(json_datafile):
                             failure_trade_result.save()
                     except Exception as ex:
                         print(ex)
-                        print("SAVE"*50)
+                        print("SAVE" * 50)
                     try:
                         if application.time_begin is not None:
                             application.save()
@@ -4236,7 +4218,7 @@ def update_products_xml(json_datafile):
                             participant_person.save()
                             participant.participant_person = participant_person
                             participant.save()
-                            participants_model.participant= participant
+                            participants_model.participant = participant
                             participants_model.save()
 
                     except:
@@ -4253,7 +4235,7 @@ def update_products_xml(json_datafile):
                             participants_model.save()
                     except Exception as ex:
                         print(ex)
-                        print("$"*50)
+                        print("$" * 50)
                     try:
                         if application_dataa.result is not None:
                             application_dataa.save()
@@ -4280,7 +4262,7 @@ def update_products_xml(json_datafile):
                             lot.step_price = step_price_model
                     except Exception as ex:
                         print(ex)
-                        print("<"*50)
+                        print("<" * 50)
                     try:
                         if debtor_company.full_name is not None:
                             debtor_company.save()
@@ -4295,7 +4277,7 @@ def update_products_xml(json_datafile):
                             lot_list.save()
                     except Exception as ex:
                         print(ex)
-                        print("lotlist"*60)
+                        print("lotlist" * 60)
                     try:
                         if lot.lot_number:
                             lot.save()
@@ -4365,8 +4347,8 @@ def update_products_xml(json_datafile):
                     # sleep(5)
                     # success_trade_result.save()
 
-                        # print("SUCCESSTRADE")
-                        # sleep(5)
+                    # print("SUCCESSTRADE")
+                    # sleep(5)
                     try:
                         if bidding_proccess_info.trade_id is not None:
                             bidding_proccess_info.price_info = price_info
@@ -4460,19 +4442,19 @@ def update_products_xml(json_datafile):
                         # print( "in LIST")
                         # sleep(5
                         # )
-                    # print("^" * 50)
+                        # print("^" * 50)
 
-                    # body.set_bidding_proccess_info = set_bidding_proccess_info
-                    # body.set_bidding_fail = set_bidding_fail
-                    # body.set_bidding_end = set_bidding_end
-                    # body.set_bidding_cancel = set_bidding_cancel
-                    # try:
-                    #     body.set_application_session_start = set_application_session_start
-                    # except:
-                    #     pass
-                    # try:
-                    #     # body.set_application_session_end = set_application_session_end
-                    # except:
+                        # body.set_bidding_proccess_info = set_bidding_proccess_info
+                        # body.set_bidding_fail = set_bidding_fail
+                        # body.set_bidding_end = set_bidding_end
+                        # body.set_bidding_cancel = set_bidding_cancel
+                        # try:
+                        #     body.set_application_session_start = set_application_session_start
+                        # except:
+                        #     pass
+                        # try:
+                        #     # body.set_application_session_end = set_application_session_end
+                        # except:
                         pass
                     # try:
                     #     body.set_application_session_statistic = set_application_session_statistic
@@ -4508,3 +4490,123 @@ def update_products_xml(json_datafile):
             print('From list')
         # print("END OF")
         # sleep(5)
+
+
+
+    message_data = MessageData()
+    publisher = Publisher()
+    fio = Fio()
+    sro = Sro()
+    publisher_arbitr_manager_v2 = Publisher_Arbitr_Manager_v2()
+    publisher_arbitr_manager_sro_v2 = Publisher_Arbitr_Manager_Sro_v2()
+    publisher_firm_trade_organizer_v2 = Publisher_FirmTrade_Organizer_v2()
+    publisher_person_trade_organizer_v2 = Publisher_PersonTrade_Organizer_v2()
+    publisher_company_v2 = Publisher_Company_v2()
+    publisher_person_v2 = Publisher_Person_v2()
+    publisher_central_bank_rf_v2 = Publisher_CentralBankRf_v2()
+    publisher_asv_v2 = Publisher_Asv_v2
+    publisher_fns_department_v2 = Publisher_FnsDepartment_v2()
+    publisher_efrsb_v2 = Publisher_Efrsb_v2()
+    publisher_mfc_v2 = Publisher_Mfc_v2()
+
+    message_info = MessageInfo()
+
+
+    try:
+        for msg_data in data_json["MessageList"]["MessageData"]:
+            print(msg_data.keys())
+            print(msg_data["Id"])
+
+            message_data.id_message_data  = msg_data["Id"]
+            message_data.number= msg_data["Number"]
+            message_data.case_number = msg_data["CaseNumber"]
+
+            xsi_type = msg_data["Publisher"]["@xsi:type"]
+
+            if xsi_type == "Publisher.ArbitrManager.v2":
+                publisher_arbitr_manager_v2.inn = msg_data["Publisher"]["Inn"]
+                publisher_arbitr_manager_v2.snils = msg_data["Publisher"]["Snils"]
+                publisher_arbitr_manager_v2.ogrnip = msg_data["Publisher"]["Ogrnip"]
+                publisher_arbitr_manager_v2.correspondence_address = msg_data["Publisher"]["CorrespondenceAddress"]
+
+                sro.name = msg_data["Publisher"]["Sro"]["Name"]
+                sro.ogrn = msg_data["Publisher"]["Sro"]["Ogrn"]
+                sro.inn = msg_data["Publisher"]["Sro"]["Inn"]
+                sro.address = msg_data["Publisher"]["Sro"]["Address"]
+
+                fio.last_name = msg_data["Publisher"]["Fio"]["LastName"]
+                fio.first_name = msg_data["Publisher"]["Fio"]["FirstName"]
+                fio.middle_name = msg_data["Publisher"]["Fio"]["MiddleName"]
+
+            if xsi_type == "Publisher.ArbitrManager_Sro_v2":
+                publisher_arbitr_manager_sro_v2.name = msg_data["Publisher"]["Name"]
+                publisher_arbitr_manager_sro_v2.ogrn = msg_data["Publisher"]["Ogrn"]
+                publisher_arbitr_manager_sro_v2.inn = msg_data["Publisher"]["Inn"]
+                publisher_arbitr_manager_sro_v2.address = msg_data["Publisher"]["Address"]
+
+            if xsi_type == "Publisher.FirmTradeOrganizer.v2":
+                publisher_firm_trade_organizer_v2.name = msg_data["Publisher"]["Name"]
+                publisher_firm_trade_organizer_v2.ogrn = msg_data["Publisher"]["Ogrn"]
+                publisher_firm_trade_organizer_v2.inn =msg_data["Publisher"]["Inn"]
+
+            if xsi_type == "Publisher.PersonTradeOrganizer.v2":
+                publisher_person_trade_organizer_v2.inn =  msg_data["Publisher"]["Inn"]
+                publisher_person_trade_organizer_v2.ogrnip = msg_data["Publisher"]["Ogrnip"]
+
+                fio.last_name = msg_data["Publisher"]["Fio"]["LastName"]
+                fio.first_name = msg_data["Publisher"]["Fio"]["FirstName"]
+                fio.middle_name = msg_data["Publisher"]["Fio"]["MiddleName"]
+
+            if xsi_type == "Publisher.Company.v2":
+                publisher_company_v2.name = msg_data["Publisher"]["Name"]
+                publisher_company_v2.ogrn = msg_data["Publisher"]["Ogrn"]
+                publisher_company_v2.inn = msg_data["Publisher"]["Inn"]
+
+            if xsi_type == "Publisher.Person.v2":
+                publisher_person_v2.inn = msg_data["Publisher"]["Inn"]
+
+                fio.last_name = msg_data["Publisher"]["Fio"]["LastName"]
+                fio.first_name = msg_data["Publisher"]["Fio"]["FirstName"]
+                fio.middle_name = msg_data["Publisher"]["Fio"]["MiddleName"]
+
+            if xsi_type == "Publisher.CentralBankRf.v2":
+                publisher_central_bank_rf_v2.name = msg_data["Publisher"]["Name"]
+                publisher_central_bank_rf_v2.ogrn = msg_data["Publisher"]["Ogrn"]
+                publisher_central_bank_rf_v2.inn = msg_data["Publisher"]["Inn"]
+
+            if xsi_type == "Publisher.Asv.v2":
+                publisher_asv_v2.name = msg_data["Publisher"]["Name"]
+                publisher_asv_v2.ogrn = msg_data["Publisher"]["Ogrn"]
+                publisher_asv_v2.inn = msg_data["Publisher"]["Inn"]
+
+            if xsi_type == "Publisher.FnsDepartment.v2":
+
+                publisher_fns_department_v2.name = msg_data["Publisher"]["Name"]
+                publisher_fns_department_v2.ogrn = msg_data["Publisher"]["Ogrn"]
+                publisher_fns_department_v2.inn = msg_data["Publisher"]["Inn"]
+
+            if xsi_type == "Publisher.Efrsb.v2":
+                publisher_efrsb_v2.name = msg_data["Publisher"]["Name"]
+
+            if xsi_type == "Publisher.Mfc.v2":
+                publisher_mfc_v2.name = msg_data["Publisher"]["Name"]
+                publisher_mfc_v2.ogrn = msg_data["Publisher"]["Ogrn"]
+                publisher_mfc_v2.inn = msg_data["Publisher"]["Inn"]
+
+
+
+
+
+
+            message_info.message_type = msg_data["MessageInfo"]["@MessageType"]
+
+            if sro:
+                sro.save()
+            if publisher_arbitr_manager_v2:
+                publisher_arbitr_manager_v2.save()
+            if publisher:
+                publisher.save()
+            if message_data:
+                message_data.save()
+    except Exception as ex:
+        print(ex)
