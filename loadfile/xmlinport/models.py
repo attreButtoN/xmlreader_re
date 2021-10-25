@@ -259,6 +259,8 @@ class OpenForm(models.Model):
 
 class ParticipantCompany(models.Model):
     legal_address = models.TextField(null=True, blank=True, verbose_name="LegalAddress")
+    address = models.TextField(null=True, blank=True, verbose_name="Address")
+    name = models.TextField(null=True, blank=True, verbose_name="Name")
     post_address = models.TextField(null=True, blank=True, verbose_name="PostAddress")
     phone = models.TextField(null=True, blank=True, verbose_name="Phone")
     email = models.TextField(null=True, blank=True, verbose_name="Email")
@@ -1419,6 +1421,7 @@ class PublisherInfo(models.Model):
 
 class DecisionType(models.Model):
     name = models.TextField(blank=True, null=True, verbose_name="Name")
+    Id = models.BigIntegerField(blank=True,null=True)
 
 
 class CourtDecree(models.Model):
@@ -1429,6 +1432,7 @@ class CourtDecree(models.Model):
 
 
 class ArbitrManagerInfo(models.Model):
+    Id = models.BigIntegerField(blank=True,null=True)
     registry_number = models.TextField(blank=True, null=True, verbose_name="RegistryNumber")
     first_name = models.TextField(blank=True, null=True, verbose_name="FirstName")
     middle_name = models.TextField(blank=True, null=True, verbose_name="MiddleName")
@@ -1492,17 +1496,17 @@ class CourtDecision(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
     losses_from_arbitr_manager_actions_amount = models.TextField(blank=True, null=True,
                                                                  verbose_name="LossesFromArbitrManagerActionsAmmount")
-    citizen_not_released_from_responsibility = models.BooleanField(blank=True, null=True,
+    citizen_not_released_from_responsibility = models.TextField(blank=True, null=True,
                                                                    verbose_name="CitizenNotReleasedFromResponsibility")
     arbitrmanager_illegal_actiontype = models.TextField(blank=True, null=True,
                                                         verbose_name="ArbitrManagerIllegalActionType")
-    decision_made_due_tor_cancellation_restructuring_plan = models.BooleanField(blank=True, null=True,
+    decision_made_due_tor_cancellation_restructuring_plan = models.TextField(blank=True, null=True,
                                                                                 verbose_name="DecisionMadeDueTorCancellationRestructuringPlan")
     reason_for_cancellation_restructuring_plan = models.TextField(blank=True, null=True,
                                                                   verbose_name="ReasonForCancellationRestructuringPlan")
-    creditor_claim_register_close_date = models.DateTimeField(blank=True, null=True,
+    creditor_claim_register_close_date = models.TextField(blank=True, null=True,
                                                               verbose_name="CreditorClaimRegisterCloseDate")
-    creditor_claim_setting_requirement_expiration_date = models.DateTimeField(blank=True, null=True,
+    creditor_claim_setting_requirement_expiration_date = models.TextField(blank=True, null=True,
                                                                               verbose_name="CreditorClaimSettingRequirementsExpirationDate")
     arbitrmanager_type = models.TextField(blank=True, null=True, verbose_name="ArbitrManagerType")
     decision_type = models.ForeignKey(DecisionType, blank=True, null=True, on_delete=models.CASCADE)
@@ -1513,7 +1517,7 @@ class CourtDecision(models.Model):
     procedure_prolongation = models.ForeignKey(ProcedureProlongation, blank=True, null=True, on_delete=models.CASCADE)
     changed_message_number = models.TextField(blank=True, null=True, verbose_name="ChangedMessageNumber")
     canceled_messages = models.ForeignKey(CanceledMessages, blank=True, null=True, on_delete=models.CASCADE)
-    next_court_session_date = models.DateTimeField(blank=True, null=True, verbose_name="NextCourtSessionDate")
+    next_court_session_date = models.TextField(blank=True, null=True, verbose_name="NextCourtSessionDate")
     meeting_form = models.TextField(blank=True, null=True, verbose_name="MeetingForm")
     web_address = models.TextField(blank=True, null=True, verbose_name="WebAddress")
     comment = models.TextField(blank=True, null=True, verbose_name="Comment")
@@ -2270,16 +2274,20 @@ class TradeResult(models.Model):
 
 class Meeting(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    meeting_date = models.DateTimeField(blank=True, null=True, verbose_name="MeetingDate")
+    meeting_date = models.TextField(blank=True, null=True, verbose_name="MeetingDate")
     meeting_site = models.TextField(blank=True, null=True, verbose_name="MeetingSite")
-    meeting_date_begin = models.DateField(blank=True, null=True, verbose_name="Meeting_date_begin")
-    meeting_time_begin = models.TimeField(blank=True, null=True, verbose_name="MeetingTimeBegin")
-    registration_date = models.DateField(blank=True, null=True, verbose_name="RegistrationDate")
-    registration_date_begin = models.TimeField(blank=True, null=True, verbose_name="RegistrationDateBegin")
-    registration_date_end = models.TimeField(blank=True, null=True, verbose_name="RegistrationDateEnd")
-    registration_site = models.TextField(blank=True, null=True, verbose_name="RegistraionSite")
-    examination_date = models.DateField(blank=True, null=True, verbose_name="ExaminationDate")
-    examination_site = models.TextField(blank=True, null=True, verbose_name="ExamintationSite")
+    meeting_date_begin = models.TextField(blank=True, null=True, verbose_name="Meeting_date_begin")
+    meeting_time_begin = models.TextField(blank=True, null=True, verbose_name="MeetingTimeBegin")
+    registration_date = models.TextField(blank=True, null=True, verbose_name="RegistrationDate")
+    registration_date_begin = models.TextField(blank=True, null=True, verbose_name="RegistrationDateBegin")
+    registration_date_end = models.TextField(blank=True, null=True, verbose_name="RegistrationDateEnd")
+    registration_site = models.TextField(blank=True, null=True, verbose_name="RegistrationSite")
+    examination_date = models.TextField(blank=True, null=True, verbose_name="ExaminationDate")
+    examination_site = models.TextField(blank=True, null=True, verbose_name="ExaminatationSite")
+    comment = models.TextField(blank=True, null=True, verbose_name="Comment")
+    fu_mail_address = models.TextField(blank=True, null=True, verbose_name="FuMailAddress")
+    web_address = models.TextField(blank=True, null=True, verbose_name="WebAddress")
+    meeting_form = models.TextField(blank=True, null=True, verbose_name="MeetingForm")
 
 
 class MessageTypes(models.Model):

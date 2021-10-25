@@ -4491,8 +4491,6 @@ def update_products_xml(json_datafile):
         # print("END OF")
         # sleep(5)
 
-
-
     message_data = MessageData()
     publisher = Publisher()
     fio = Fio()
@@ -4508,17 +4506,37 @@ def update_products_xml(json_datafile):
     publisher_fns_department_v2 = Publisher_FnsDepartment_v2()
     publisher_efrsb_v2 = Publisher_Efrsb_v2()
     publisher_mfc_v2 = Publisher_Mfc_v2()
-
+    court_decision = CourtDecision()
+    sale_contract_result2 = SaleContractResult2()
     message_info = MessageInfo()
-
-
+    contracts = Contracts()
+    decision_type = DecisionType()
+    court_decree = CourtDecree()
+    arbitr_manager_info = ArbitrManagerInfo()
+    legal_case_termination_type = LegalCaseTerminationType()
+    procedure_prolongation = ProcedureProlongation()
+    cancelled_message = CanceledMessages()
+    auction = Auction()
+    application = Application()
+    lot_table = LotTable()
+    auction_lot = AuctionLot()
+    sale_contract_info = SaleContractInfo()
+    auction_lot_classifier = AuctionLotClassifier()
+    meeting = Meeting()
+    meeting_result = MeetingResult()
+    trade_result = TradeResult()
+    trade_result_lot = TradeResultLot()
+    winner = Winner()
+    buyer = Buyer()
+    participant_company = ParticipantCompany()
+    participant_person = ParticipantPerson()
     try:
         for msg_data in data_json["MessageList"]["MessageData"]:
             print(msg_data.keys())
             print(msg_data["Id"])
 
-            message_data.id_message_data  = msg_data["Id"]
-            message_data.number= msg_data["Number"]
+            message_data.id_message_data = msg_data["Id"]
+            message_data.number = msg_data["Number"]
             message_data.case_number = msg_data["CaseNumber"]
 
             xsi_type = msg_data["Publisher"]["@xsi:type"]
@@ -4547,10 +4565,10 @@ def update_products_xml(json_datafile):
             if xsi_type == "Publisher.FirmTradeOrganizer.v2":
                 publisher_firm_trade_organizer_v2.name = msg_data["Publisher"]["Name"]
                 publisher_firm_trade_organizer_v2.ogrn = msg_data["Publisher"]["Ogrn"]
-                publisher_firm_trade_organizer_v2.inn =msg_data["Publisher"]["Inn"]
+                publisher_firm_trade_organizer_v2.inn = msg_data["Publisher"]["Inn"]
 
             if xsi_type == "Publisher.PersonTradeOrganizer.v2":
-                publisher_person_trade_organizer_v2.inn =  msg_data["Publisher"]["Inn"]
+                publisher_person_trade_organizer_v2.inn = msg_data["Publisher"]["Inn"]
                 publisher_person_trade_organizer_v2.ogrnip = msg_data["Publisher"]["Ogrnip"]
 
                 fio.last_name = msg_data["Publisher"]["Fio"]["LastName"]
@@ -4580,7 +4598,6 @@ def update_products_xml(json_datafile):
                 publisher_asv_v2.inn = msg_data["Publisher"]["Inn"]
 
             if xsi_type == "Publisher.FnsDepartment.v2":
-
                 publisher_fns_department_v2.name = msg_data["Publisher"]["Name"]
                 publisher_fns_department_v2.ogrn = msg_data["Publisher"]["Ogrn"]
                 publisher_fns_department_v2.inn = msg_data["Publisher"]["Inn"]
@@ -4593,12 +4610,271 @@ def update_products_xml(json_datafile):
                 publisher_mfc_v2.ogrn = msg_data["Publisher"]["Ogrn"]
                 publisher_mfc_v2.inn = msg_data["Publisher"]["Inn"]
 
-
-
-
-
-
             message_info.message_type = msg_data["MessageInfo"]["@MessageType"]
+            if message_info.message_type == "ArbitralDecree":
+                court_decision.text = msg_data["MessageInfo"]["CourtDecision"]["Text"]
+                try:
+                    court_decision.losses_from_arbitr_manager_actions_ammount = msg_data["MessageInfo"]["CourtDecision"][
+                        "LossesFromArbitrManagerActionsAmount"]
+                except:
+                    pass
+                else:
+                    court_decision.losses_from_arbitr_manager_actions_ammount = \
+                    msg_data["MessageInfo"]["CourtDecision"][
+                        "LossesFromArbitrManagerActionsAmount"]["@xsi:nil"]
+
+                try:
+                    court_decision.citizen_not_released_from_responsibility = \
+                        msg_data["MessageInfo"]["CourtDecision"][
+                            "CitizenNotReleasedFromResponsibility"]
+                except:
+                    pass
+                else:
+                    court_decision.citizen_not_released_from_responsibility = \
+                        msg_data["MessageInfo"]["CourtDecision"][
+                            "CitizenNotReleasedFromResponsibility"]["@xsi:nil"]
+
+                try:
+                    court_decision.arbitr_manager_illegal_action_type = msg_data["MessageInfo"]["CourtDecision"][
+                        "ArbitrManagerIllegalActionType"]
+                except:
+                    pass
+
+                try:
+                    court_decision.decision_made_due_tor_cancellation_restructuring_plan = msg_data["MessageInfo"][
+                        "CourtDecision"]["DecisionMadeDueTorCancellationRestructuringPlan"]
+                except:
+                    pass
+                else: court_decision.decision_made_due_tor_cancellation_restructuring_plan = msg_data["MessageInfo"][
+                    "CourtDecision"]["DecisionMadeDueTorCancellationRestructuringPlan"]["@xsi:nil"]
+
+                try:
+                    court_decision.reason_for_cancellation_restructuring_plan = \
+                    msg_data["MessageInfo"]["CourtDecision"][
+                        "ReasonForCancellationRestructuringPlan"]
+                except:
+                    pass
+
+                try:
+                    court_decision.creditor_claim_register_close_date = msg_data["MessageInfo"]["CourtDecision"][
+                        "CreditorClaimRegisterCloseDate"]
+                except:
+                    pass
+                else:
+                    court_decision.creditor_claim_register_close_date = msg_data["MessageInfo"]["CourtDecision"][
+                        "CreditorClaimRegisterCloseDate"]["@xsi:nil"]
+                try:
+                    court_decision.creditor_claim_setting_requirements_expiration_date = msg_data["MessageInfo"][
+                        "CourtDecision"]["CreditorClaimSettingRequirementsExpirationDate"]
+                except:
+                    pass
+                else:
+                    court_decision.creditor_claim_setting_requirements_expiration_date = msg_data["MessageInfo"][
+                        "CourtDecision"]["CreditorClaimSettingRequirementsExpirationDate"]["@xsi:nil"]
+                try:
+                    court_decision.arbitr_manager_type = msg_data["MessageInfo"]["ArbitrManagerType"]
+                except:
+                    pass
+                # DecisionType
+                decision_type.name = msg_data["MessageInfo"]["CourtDecision"]["DecisionType"]["@Name"]
+                decision_type.Id = msg_data["MessageInfo"]["CourtDecision"]["DecisionType"]["@Id"]
+                try:
+                    #CourtDecree
+                    court_decree.court_id = msg_data["MessageInfo"]["CourtDecision"]["CourtDecree"]["CourtId"]
+                    court_decree.court_name = msg_data["MessageInfo"]["CourtDecision"]["CourtDecree"]["CourtName"]
+                    court_decree.file_number = msg_data["MessageInfo"]["CourtDecision"]["CourtDecree"]["FileNumber"]
+                    court_decree.decision_date = msg_data["MessageInfo"]["CourtDecision"]["CourtDecree"]["DecisionDate"]
+                except:
+                    pass
+
+                try:
+                    arbitr_manager_info.Id =  msg_data["MessageInfo"]["CourtDecision"]["ArbitrManagerInfo"]["Id"]
+                    arbitr_manager_info.registry_number =  msg_data["MessageInfo"]["CourtDecision"]["ArbitrManagerInfo"]["RegistryNumber"]
+                    arbitr_manager_info.first_name =  msg_data["MessageInfo"]["CourtDecision"]["ArbitrManagerInfo"]["FirstName"]
+                    arbitr_manager_info.middle_name =  msg_data["MessageInfo"]["CourtDecision"]["ArbitrManagerInfo"]["MiddleName"]
+                    arbitr_manager_info.last_name =  msg_data["MessageInfo"]["CourtDecision"]["ArbitrManagerInfo"]["LastName"]
+                    arbitr_manager_info.inn =  msg_data["MessageInfo"]["CourtDecision"]["ArbitrManagerInfo"]["INN"]
+                    arbitr_manager_info.ogrn =  msg_data["MessageInfo"]["CourtDecision"]["ArbitrManagerInfo"]["OGRN"]
+                    arbitr_manager_info.snils =  msg_data["MessageInfo"]["CourtDecision"]["ArbitrManagerInfo"]["SNILS"]
+                except:
+                    pass
+                try:
+                    legal_case_termination_type.code = msg_data["MessageInfo"]["CourtDecision"]["LegalCaseTerminationType"]["Code"]
+
+                    legal_case_termination_type.code = msg_data["MessageInfo"]["CourtDecision"]["LegalCaseTerminationType"][
+                    "Description"]
+                except:
+                    pass
+                try:
+                    procedure_prolongation.date = msg_data["MessageInfo"]["CourtDecision"]["ProcedureProlongation"]["Date"]
+                    procedure_prolongation.months = msg_data["MessageInfo"]["CourtDecision"]["ProcedureProlongation"]["Months"]
+                    procedure_prolongation.message_number = msg_data["MessageInfo"]["CourtDecision"]["ProcedureProlongation"]["MessageNumber"]
+                except:
+                    pass
+                else:
+                    procedure_prolongation.date = msg_data["MessageInfo"]["CourtDecision"]["ProcedureProlongation"][
+                        "Date"]["@xsi:nil"]
+                    procedure_prolongation.months = msg_data["MessageInfo"]["CourtDecision"]["ProcedureProlongation"][
+                        "Months"]["@xsi:nil"]
+                    procedure_prolongation.message_number = \
+                    msg_data["MessageInfo"]["CourtDecision"]["ProcedureProlongation"]["MessageNumber"]
+                try:
+                    cancelled_message.number = msg_data["MessageInfo"]["CourtDecision"]["CancelledMessages"]["Number"]
+                except:
+                    pass
+
+
+
+                court_decision.next_court_session_date = \
+                    msg_data["MessageInfo"]["CourtDecision"]["NextCourtSessionDate"]
+
+            if message_info.message_type == "Auction":
+                auction.is_repeat = json.loads(msg_data["MessageInfo"]["Auction"]["IsRepeat"])
+                auction.date = msg_data["MessageInfo"]["Auction"]["Date"]
+                auction.trade_type = msg_data["MessageInfo"]["Auction"]["TradeType"]
+                auction.price_type = msg_data["MessageInfo"]["Auction"]["PriceType"]
+                auction.text = msg_data["MessageInfo"]["Auction"]["Text"]
+                auction.trade_site = msg_data["MessageInfo"]["Auction"]["TradeSite"]
+                auction.id_trade_place = msg_data["MessageInfo"]["Auction"]["IdTradePlace"]
+                auction.additional_text = msg_data["MessageInfo"]["Auction"]["AdditionalText"]
+
+
+                #Application
+                application.time_begin =  msg_data["MessageInfo"]["Auction"]["Application"]["TimeBegin"]
+                application.time_end =  msg_data["MessageInfo"]["Auction"]["Application"]["TimeEnd"]
+                application.rules =  msg_data["MessageInfo"]["Auction"]["Application"]["Rules"]
+
+                #LotTable -> AuctionLot
+                auction_lot.order =  msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["Order"]
+                auction_lot.start_price =  msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["StartPrice"]
+                auction_lot.step =  msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["Step"]
+                auction_lot.advance =  msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["Advance"]
+                auction_lot.description =  msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["Description"]
+                auction_lot.auction_step_unit =  msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["AuctionStepUnit"]
+                auction_lot.advance_step_unit =  msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["AdvanceStepUnit"]
+
+                #classifierCollection
+                auction_lot_classifier.code =  msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["Code"]
+                auction_lot_classifier.name =  msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["Name"]
+
+            if message_info.message_type == "Meeting":
+                meeting.text = msg_data["MessageInfo"]["Meeting"]["Text"]
+                try:
+                    meeting.meeting_date = msg_data["MessageInfo"]["Meeting"]["MeetingDate"]
+                except:
+                    pass
+                else:
+                    meeting.meeting_date = msg_data["MessageInfo"]["Meeting"]["MeetingDate"]["@xsi:nil"]
+                try:
+                    meeting.meeting_date_begin = msg_data["MessageInfo"]["Meeting"]["MeetingDateBegin"]
+                except:
+                    pass
+                else:
+                    meeting.meeting_date_begin = msg_data["MessageInfo"]["Meeting"]["MeetingDateBegin"]["@xsi:nil"]
+                try:
+                    meeting.meeting_form = msg_data["MessageInfo"]["Meeting"]["MeetingForm"]
+                except:
+                    pass
+                try:
+                    meeting.registration_date = msg_data["MessageInfo"]["Meeting"]["RegistrationDate"]
+                except:
+                    pass
+                else:
+                    meeting.registration_date = msg_data["MessageInfo"]["Meeting"]["RegistrationDate"]["@xsi:nil"]
+                try:
+                    meeting.registration_time_begin = msg_data["MessageInfo"]["Meeting"]["RegistrationTimeBegin"]
+                except:
+                    pass
+                else:
+                    meeting.registration_time_begin = msg_data["MessageInfo"]["Meeting"]["RegistrationTimeBegin"]["@xsi:nil"]
+                try:
+                    meeting.registration_time_end = msg_data["MessageInfo"]["Meeting"]["RegistrationTimeEnd"]
+                except:
+                    pass
+                else:
+                    meeting.registration_time_end = msg_data["MessageInfo"]["Meeting"]["RegistrationTimeEnd"]["@xsi:nil"]
+                try:
+                    meeting.examination_site = msg_data["MessageInfo"]["Meeting"]["ExaminationSite"]
+                except:
+                    pass
+                try:
+                    meeting.examination_date = msg_data["MessageInfo"]["Meeting"]["ExaminationDate"]
+                except:
+                    pass
+                try:
+                    meeting.comment = msg_data["MessageInfo"]["Meeting"]["Comment"]
+                except:
+                    pass
+                try:
+                    meeting.fu_mail_address = msg_data["MessageInfo"]["Meeting"]["FuMailAddress"]
+                except:
+                    pass
+                try:
+                    meeting.web_address = msg_data["MessageInfo"]["Meeting"]["WebAddress"]
+                except:
+                    pass
+                try:
+                    meeting.meeting_form = msg_data["MessageInfo"]["Meeting"]["MeetingForm"]
+                except:
+                    pass
+
+            if message_info.message_type == "MeetingResult":
+                meeting_result.text =  msg_data["MessageInfo"]["MeetingResult"]["Text"]
+                meeting_result.meeting_form =  msg_data["MessageInfo"]["MeetingResult"]["MeetingForm"]
+
+            if message_info.message_type == "TradeResult":
+                trade_result.text = msg_data["MessageInfo"]["TradeResult"]["Text"]
+                trade_result.id_auction_message = msg_data["MessageInfo"]["TradeResult"]["IdAuctionMessage"]
+                # trade_result.lot_table = msg_data["MessageInfo"]["TradeResult"]["LotTable"]
+                #TradeResultLot
+                trade_result_lot.order = msg_data["MessageInfo"]["TradeResult"]["LotTable"]["TradeResultLot"]["Order"]
+                trade_result_lot.description = msg_data["MessageInfo"]["TradeResult"]["LotTable"]["TradeResultLot"]["Description"]
+                trade_result_lot.lot_status = msg_data["MessageInfo"]["TradeResult"]["LotTable"]["TradeResultLot"]["LotStatus"]
+                trade_result_lot.basis = msg_data["MessageInfo"]["TradeResult"]["LotTable"]["TradeResultLot"]["Basis"]
+
+                auction_lot_classifier.code = msg_data["TradeResult"]["LotTable"]["TradeResultLot"]["ClassifierCollection"]["AuctionLotClassifier"]["Code"]
+                auction_lot_classifier.name = msg_data["TradeResult"]["LotTable"]["TradeResultLot"]["ClassifierCollection"]["AuctionLotClassifier"]["Name"]
+
+                #winner
+                try:
+                    participant_company.price_offer = msg_data["MessageInfo"]["TradeResult"]["Winner"]["ParticipantCompany"]["PriceOffer"]
+                except:
+                    pass
+                try:
+                    participant_company.address = msg_data["MessageInfo"]["TradeResult"]["Winner"]["ParticipantCompany"]["Address"]
+                except:
+                    pass
+                try:
+                    participant_company.inn = msg_data["MessageInfo"]["TradeResult"]["Winner"]["ParticipantCompany"]["INN"]
+                except:
+                    pass
+                try:
+                    participant_company.name = msg_data["MessageInfo"]["TradeResult"]["Winner"]["ParticipantCompany"]["Name"]
+                except:
+                    pass
+                try:
+                    participant_company.ogrn = msg_data["MessageInfo"]["TradeResult"]["Winner"]["ParticipantCompany"]["OGRN"]
+                except:
+                    pass
+
+
+
+
+
+
+
+
+
+
+
+
+            if message_info.message_type == "SaleContractResult2":
+                sale_contract_result2.text = msg_data["MessageInfo"]["Text"]
+                sale_contract_result2.id_auction_message = msg_data["MessageInfo"]["IdAuctionMessage"]
+                sale_contract_result2.trade_place_name = msg_data["MessageInfo"]["TradePlaceName"]
+                sale_contract_result2.trade_number = msg_data["MessageInfo"]["TradeNumber"]
+
+            # if message_info.message_type ==
 
             if sro:
                 sro.save()
