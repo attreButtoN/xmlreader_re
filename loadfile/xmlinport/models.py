@@ -1099,6 +1099,7 @@ class Message(models.Model):
     #                                                          verbose_name="Envelope")
     bankrupt_supervisory_persons = models.ForeignKey(BankruptSupervisoryPersons, blank=True, null=True,
                                                      on_delete=models.CASCADE)
+    number = models.BigIntegerField(blank=True,null=True)
 
     def __str__(self):
         return (
@@ -1527,7 +1528,7 @@ class CourtDecision(models.Model):
 class Director(models.Model):
     name = models.TextField(blank=True, null=True, verbose_name="Name")
     address = models.TextField(blank=True, null=True, verbose_name="Address")
-    id_arbitr_manager = models.FloatField(blank=True, null=True, verbose_name="IdAritrManager")
+    id_arbitr_manager = models.TextField(blank=True, null=True, verbose_name="IdAritrManager")
     inn = models.TextField(blank=True, null=True, verbose_name="INN")
     snils = models.TextField(blank=True, null=True, verbose_name="SNILS")
     sro = models.ForeignKey(Sro, blank=True, null=True, verbose_name="SRO", on_delete=models.CASCADE)
@@ -1621,7 +1622,7 @@ class SaleContractResult(models.Model):
 
 class SaleContractResult2(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
-    id_auction_message = models.BigIntegerField(blank=True, null=True)
+    id_auction_message = models.TextField(blank=True, null=True)
     trade_place_name = models.TextField(blank=True, null=True)
     trade_number = models.TextField(blank=True, null=True)
     contracts = models.ForeignKey(Contracts, blank=True, null=True, on_delete=models.CASCADE)
@@ -1806,7 +1807,7 @@ class ActReviewPersonSubsidiary(models.Model):
 class MeetingWorker(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
     meeting_form = models.TextField(blank=True, null=True)
-    meeting_date = models.DateTimeField(blank=True, null=True)
+    meeting_date = models.TextField(blank=True, null=True)
     meeting_site = models.TextField(blank=True, null=True)
     ballots_reception_end_date = models.DateTimeField(blank=True, null=True)
     ballots_send_post_address = models.TextField(blank=True, null=True)
@@ -1827,7 +1828,7 @@ class ViewDraftRestructuringPlan(models.Model):
     date_end_restructuring_plan_execution = models.DateTimeField(blank=True, null=True)
     place_of_acquaintance = models.TextField(blank=True, null=True)
     included_registry_requirements_not_satisfied = models.BooleanField(blank=True, null=True)
-
+    bankruptcy_acknowledgment_and_start_of_restructuring_messageid = models.BigIntegerField(blank=True,null=True)
 
 class ViewExecRestructuringPlan(models.Model):
     text = models.TextField(blank=True, null=True, verbose_name="Text")
@@ -1879,6 +1880,11 @@ class DeliberateBankruptcy(models.Model):
 
 
 class ChangeDeliberateBankruptcy(models.Model):
+    text = models.TextField(blank=True, null=True, verbose_name="Text")
+    deliberate_bankruptcy_signs = models.TextField(blank=True, null=True)
+    deliberate_signs_not_searched_reason = models.TextField(blank=True, null=True)
+    fake_bankruptcy_signs = models.TextField(blank=True, null=True)
+    fake_signs_not_searched_reason = models.TextField(blank=True, null=True)
     id_cancelled_message = models.BigIntegerField(blank=True, null=True)
 
 
@@ -2107,7 +2113,7 @@ class Experts(models.Model):
 
 class ExpertDecision(models.Model):
     number = models.TextField(blank=True, null=True)
-    date = models.DateTimeField(blank=True, null=True)
+    date = models.TextField(blank=True, null=True)
     result = models.TextField(blank=True, null=True)
     experts = models.ForeignKey(Experts, blank=True, null=True, on_delete=models.CASCADE)
 
@@ -2151,14 +2157,14 @@ class Bank(models.Model):
     bank_identifier = models.IntegerField(blank=True, null=True)
 
 
-class OblegatoryPayment(models.Model):
+class ObligatoryPayment(models.Model):
     name = models.TextField(blank=True, null=True)
     sum = models.FloatField(blank=True, null=True)
     penalty_sum = models.FloatField(blank=True, null=True)
 
 
-class OblegatoryPayments(models.Model):
-    obligatory_payment = models.ForeignKey(OblegatoryPayment, blank=True, null=True, on_delete=models.CASCADE)
+class ObligatoryPayments(models.Model):
+    obligatory_payment = models.ForeignKey(ObligatoryPayment, blank=True, null=True, on_delete=models.CASCADE)
 
 
 class MonetaryObligations(models.Model):
@@ -2173,7 +2179,7 @@ class ReturnOfApplicationOnExtrajudicialBankruptcy(models.Model):
 
 class CreditorsNonFromEntrepreneurship(models.Model):
     monetary_obligations = models.ForeignKey(MonetaryObligations, blank=True, null=True, on_delete=models.CASCADE)
-    obligatory_payment = models.ForeignKey(OblegatoryPayment, blank=True, null=True, on_delete=models.CASCADE)
+    obligatory_payment = models.ForeignKey(ObligatoryPayment, blank=True, null=True, on_delete=models.CASCADE)
     non_monetary_obligations = models.TextField(blank=True, null=True)
 
 
@@ -2183,7 +2189,7 @@ class Banks(models.Model):
 
 class CreditorsFromEntrepreneurship(models.Model):
     monetary_obligations = models.ForeignKey(MonetaryObligations, blank=True, null=True, on_delete=models.CASCADE)
-    obligatory_payment = models.ForeignKey(OblegatoryPayment, blank=True, null=True, on_delete=models.CASCADE)
+    obligatory_payment = models.ForeignKey(ObligatoryPayment, blank=True, null=True, on_delete=models.CASCADE)
     non_monetary_obligations = models.TextField(blank=True, null=True)
 
 
