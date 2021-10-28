@@ -1350,16 +1350,16 @@ class BankruptInfo(models.Model):
 
 
 class Category(models.Model):
-    code = models.TextField(blank=True)
-    description = models.TextField(blank=True)
+    code = models.TextField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
 
 class Bankrupt_Company_v2(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True)
-    name = models.CharField(max_length=1024, blank=True, verbose_name="Name")
-    ogrn = models.CharField(max_length=13, blank=True, verbose_name="OGRNIP")
-    inn = models.CharField(max_length=10, blank=True, verbose_name="INN")
-    address = models.CharField(max_length=300, blank=True, verbose_name="Address")
+    category = models.ForeignKey(Category,null=True,  on_delete=models.CASCADE, blank=True)
+    name = models.CharField(max_length=1024,null=True,  blank=True, verbose_name="Name")
+    ogrn = models.CharField(max_length=13,null=True,  blank=True, verbose_name="OGRNIP")
+    inn = models.CharField(max_length=10,null=True,  blank=True, verbose_name="INN")
+    address = models.CharField(max_length=300,null=True,  blank=True, verbose_name="Address")
 
 
 class FioHistory(models.Model):
@@ -1367,35 +1367,35 @@ class FioHistory(models.Model):
 
 
 class Bankrupt_Person_v2(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True)
-    fio = models.ForeignKey(Fio, on_delete=models.CASCADE, blank=True)
-    inn = models.CharField(max_length=12, blank=True, verbose_name="INN")
-    snils = models.CharField(max_length=11, blank=True, verbose_name="SNILS")
-    address = models.CharField(max_length=300, blank=True, verbose_name="Address")
-    birth_date = models.DateTimeField(blank=True, verbose_name="BirthDate")
-    birth_place = models.CharField(max_length=300, blank=True, verbose_name="BirthPlace")
-    fio_history = models.ForeignKey(FioHistory, on_delete=models.CASCADE, verbose_name="FioHistory")
+    category = models.ForeignKey(Category,null=True,  on_delete=models.CASCADE, blank=True)
+    fio = models.ForeignKey(Fio,null=True,  on_delete=models.CASCADE, blank=True)
+    inn = models.CharField(max_length=12,null=True,  blank=True, verbose_name="INN")
+    snils = models.CharField(max_length=11,null=True,  blank=True, verbose_name="SNILS")
+    address = models.CharField(max_length=300,null=True,  blank=True, verbose_name="Address")
+    birth_date = models.TextField(blank=True,null=True,  verbose_name="BirthDate")
+    birth_place = models.CharField(max_length=300,null=True, blank=True, verbose_name="BirthPlace")
+    fio_history = models.ForeignKey(FioHistory,null=True,blank=True, on_delete=models.CASCADE, verbose_name="FioHistory")
 
 
 class FileInfo(models.Model):
-    name = models.TextField(verbose_name="Name")
-    hash = models.TextField(verbose_name="Hash")
+    name = models.TextField(null=True, verbose_name="Name")
+    hash = models.TextField(null=True, verbose_name="Hash")
 
 
 class FileInfoList(models.Model):
-    file_info = models.ForeignKey(FileInfo, on_delete=models.CASCADE)
+    file_info = models.ForeignKey(FileInfo,null=True,  on_delete=models.CASCADE)
 
 
 class Bankrupt(models.Model):
-    bankrupt = models.CharField(max_length=30, blank=True, verbose_name="Bankrupt")
-    bankrupt_company_v2 = models.ForeignKey(Bankrupt_Company_v2, on_delete=models.CASCADE, blank=True)
-    bankrupt_person_v2 = models.ForeignKey(Bankrupt_Person_v2, on_delete=models.CASCADE, blank=True)
+    bankrupt = models.CharField(max_length=30,null=True,  blank=True, verbose_name="Bankrupt")
+    bankrupt_company_v2 = models.ForeignKey(Bankrupt_Company_v2,null = True, on_delete=models.CASCADE, blank=True)
+    bankrupt_person_v2 = models.ForeignKey(Bankrupt_Person_v2,null=True, on_delete=models.CASCADE, blank=True)
 
 
 class MessageUrl(models.Model):
-    url_name = models.TextField(blank=True)
-    url = models.TextField(blank=True)
-    download_size = models.CharField(max_length=15, blank=True)
+    url_name = models.TextField(null=True, blank=True)
+    url = models.TextField(null=True, blank=True)
+    download_size = models.CharField(null=True, max_length=15, blank=True)
 
 
 class MessageURLList(models.Model):
@@ -2339,8 +2339,8 @@ class MessageTypes(models.Model):
                                                    related_name="court_acceptance_statement_other")
     deliberate_bankruptcy = models.ForeignKey(DeliberateBankruptcy, null=True, blank=True, on_delete=models.CASCADE)
     intention_credit_org = models.ForeignKey(IntentionCreditOrg, null=True, blank=True, on_delete=models.CASCADE)
-    liabilities_creditor_org = models.ForeignKey(LiabilitiesCreditOrg, null=True, blank=True, on_delete=models.CASCADE)
-    perfomance_creditor_org = models.ForeignKey(PerformanceCreditOrg, null=True, blank=True, on_delete=models.CASCADE)
+    liabilities_credit_org = models.ForeignKey(LiabilitiesCreditOrg, null=True, blank=True, on_delete=models.CASCADE)
+    perfomance_credit_org = models.ForeignKey(PerformanceCreditOrg, null=True, blank=True, on_delete=models.CASCADE)
     buying_property = models.ForeignKey(BuyingProperty, null=True, blank=True, on_delete=models.CASCADE)
     declaration_person_damages = models.ForeignKey(DeclarationPersonDamages, null=True, blank=True,
                                                    on_delete=models.CASCADE)
@@ -2368,7 +2368,7 @@ class MessageTypes(models.Model):
                                                      on_delete=models.CASCADE)
     transfer_ownership_real_estate = models.ForeignKey(TransferOwnershipRealEstate, null=True, blank=True,
                                                        on_delete=models.CASCADE)
-    cancel_autction_trade_result = models.ForeignKey(CancelAuctionTradeResult, null=True, blank=True,
+    cancel_auction_trade_result = models.ForeignKey(CancelAuctionTradeResult, null=True, blank=True,
                                                      on_delete=models.CASCADE)
     cancel_deliberate_bankruptcy = models.ForeignKey(CancelDeliberateBankruptcy, null=True, blank=True,
                                                      on_delete=models.CASCADE)
@@ -2377,7 +2377,7 @@ class MessageTypes(models.Model):
                                                      on_delete=models.CASCADE)
     reducing_size_share_capital = models.ForeignKey(ReducingSizeShareCapital, null=True, blank=True,
                                                     on_delete=models.CASCADE)
-    selection_purchaser_assert = models.ForeignKey(SelectionPurchaserAssets, blank=True, null=True,
+    selection_purchaser_assets = models.ForeignKey(SelectionPurchaserAssets, blank=True, null=True,
                                                    on_delete=models.CASCADE)
     estimates_current_expenses = models.ForeignKey(EstimatesCurrentExpenses, blank=True, null=True,
                                                    on_delete=models.CASCADE)
@@ -2437,7 +2437,7 @@ class MessageTypes(models.Model):
 
 class MessageInfo(models.Model):
     message_type = models.TextField(blank=True, null=True, verbose_name="Message Type")
-    message_types = models.ForeignKey(MessageTypes, on_delete=models.CASCADE, blank=True)
+    message_types = models.ForeignKey(MessageTypes, null=True,on_delete=models.CASCADE, blank=True)
 
 
 class MessageData(models.Model):
