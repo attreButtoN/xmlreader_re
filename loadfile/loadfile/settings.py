@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,11 +25,12 @@ SECRET_KEY = "django-insecure-$g_(!fo9=ydd(h2fd!b&yi&_y&#kng!j)o___upm7bl+i19dq7
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+load_dotenv()
+FILES_PATH = os.getenv('FILES_PATH')
 
 ALLOWED_HOSTS = []
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",

@@ -4,9 +4,9 @@ from time import sleep
 from xmlinport.views import *
 from xmlinport.models import *
 
-
 def update_products_xml(json_datafile):
     global envelope, envelopefor
+    # status  =''
     data_json = json_datafile
     trades_list = list()
     trade_places_inn = list()
@@ -4499,19 +4499,20 @@ def update_products_xml(json_datafile):
     try:
         for msg_data in data_json["MessageList"]["MessageData"]:
             try:
+                status = ''
                 message_data = MessageData()
                 publisher = Publisher()
                 fio = Fio()
                 sro = Sro()
                 publisher_arbitr_manager_v2 = Publisher_Arbitr_Manager_v2()
                 publisher_arbitr_manager_sro_v2 = Publisher_Arbitr_Manager_Sro_v2()
-                publisher_firm_trade_organizer_v2 = Publisher_FirmTrade_Organizer_v2()
-                publisher_person_trade_organizer_v2 = Publisher_PersonTrade_Organizer_v2()
+                publisher_firmtrade_organizer_v2 = Publisher_FirmTrade_Organizer_v2()
+                publisher_persontrade_organizer_v2 = Publisher_PersonTrade_Organizer_v2()
                 publisher_company_v2 = Publisher_Company_v2()
                 publisher_person_v2 = Publisher_Person_v2()
-                publisher_central_bank_rf_v2 = Publisher_CentralBankRf_v2()
-                publisher_asv_v2 = Publisher_Asv_v2
-                publisher_fns_department_v2 = Publisher_FnsDepartment_v2()
+                publisher_centralbankrf_v2 = Publisher_CentralBankRf_v2()
+                publisher_asv_v2 = Publisher_Asv_v2()
+                publisher_fnsdepartment_v2 = Publisher_FnsDepartment_v2()
                 publisher_efrsb_v2 = Publisher_Efrsb_v2()
                 publisher_mfc_v2 = Publisher_Mfc_v2()
                 court_decision = CourtDecision()
@@ -4601,19 +4602,20 @@ def update_products_xml(json_datafile):
                 remaining_assets_and_right = RemainingAssetsAndRight()
                 impending_transfer_assets = ImpendingTransferAssets()
                 credit_organizations = CreditOrganizations()
+
                 credit_organization_info = CreditOrganizationInfo()
                 transfer_assets = TransferAssets()
                 transfer_insurance_portfolio = TransferInsurancePortfolio()
                 insurance_organization = InsuranceOrganization()
                 bank_open_account_debtor = BankOpenAccountDebtor()
                 procedure_granting_indemnity = ProcedureGrantingIndemnity()
-                right_unsold_assets = RightUnsoldAsset()
+                right_unsold_asset = RightUnsoldAsset()
                 transfer_responsibilities_fund = TransferResponsibilitiesFund()
                 extension_administration = ExtensionAdministration()
-                meeting_participant_building = MeetingParticipantsBuilding()
+                meeting_participants_building = MeetingParticipantsBuilding()
                 meeting_part_build_result = MeetingPartBuildResult()
                 part_build_monetary_claim = PartBuildMonetaryClaim()
-                start_setttlement = StartSettlement()
+                start_settlement = StartSettlement()
                 process_inventory_debtor = ProcessInventoryDebtor()
                 rebuttal = Rebuttal()
                 creditor_choice_right_subsidiary = CreditorChoiceRightSubsidiary()
@@ -4625,7 +4627,7 @@ def update_products_xml(json_datafile):
                 change_estimates_current_expenses = ChangeEstimatesCurrentExpenses()
                 act_person_subsidiary2 = ActPersonSubsidiary2()
                 declaration_person_subsidiary_info_messages = DeclarationPersonSubsidiaryInfoMessages()
-                act_review_person_subsidiary2 = ActPersonSubsidiary2()
+                act_review_person_subsidiary2 = ActReviewPersonSubsidiary2()
                 act_person_subsidiary_info_messages = ActPersonSubsidiaryInfoMessages()
                 assessment_report = AssessmentReport()
                 appraisers = Appraisers()
@@ -4638,8 +4640,8 @@ def update_products_xml(json_datafile):
                 expert = Expert()
                 experts = Experts()
                 expert_decision = ExpertDecision()
-                return_of_application_on_extrajudical_bankruptcy = ReturnOfApplicationOnExtrajudicialBankruptcy()
-                start_of_extrajudical_bankruptcy = StartOfExtrajudicialBankruptcy()
+                return_of_application_on_extrajudicial_bankruptcy = ReturnOfApplicationOnExtrajudicialBankruptcy()
+                start_of_extrajudicial_bankruptcy = StartOfExtrajudicialBankruptcy()
                 creditors_non_from_entrepreneurship = CreditorsNonFromEntrepreneurship()
                 creditors_from_entrepreneurship = CreditorsFromEntrepreneurship()
                 banks = Banks()
@@ -4648,10 +4650,10 @@ def update_products_xml(json_datafile):
                 monetary_obligation = MonetaryObligation()
                 arbitr_manager = ArbitrManager()
                 message = Message()
-                obligatory_payment = ObligatoryPayment
-                obligatory_payments = ObligatoryPayments
-                termination_of_extrajudical_bankruptcy = TerminationOfExtrajudicialBankruptcy()
-                completion_of_extrajudical_bankruptcy = CompletionOfExtrajudicialBankruptcy()
+                obligatory_payment = ObligatoryPayment()
+                obligatory_payments = ObligatoryPayments()
+                termination_of_extrajudicial_bankruptcy = TerminationOfExtrajudicialBankruptcy()
+                completion_of_extrajudicial_bankruptcy = CompletionOfExtrajudicialBankruptcy()
                 bankrupt_company_v2 = Bankrupt_Company_v2()
                 bankrupt_person_v2 = Bankrupt_Person_v2()
                 category = Category()
@@ -4661,7 +4663,9 @@ def update_products_xml(json_datafile):
                 message_url = MessageUrl()
                 bankrupt_info = BankruptInfo()
                 bankrupt = Bankrupt()
+                change_auction = ChangeAuction()
                 message_types = MessageTypes()
+                # classifier_collection = Classifi
                 # print(msg_data.keys())
                 # print(msg_data["Id"])
                 print(msg_data)
@@ -4727,11 +4731,12 @@ def update_products_xml(json_datafile):
                     except:
                         pass
 
-                if xsi_type == "Publisher.ArbitrManager_Sro_v2":
+                if xsi_type == "Publisher.ArbitrManagerSro.v2":
                     try:
                         publisher_arbitr_manager_sro_v2.name = msg_data["Publisher"]["Name"]
-                    except:
-                        pass
+                    except Exception as ex:
+                        print("#"*50)
+                        print(ex)
                     try:
                         publisher_arbitr_manager_sro_v2.ogrn = msg_data["Publisher"]["Ogrn"]
                     except:
@@ -4744,28 +4749,59 @@ def update_products_xml(json_datafile):
                         publisher_arbitr_manager_sro_v2.address = msg_data["Publisher"]["Address"]
                     except:
                         pass
+                    #fio
+                    try:
+                        fio.last_name = msg_data["Publisher"]["Fio"]["LastName"]
+                    except:
+                        pass
+                    try:
+                        fio.first_name = msg_data["Publisher"]["Fio"]["FirstName"]
+                    except:
+                        pass
+                    try:
+                        fio.middle_name = msg_data["Publisher"]["Fio"]["MiddleName"]
+                    except:
+                        pass
+                    #sro
+                    try:
+                        sro.name = msg_data["Publisher"]["Sro"]["Name"]
+                    except:
+                        pass
+                    try:
+                        sro.ogrn = msg_data["Publisher"]["Sro"]["Ogrn"]
+                    except:
+                        pass
+                    try:
+                        sro.inn = msg_data["Publisher"]["Sro"]["Inn"]
+                    except:
+                        pass
+                    try:
+                        sro.address = msg_data["Publisher"]["Sro"]["Address"]
+                    except:
+                        pass
+
 
                 if xsi_type == "Publisher.FirmTradeOrganizer.v2":
                     try:
-                        publisher_firm_trade_organizer_v2.name = msg_data["Publisher"]["Name"]
+                        publisher_firmtrade_organizer_v2.name = msg_data["Publisher"]["Name"]
                     except:
                         pass
                     try:
-                        publisher_firm_trade_organizer_v2.ogrn = msg_data["Publisher"]["Ogrn"]
+                        publisher_firmtrade_organizer_v2.ogrn = msg_data["Publisher"]["Ogrn"]
                     except:
                         pass
                     try:
-                        publisher_firm_trade_organizer_v2.inn = msg_data["Publisher"]["Inn"]
+                        publisher_firmtrade_organizer_v2.inn = msg_data["Publisher"]["Inn"]
                     except:
                         pass
 
                 if xsi_type == "Publisher.PersonTradeOrganizer.v2":
                     try:
-                        publisher_person_trade_organizer_v2.inn = msg_data["Publisher"]["Inn"]
+                        publisher_persontrade_organizer_v2.inn = msg_data["Publisher"]["Inn"]
                     except:
                         pass
                     try:
-                        publisher_person_trade_organizer_v2.ogrnip = msg_data["Publisher"]["Ogrnip"]
+                        publisher_persontrade_organizer_v2.ogrnip = msg_data["Publisher"]["Ogrnip"]
                     except:
                         pass
                     try:
@@ -4816,15 +4852,15 @@ def update_products_xml(json_datafile):
 
                 if xsi_type == "Publisher.CentralBankRf.v2":
                     try:
-                        publisher_central_bank_rf_v2.name = msg_data["Publisher"]["Name"]
+                        publisher_centralbankrf_v2.name = msg_data["Publisher"]["Name"]
                     except:
                         pass
                     try:
-                        publisher_central_bank_rf_v2.ogrn = msg_data["Publisher"]["Ogrn"]
+                        publisher_centralbankrf_v2.ogrn = msg_data["Publisher"]["Ogrn"]
                     except:
                         pass
                     try:
-                        publisher_central_bank_rf_v2.inn = msg_data["Publisher"]["Inn"]
+                        publisher_centralbankrf_v2.inn = msg_data["Publisher"]["Inn"]
                     except:
                         pass
 
@@ -4844,15 +4880,15 @@ def update_products_xml(json_datafile):
 
                 if xsi_type == "Publisher.FnsDepartment.v2":
                     try:
-                        publisher_fns_department_v2.name = msg_data["Publisher"]["Name"]
+                        publisher_fnsdepartment_v2.name = msg_data["Publisher"]["Name"]
                     except:
                         pass
                     try:
-                        publisher_fns_department_v2.ogrn = msg_data["Publisher"]["Ogrn"]
+                        publisher_fnsdepartment_v2.ogrn = msg_data["Publisher"]["Ogrn"]
                     except:
                         pass
                     try:
-                        publisher_fns_department_v2.inn = msg_data["Publisher"]["Inn"]
+                        publisher_fnsdepartment_v2.inn = msg_data["Publisher"]["Inn"]
                     except:
                         pass
 
@@ -5097,35 +5133,41 @@ def update_products_xml(json_datafile):
                             "AdvanceStepUnit"]
                     except:
                         pass
-
+                    try:
+                        auction_lot.price_reduction = \
+                        msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"][
+                            "PriceReduction"]
+                    except:
+                        pass
                         # classifierCollection
                     try:
-                        auction_lot_classifier.code = msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["Code"]
+                        auction_lot_classifier.code = msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["ClassifierCollection"]["AuctionLotClassifier"]["Code"]
                     except:
                         pass
                     try:
-                        auction_lot_classifier.name = msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["Name"]
+                        auction_lot_classifier.name = msg_data["MessageInfo"]["Auction"]["LotTable"]["AuctionLot"]["ClassifierCollection"]["AuctionLotClassifier"]["Name"]
                     except:
                         pass
 
                 if message_info.message_type == "Meeting":
                     try:
                         meeting.text = msg_data["MessageInfo"]["Meeting"]["Text"]
-                    except:
-                        pass
+                    except Exception as ex:
+                        print("^"*50)
+                        print(ex)
                     try:
                         meeting.meeting_date = msg_data["MessageInfo"]["Meeting"]["MeetingDate"]
                     except:
                         pass
-                    else:
-                        meeting.meeting_date = msg_data["MessageInfo"]["Meeting"]["MeetingDate"]["@xsi:nil"]
+                    # else:
+                    #     meeting.meeting_date = msg_data["MessageInfo"]["Meeting"]["MeetingDate"]["@xsi:nil"]
                     try:
                         meeting.meeting_date_begin = msg_data["MessageInfo"]["Meeting"]["MeetingDateBegin"]
 
                     except:
                         pass
-                    else:
-                        meeting.meeting_date_begin = msg_data["MessageInfo"]["Meeting"]["MeetingDateBegin"]["@xsi:nil"]
+                    # else:
+                    #     meeting.meeting_date_begin = msg_data["MessageInfo"]["Meeting"]["MeetingDateBegin"]["@xsi:nil"]
                     try:
                         meeting.meeting_form = msg_data["MessageInfo"]["Meeting"]["MeetingForm"]
                     except:
@@ -5134,8 +5176,8 @@ def update_products_xml(json_datafile):
                         meeting.registration_date = msg_data["MessageInfo"]["Meeting"]["RegistrationDate"]
                     except:
                         pass
-                    else:
-                        meeting.registration_date = msg_data["MessageInfo"]["Meeting"]["RegistrationDate"]["@xsi:nil"]
+                    # else:
+                    #     meeting.registration_date = msg_data["MessageInfo"]["Meeting"]["RegistrationDate"]["@xsi:nil"]
                     try:
                         meeting.registration_time_begin = msg_data["MessageInfo"]["Meeting"]["RegistrationTimeBegin"]
                     except:
@@ -5147,9 +5189,9 @@ def update_products_xml(json_datafile):
                         meeting.registration_time_end = msg_data["MessageInfo"]["Meeting"]["RegistrationTimeEnd"]
                     except:
                         pass
-                    else:
-                        meeting.registration_time_end = msg_data["MessageInfo"]["Meeting"]["RegistrationTimeEnd"][
-                            "@xsi:nil"]
+                    # else:
+                    #     meeting.registration_time_end = msg_data["MessageInfo"]["Meeting"]["RegistrationTimeEnd"][
+                    #         "@xsi:nil"]
                     try:
                         meeting.examination_site = msg_data["MessageInfo"]["Meeting"]["ExaminationSite"]
                     except:
@@ -5228,10 +5270,25 @@ def update_products_xml(json_datafile):
                     except:
                         pass
 
+                    try:
+                        check = msg_data["MessageInfo"]["TradeResult"]["LotTable"]["TradeResultLot"]["Winner"]
+                        check = 'winner'
+
+                        status = check
+                    except:
+                        pass
+                    try:
+                        check =  msg_data["MessageInfo"]["TradeResult"]["LotTable"]["TradeResultLot"]["Buyer"]
+                        check = 'buyer'
+
+                        status = check
+                    except:
+                        pass
                     # winner
                     try:
                         participant_company.price_offer = \
-                            msg_data["MessageInfo"]["TradeResult"]["Winner"]["ParticipantCompany"]["PriceOffer"]
+                            msg_data["MessageInfo"]["TradeResult"]["LotTable"]["TradeResultLot"]["Winner"][
+                                "ParticipantCompany"]["PriceOffer"]
                     except:
                         pass
                     try:
@@ -5264,7 +5321,8 @@ def update_products_xml(json_datafile):
                     # winner person
                     try:
                         participant_person.price_offer = \
-                            msg_data["MessageInfo"]["TradeResult"]["Winner"]["ParticipantPerson"]["PriceOffer"]
+                            msg_data["MessageInfo"]["TradeResult"]["LotTable"]["TradeResultLot"]["Winner"][
+                                "ParticipantPerson"]["PriceOffer"]
                     except:
                         pass
                     try:
@@ -5307,7 +5365,8 @@ def update_products_xml(json_datafile):
 
                     try:
                         participant_company.price_offer = \
-                            msg_data["MessageInfo"]["TradeResult"]["Buyer"]["ParticipantCompany"]["PriceOffer"]
+                            msg_data["MessageInfo"]["TradeResult"]["LotTable"]["TradeResultLot"]["Buyer"][
+                                "ParticipantCompany"]["PriceOffer"]
                     except:
                         pass
                     try:
@@ -5340,7 +5399,8 @@ def update_products_xml(json_datafile):
                     # winner person
                     try:
                         participant_person.price_offer = \
-                            msg_data["MessageInfo"]["TradeResult"]["Buyer"]["ParticipantPerson"]["PriceOffer"]
+                            msg_data["MessageInfo"]["TradeResult"]["LotTable"]["TradeResultLot"]["Buyer"][
+                                "ParticipantPerson"]["PriceOffer"]
                     except:
                         pass
                     try:
@@ -6287,26 +6347,27 @@ def update_products_xml(json_datafile):
                             "DeclarationDate"]
                     except:
                         pass
-                    # try:
-                    #     for i in range(msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"]):
-                    #         deal_participant.deal_participant = msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
-                    #         deal_participant.name = \
-                    #         msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["Name"]
-                    #         deal_participant.code = \
-                    #         msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["Code"]
-                    #         deal_participant.save()
-                    #         deal_participants.deal_participant = deal_participants
-                    #         deal_participants.save()
-                    # except:
-                    #     pass
-                    else:
+                    try:
+                        for i in range(msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"]):
+                            deal_participant.deal_participant = msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
+                            deal_participant.name = \
+                            msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["Name"]
+                            deal_participant.code = \
+                            msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["Code"]
+                            deal_participant.save()
+                            deal_participants.deal_participant = deal_participants
+                            deal_participants.save()
+                    except:
+                        pass
+                    try:
                         deal_participant.deal_participant = \
                         msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"]["@xsi:type"]
                         deal_participant.name = \
-                            msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"]["@Name:type"]
+                            msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"]["Name"]
                         deal_participant.code = \
                             msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"]["Code"]
-
+                    except:
+                        pass
                 if message_info.message_type == "ActDealInvalid":
                     try:
                         act_deal_invalid.text = buying_property.text = msg_data["MessageInfo"]["ActDealInvalid"]["Text"]
@@ -6317,7 +6378,7 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
-                        act_deal_invalid.deal_not_valid = msg_data["MessageInfo"]["ActDealInvalid"]["DealNotValid"]
+                        act_deal_invalid.deal_not_valid = json.loads(msg_data["MessageInfo"]["ActDealInvalid"]["DealNotValid"])
                     except:
                         pass
                     try:
@@ -6327,27 +6388,27 @@ def update_products_xml(json_datafile):
                         pass
 
 
-                    # try:
-                    #     for i in range(msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"]):
-                    #         deal_participant.deal_participant = msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
-                    #         deal_participant.name = \
-                    #         msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"][i]["Name"]
-                    #         deal_participant.code = \
-                    #         msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"][i]["Code"]
-                    #         deal_participant.deal_participant = \
-                    #         msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
-                    #         deal_participant.code_type = \
-                    #             msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"][i][
-                    #                 "CodeType"]
-                    #         deal_participant.country = \
-                    #             msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"][i][
-                    #                 "Country"]
-                    #         deal_participant.save()
-                    #         deal_participants.deal_participant = deal_participants
-                    #         deal_participants.save()
-                    # except:
-                    #     pass
-                    else:
+                    try:
+                        for i in range(msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"]):
+                            deal_participant.deal_participant = msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
+                            deal_participant.name = \
+                            msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"][i]["Name"]
+                            deal_participant.code = \
+                            msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"][i]["Code"]
+                            deal_participant.deal_participant = \
+                            msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
+                            deal_participant.code_type = \
+                                msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"][i][
+                                    "CodeType"]
+                            deal_participant.country = \
+                                msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"][i][
+                                    "Country"]
+                            deal_participant.save()
+                            deal_participants.deal_participant = deal_participants
+                            deal_participants.save()
+                    except:
+                        pass
+                    try:
                         deal_participant.deal_participant = \
                         msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"]["@xsi:type"]
                         deal_participant.name = \
@@ -6362,6 +6423,8 @@ def update_products_xml(json_datafile):
                         deal_participant.country = \
                             msg_data["MessageInfo"]["ActDealInvalid"]["DealParticipants"]["DealParticipant"][
                                 "Country"]
+                    except:
+                        pass
 
                 if message_info.message_type == "ActDealInvalid2":
                     try:
@@ -6395,27 +6458,28 @@ def update_products_xml(json_datafile):
                     except:
                         pass
 
-                    # try:
-                    #     for i in range(msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"]):
-                    #         deal_participant.deal_participant = msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
-                    #         deal_participant.name = \
-                    #         msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i]["Name"]
-                    #         deal_participant.code = \
-                    #         msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i]["Code"]
-                    #         deal_participant.deal_participant = \
-                    #         msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
-                    #         deal_participant.code_type = \
-                    #             msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i][
-                    #                 "CodeType"]
-                    #         deal_participant.country = \
-                    #             msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i][
-                    #                 "Country"]
-                    #         deal_participant.save()
-                    #         deal_participants.deal_participant = deal_participants
-                    #         deal_participants.save()
-                    # except:
-                    #     pass
-                    else:
+                    try:
+                        for i in range(msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"]):
+                            deal_participant.deal_participant = msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
+                            deal_participant.name = \
+                            msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i]["Name"]
+                            deal_participant.code = \
+                            msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i]["Code"]
+                            deal_participant.deal_participant = \
+                            msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
+                            deal_participant.code_type = \
+                                msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i][
+                                    "CodeType"]
+                            deal_participant.country = \
+                                msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i][
+                                    "Country"]
+                            deal_participant.save()
+                            deal_participants.deal_participant = deal_participants
+                            deal_participants.save()
+                    except:
+                        pass
+                    try:
+
                         deal_participant.deal_participant = \
                         msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"]["@xsi:type"]
                         deal_participant.name = \
@@ -6430,6 +6494,8 @@ def update_products_xml(json_datafile):
                         deal_participant.country = \
                             msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][
                                 "Country"]
+                    except:
+                        pass
 
                 if message_info.message_type == "ActReviewDealInvalid":
                     try:
@@ -6448,29 +6514,29 @@ def update_products_xml(json_datafile):
                         act_review_deal_invalid.court = msg_data["MessageInfo"]["ActReviewDealInvalid"]["Deals"]["DealInfo"]["DealInvalidMessageId"]
                     except:
                         pass
-                    # try:
-                    #     for i in range(msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"]):
-                    #         deal_participant.deal_participant = \
-                    #         msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
-                    #         deal_participant.name = \
-                    #             msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i]["Name"]
-                    #         deal_participant.code = \
-                    #             msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i]["Code"]
-                    #         deal_participant.deal_participant = \
-                    #             msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i][
-                    #                 "@xsi:type"]
-                    #         deal_participant.code_type = \
-                    #             msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i][
-                    #                 "CodeType"]
-                    #         deal_participant.country = \
-                    #             msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i][
-                    #                 "Country"]
-                    #         deal_participant.save()
-                    #         deal_participants.deal_participant = deal_participants
-                    #         deal_participants.save()
-                    # except:
-                    #     pass
-                    else:
+                    try:
+                        for i in range(msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"]):
+                            deal_participant.deal_participant = \
+                            msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
+                            deal_participant.name = \
+                                msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i]["Name"]
+                            deal_participant.code = \
+                                msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i]["Code"]
+                            deal_participant.deal_participant = \
+                                msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i][
+                                    "@xsi:type"]
+                            deal_participant.code_type = \
+                                msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i][
+                                    "CodeType"]
+                            deal_participant.country = \
+                                msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"][i][
+                                    "Country"]
+                            deal_participant.save()
+                            deal_participants.deal_participant = deal_participants
+                            deal_participants.save()
+                    except:
+                        pass
+                    try:
                         deal_participant.deal_participant = \
                             msg_data["MessageInfo"]["ActDealInvalid2"]["DealParticipants"]["DealParticipant"]["@xsi:type"]
                         deal_participant.name = \
@@ -6484,6 +6550,8 @@ def update_products_xml(json_datafile):
                         deal_participant.country = \
                             msg_data["MessageInfo"]["DealInvalid"]["DealParticipants"]["DealParticipant"][
                                 "Country"]
+                    except:
+                        pass
     #
                 if message_info.message_type == "ActReviewDealInvalid2":
                     try:
@@ -6521,33 +6589,34 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
-                        deal_info.deal_not_valid = msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealNotValid"]
+                        deal_info.deal_not_valid = json.loads(msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealNotValid"])
                     except:
                         pass
 
-                    #deal participants -> participant
-                    # try:
-                    #     for i in range(msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]):
-                    #         deal_participant.deal_participant = msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
-                    #         deal_participant.name = \
-                    #         msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]["DealParticipant"][i]["Name"]
-                    #         deal_participant.code = \
-                    #             msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"][
-                    #                 "DealInfo"]["DealParticipants"]["DealParticipant"][i]["Code"]
-                    #         deal_participant.deal_participant = \
-                    #         msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
-                    #         deal_participant.code_type = \
-                    #             msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]["DealParticipant"][i][
-                    #                 "CodeType"]
-                    #         deal_participant.country = \
-                    #             msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]["DealParticipant"][i][
-                    #                 "Country"]
-                    #         deal_participant.save()
-                    #         deal_participants.deal_participant = deal_participants
-                    #         deal_participants.save()
-                    # except:
-                    #     pass
-                    else:
+                     #deal participants -> participant
+                    try:
+                        for i in range(msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]):
+                            deal_participant.deal_participant = msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
+                            deal_participant.name = \
+                            msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]["DealParticipant"][i]["Name"]
+                            deal_participant.code = \
+                                msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"][
+                                    "DealInfo"]["DealParticipants"]["DealParticipant"][i]["Code"]
+                            deal_participant.deal_participant = \
+                            msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]["DealParticipant"][i]["@xsi:type"]
+                            deal_participant.code_type = \
+                                msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]["DealParticipant"][i][
+                                    "CodeType"]
+                            deal_participant.country = \
+                                msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]["DealParticipant"][i][
+                                    "Country"]
+                            deal_participant.save()
+                            deal_participants.deal_participant = deal_participants
+                            deal_participants.save()
+                    except:
+                        pass
+                    #dpart
+                    try:
                         deal_participant.deal_participant = \
                         msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"]["DealInfo"]["DealParticipants"]["DealParticipant"]["@xsi:type"]
                         deal_participant.name = \
@@ -6565,6 +6634,8 @@ def update_products_xml(json_datafile):
                             msg_data["MessageInfo"]["ActReviewDealInvalid2"]["Acts"]["ActInfo"]["Deals"][
                                 "DealInfo"]["DealParticipants"]["DealParticipant"][
                                 "Country"]
+                    except:
+                        pass
 
                 if message_info.message_type == "DeclarationPersonSubsidiary":
                     try:
@@ -6843,7 +6914,7 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
-                        land_plot.cadastral_number = msg_data["MessageInfo"]["TransferOwnershipRealEstate"]["LandPlots"]["LandPlot"]["AdditionalInfo"]
+                        land_plot.additional_info = msg_data["MessageInfo"]["TransferOwnershipRealEstate"]["LandPlots"]["LandPlot"]["AdditionalInfo"]
                     except:
                         pass
                     try:
@@ -6887,7 +6958,114 @@ def update_products_xml(json_datafile):
                     except:
                         pass
 
-                #Here Should be 5.1.51 do not forget
+                if message_info.message_type == "ChangeAuction":
+                    try:
+                        change_auction.is_repeat = json.loads(msg_data["MessageInfo"]["ChangeAuction"]["IsRepeat"])
+                    except:
+                        pass
+                    try:
+                        change_auction.date = msg_data["MessageInfo"]["ChangeAuction"]["Date"]
+                    except:
+                        pass
+                    try:
+                        change_auction.id_changed_message = msg_data["MessageInfo"]["ChangeAuction"]["IdChangedMessage"]
+                    except:
+                        pass
+                    try:
+                        change_auction.change_reason = msg_data["MessageInfo"]["ChangeAuction"]["ChangeReason"]
+                    except:
+                        pass
+                    try:
+                        change_auction.trade_type = msg_data["MessageInfo"]["ChangeAuction"]["TradeType"]
+                    except:
+                        pass
+                    try:
+                        change_auction.price_type = msg_data["MessageInfo"]["ChangeAuction"]["PriceType"]
+                    except:
+                        pass
+                    try:
+                        change_auction.text = msg_data["MessageInfo"]["ChangeAuction"]["Text"]
+                    except:
+                        pass
+                    try:
+                        change_auction.trade_site = msg_data["MessageInfo"]["ChangeAuction"]["TradeSite"]
+                    except:
+                        pass
+                    try:
+                        change_auction.id_trade_place = msg_data["MessageInfo"]["ChangeAuction"]["IdTradePlace"]
+                    except:
+                        pass
+                    try:
+                        change_auction.additional_text = msg_data["MessageInfo"]["ChangeAuction"]["AdditionalText"]
+                    except:
+                        pass
+
+                    # Application
+                    try:
+                        application.time_begin = msg_data["MessageInfo"]["ChangeAuction"]["Application"]["TimeBegin"]
+                    except:
+                        pass
+                    try:
+                        application.time_end = msg_data["MessageInfo"]["ChangeAuction"]["Application"]["TimeEnd"]
+                    except:
+                        pass
+                    try:
+                        application.rules = msg_data["MessageInfo"]["ChangeAuction"]["Application"]["Rules"]
+                    except:
+                        pass
+
+                    # LotTable -> AuctionLot
+                    try:
+                        auction_lot.order = msg_data["MessageInfo"]["ChangeAuction"]["LotTable"]["AuctionLot"]["Order"]
+                    except:
+                        pass
+                    try:
+                        auction_lot.start_price = msg_data["MessageInfo"]["ChangeAuction"]["LotTable"]["AuctionLot"][
+                            "StartPrice"]
+                    except:
+                        pass
+                    try:
+                        auction_lot.step = msg_data["MessageInfo"]["ChangeAuction"]["LotTable"]["AuctionLot"]["Step"]
+                    except:
+                        pass
+                    try:
+                        auction_lot.advance = msg_data["MessageInfo"]["ChangeAuction"]["LotTable"]["AuctionLot"]["Advance"]
+                    except:
+                        pass
+                    try:
+                        auction_lot.description = msg_data["MessageInfo"]["ChangeAuction"]["LotTable"]["AuctionLot"][
+                            "Description"]
+                    except:
+                        pass
+                    try:
+                        auction_lot.auction_step_unit = msg_data["MessageInfo"]["ChangeAuction"]["LotTable"]["AuctionLot"][
+                            "AuctionStepUnit"]
+                    except:
+                        pass
+                    try:
+                        auction_lot.advance_step_unit = msg_data["MessageInfo"]["ChangeAuction"]["LotTable"]["AuctionLot"][
+                            "AdvanceStepUnit"]
+                    except:
+                        pass
+                    try:
+                        auction_lot.price_reduction = \
+                            msg_data["MessageInfo"]["ChangeAuction"]["LotTable"]["AuctionLot"][
+                                "PriceReduction"]
+                    except:
+                        pass
+                        # classifierCollection
+                    try:
+                        auction_lot_classifier.code = \
+                        msg_data["MessageInfo"]["ChangeAuction"]["LotTable"]["AuctionLot"]["ClassifierCollection"][
+                            "AuctionLotClassifier"]["Code"]
+                    except:
+                        pass
+                    try:
+                        auction_lot_classifier.name = \
+                        msg_data["MessageInfo"]["ChangeAuction"]["LotTable"]["AuctionLot"]["ClassifierCollection"][
+                            "AuctionLotClassifier"]["Name"]
+                    except:
+                        pass
 
                 if message_info.message_type == "ReducingSizeShareCapital":
                     try:
@@ -6916,7 +7094,7 @@ def update_products_xml(json_datafile):
     #
                 if message_info.message_type == "EstimatesCurrentExpenses":
                     try:
-                        estimates_current_expenses.text = msg_data["MessageInfo"]["SelectionPurchaserAssets"]["Text"]
+                        estimates_current_expenses.text = msg_data["MessageInfo"]["EstimatesCurrentExpenses"]["Text"]
                     except:
                         pass
                 if message_info.message_type == "OrderAndTimingCalculations":
@@ -7094,7 +7272,7 @@ def update_products_xml(json_datafile):
 
                 if message_info.message_type == "RightUnsoldAsset":
                     try:
-                        right_unsold_assets.text = msg_data["MessageInfo"]["RightUnsoldAsset"]["Text"]
+                        right_unsold_asset.text = msg_data["MessageInfo"]["RightUnsoldAsset"]["Text"]
                     except:
                         pass
 
@@ -7113,23 +7291,23 @@ def update_products_xml(json_datafile):
 
                 if message_info.message_type == "MeetingParticipantsBuilding":
                     try:
-                        meeting_participant_building.text = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["Text"]
+                        meeting_participants_building.text = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["Text"]
                     except:
                         pass
                     try:
-                        meeting_participant_building.meeting_date = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["MeetingDate"]
+                        meeting_participants_building.meeting_date = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["MeetingDate"]
                     except:
                         pass
                     try:
-                        meeting_participant_building.meeting_site = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["MeetingSite"]
+                        meeting_participants_building.meeting_site = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["MeetingSite"]
                     except:
                         pass
                     try:
-                        meeting_participant_building.notice = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["Notice"]
+                        meeting_participants_building.notice = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["Notice"]
                     except:
                         pass
                     try:
-                        meeting_participant_building.materials_familiarization_order = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["MaterialsFamiliarizationOrder"]
+                        meeting_participants_building.materials_familiarization_order = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["MaterialsFamiliarizationOrder"]
                     except:
                         pass
 
@@ -7141,25 +7319,25 @@ def update_products_xml(json_datafile):
 
                 if message_info.message_type == "PartBuildMonetaryClaim":
                     try:
-                        part_build_monetary_claim.text = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["Text"]
+                        part_build_monetary_claim.text = msg_data["MessageInfo"]["PartBuildMonetaryClaim"]["Text"]
                     except:
                         pass
                     try:
-                        part_build_monetary_claim.arbitral_court = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["ArbitralCourt"]
+                        part_build_monetary_claim.arbitral_court = msg_data["MessageInfo"]["PartBuildMonetaryClaim"]["ArbitralCourt"]
                     except:
                         pass
                     try:
-                        part_build_monetary_claim.consequences = msg_data["MessageInfo"]["MeetingParticipantsBuilding"]["Consequences"]
+                        part_build_monetary_claim.consequences = msg_data["MessageInfo"]["PartBuildMonetaryClaim"]["Consequences"]
                     except:
                         pass
 
                 if message_info.message_type == "StartSettlement":
                     try:
-                        start_setttlement.text = msg_data["MessageInfo"]["StartSettlement"]["Text"]
+                        start_settlement.text = msg_data["MessageInfo"]["StartSettlement"]["Text"]
                     except:
                         pass
                     try:
-                        start_setttlement.settlement_start_date = msg_data["MessageInfo"]["StartSettlement"]["SettlementStartDate"]
+                        start_settlement.settlement_start_date = msg_data["MessageInfo"]["StartSettlement"]["SettlementStartDate"]
                     except:
                         pass
 
@@ -7237,12 +7415,12 @@ def update_products_xml(json_datafile):
 
                 if message_info.message_type == "DisqualificationArbitrationManager2":
                     try:
-                        disqualification_arbitration_manager.text = msg_data["MessageInfo"]["DisqualificationArbitrationManager2"][
+                        disqualification_arbitration_manager2.text = msg_data["MessageInfo"]["DisqualificationArbitrationManager2"][
                             "Text"]
                     except:
                         pass
                     try:
-                        disqualification_arbitration_manager.reason = msg_data["MessageInfo"]["DisqualificationArbitrationManager2"][
+                        disqualification_arbitration_manager2.reason = msg_data["MessageInfo"]["DisqualificationArbitrationManager2"][
                             "Reason"]
                     except:
                         pass
@@ -7309,7 +7487,9 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
-                        bankrupt_supervisory_person.name =  msg_data["MessageInfo"]["ActPersonSubsidiary2"]["DeclarationPersonSubsidiaryInfoMessages"]["Message"]["BankruptSupervisoryPersons"]["BankruptSupervisoryPerson"]["Name"]
+                        bankrupt_supervisory_person.name =  msg_data["MessageInfo"][
+                            "ActPersonSubsidiary2"]["DeclarationPersonSubsidiaryInfoMessages"][
+                            "Message"]["BankruptSupervisoryPersons"]["BankruptSupervisoryPerson"]["Name"]
                     except:
                         pass
                     try:
@@ -7336,8 +7516,41 @@ def update_products_xml(json_datafile):
                         message.number = msg_data["MessageInfo"]["ActReviewPersonSubsidiary2"]["DeclarationPersonSubsidiaryInfoMessages"]["Message"]["Number"]
                     except:
                         pass
+                    try:
+                        bankrupt_supervisory_person.bankrupt_supervisory_person = msg_data["MessageInfo"]["ActReviewPersonSubsidiary2"]["DeclarationPersonSubsidiaryInfoMessages"]["Message"]["BankruptSupervisoryPersons"]["BankruptSupervisoryPerson"]["@xsi:type"]
+                    except:
+                        pass
+                    try:
+                        bankrupt_supervisory_person.responsibility_amount =  msg_data["MessageInfo"]["ActReviewPersonSubsidiary2"]["DeclarationPersonSubsidiaryInfoMessages"]["Message"]["BankruptSupervisoryPersons"]["BankruptSupervisoryPerson"]["ResponsibilityAmount"]
+                    except:
+                        pass
+                    try:
+                        bankrupt_supervisory_person.name =  msg_data["MessageInfo"][
+                            "ActReviewPersonSubsidiary2"]["DeclarationPersonSubsidiaryInfoMessages"][
+                            "Message"]["BankruptSupervisoryPersons"]["BankruptSupervisoryPerson"]["Name"]
+                    except:
+                        pass
+                    try:
+                        bankrupt_supervisory_person.code =  msg_data["MessageInfo"]["ActReviewPersonSubsidiary2"]["DeclarationPersonSubsidiaryInfoMessages"]["Message"]["BankruptSupervisoryPersons"]["BankruptSupervisoryPerson"]["Code"]
+                    except:
+                        pass
+                    try:
+                        bankrupt_supervisory_person.code_type = \
+                        msg_data["MessageInfo"]["ActReviewPersonSubsidiary2"]["DeclarationPersonSubsidiaryInfoMessages"]["Message"]["BankruptSupervisoryPersons"]["BankruptSupervisoryPerson"]["CodeType"]
+                    except:
+                        pass
+                    try:
+                        bankrupt_supervisory_person.country =  msg_data["MessageInfo"]["ActReviewPersonSubsidiary2"]["DeclarationPersonSubsidiaryInfoMessages"]["Message"]["BankruptSupervisoryPersons"]["BankruptSupervisoryPerson"]["CodeType"]
+                    except:
+                        pass
+
                 if message_info.message_type == "AssessmentReport":
                     assessment_report.text = msg_data["MessageInfo"]["AssessmentReport"]["Text"]
+                    try:
+                    #report
+                        assessment_report.reason = msg_data["MessageInfo"]["AssessmentReport"]["Reason"]
+                    except:
+                        pass
                     try:
                     #report
                         report.number = msg_data["MessageInfo"]["AssessmentReport"]["Report"]["Number"]
@@ -7416,27 +7629,27 @@ def update_products_xml(json_datafile):
                         pass
                 if message_info.message_type == "ReturnOfApplicationOnExtrajudicialBankruptcy":
                     try:
-                        return_of_application_on_extrajudical_bankruptcy.date =  msg_data["MessageInfo"][
+                        return_of_application_on_extrajudicial_bankruptcy.date =  msg_data["MessageInfo"][
                             "ReturnOfApplicationOnExtrajudicialBankruptcy"]["Date"]
                     except:
                         pass
                     try:
-                        return_of_application_on_extrajudical_bankruptcy.no_return_of_enforcement_documen = json.loads(msg_data["MessageInfo"][
+                        return_of_application_on_extrajudicial_bankruptcy.no_return_of_enforcement_documen = json.loads(msg_data["MessageInfo"][
                             "ReturnOfApplicationOnExtrajudicialBankruptcy"]["NoReturnOfEnforcementDocumen"])
                     except:
                         pass
                     try:
-                        return_of_application_on_extrajudical_bankruptcy.active_enforcement_proceeding = json.loads(msg_data["MessageInfo"][
+                        return_of_application_on_extrajudicial_bankruptcy.active_enforcement_proceeding = json.loads(msg_data["MessageInfo"][
                             "ReturnOfApplicationOnExtrajudicialBankruptcy"]["ActiveEnforcementProceeding"])
                     except:
                         pass
                 #!
                 if message_info.message_type == "StartOfExtrajudicialBankruptcy":
                     try:
-                        start_of_extrajudical_bankruptcy.is_individual_entrepreneur = json.loads(msg_data["MessageInfo"]["StartOfExtrajudicialBankruptcy"]["IsIndividualEntrepreneur"])
+                        start_of_extrajudicial_bankruptcy.is_individual_entrepreneur = json.loads(msg_data["MessageInfo"]["StartOfExtrajudicialBankruptcy"]["IsIndividualEntrepreneur"])
                         #CreditorsFromEntrepreneurship
                         creditors_from_entrepreneurship.non_monetary_obligations = \
-                            msg_data["MessageInfo"]["StartOfExtrajudicialBankruptcy"]["CreditorsFromEntrepreneurship"]["NonMonetaryObligations"]
+                            json.loads(msg_data["MessageInfo"]["StartOfExtrajudicialBankruptcy"]["CreditorsFromEntrepreneurship"]["NonMonetaryObligations"])
                         #MonetaryObligations
                         monetary_obligation.creditor_name = msg_data["MessageInfo"]["StartOfExtrajudicialBankruptcy"][
                             "CreditorsFromEntrepreneurship"]["MonetaryObligations"]["MonetaryObligation"]["CreditorName"]
@@ -7472,25 +7685,25 @@ def update_products_xml(json_datafile):
                 if message_info.message_type == "TerminationOfExtrajudicialBankruptcy":
 
                     try:
-                        termination_of_extrajudical_bankruptcy.start_of_extrajudicial_bankruptcy_message_number = \
+                        termination_of_extrajudicial_bankruptcy.start_of_extrajudicial_bankruptcy_message_number = \
                             msg_data["MessageInfo"][
                                 "TerminationOfExtrajudicialBankruptcy"]["StartOfExtrajudicialBankruptcyMessageNumber"]
                     except:
                         pass
                     try:
-                        termination_of_extrajudical_bankruptcy.property_status_changed = \
+                        termination_of_extrajudicial_bankruptcy.property_status_changed = \
                             json.loads(msg_data["MessageInfo"][
                                 "TerminationOfExtrajudicialBankruptcy"]["PropertyStatusChanged"])
                     except:
                         pass
                     try:
-                        termination_of_extrajudical_bankruptcy.court_decision_issued = \
+                        termination_of_extrajudicial_bankruptcy.court_decision_issued = \
                             json.loads(msg_data["MessageInfo"][
                                            "TerminationOfExtrajudicialBankruptcy"]["CourtDecisionIssued"])
                     except:
                         pass
                     try:
-                        termination_of_extrajudical_bankruptcy.other_reason = \
+                        termination_of_extrajudicial_bankruptcy.other_reason = \
                             msg_data["MessageInfo"][
                                 "TerminationOfExtrajudicialBankruptcy"]["OtherReason"]
                     except:
@@ -7498,12 +7711,12 @@ def update_products_xml(json_datafile):
 
                 if message_info.message_type == "CompletionOfExtrajudicialBankruptcy":
                     try:
-                        completion_of_extrajudical_bankruptcy.text = msg_data["MessageInfo"][
+                        completion_of_extrajudicial_bankruptcy.text = msg_data["MessageInfo"][
                             "CompletionOfExtrajudicialBankruptcy"]["Text"]
                     except:
                         pass
                     try:
-                        completion_of_extrajudical_bankruptcy.start_of_extrajudicial_bankruptcy_message_number = msg_data["MessageInfo"][
+                        completion_of_extrajudicial_bankruptcy.start_of_extrajudicial_bankruptcy_message_number = msg_data["MessageInfo"][
                             "CompletionOfExtrajudicialBankruptcy"]["StartOfExtrajudicialBankruptcyMessageNumber"]
                     except:
                         pass
@@ -7624,16 +7837,66 @@ def update_products_xml(json_datafile):
                         sro.save()
                 except:
                     pass
-                try:
-                    if publisher_arbitr_manager_v2:
-                        publisher_arbitr_manager_v2.save()
-                except Exception as ex:
-                    print(ex)
+                # try:
+                #     if publisher_arbitr_manager_v2:
+                #         if sro.name is not None or sro.ogrn is not None:
+                #             sro.save()
+                #             publisher_arbitr_manager_v2.sro = sro
+                #         if fio.first_name is not None or fio.last_name is not None:
+                #             fio.save()
+                #             publisher_arbitr_manager_v2.fio = fio
+                #         publisher_arbitr_manager_v2.save()
+                # except Exception as ex:
+                #     print(ex)
                 try:
                     if publisher:
+                        publisher.xsi_type = xsi_type
+                        if publisher_arbitr_manager_v2.inn is not None or publisher_arbitr_manager_v2.snils is not None :
+                            if sro.name is not None or sro.ogrn is not None:
+                                sro.save()
+                                publisher_arbitr_manager_v2.sro = sro
+                            if fio.first_name is not None or fio.last_name is not None:
+                                fio.save()
+                                publisher_arbitr_manager_v2.fio = fio
+                            publisher_arbitr_manager_v2.save()
+                            publisher.publisher_arbitr_manager_v2 = publisher_arbitr_manager_v2
+                        if publisher_arbitr_manager_sro_v2.name is not None:
+                            publisher_arbitr_manager_sro_v2.save()
+                            publisher.publisher_arbitr_manager_sro_v2 = publisher_arbitr_manager_sro_v2
+                        if publisher_firmtrade_organizer_v2.name is not None:
+                            publisher_firmtrade_organizer_v2.save()
+                            publisher.publisher_firmtrade_organizer_v2 = publisher_firmtrade_organizer_v2
+                        if publisher_persontrade_organizer_v2.pk is not None:
+                            if fio.first_name is not None or fio.last_name is not None:
+                                fio.save()
+                                publisher_persontrade_organizer_v2.fio = fio
+                            publisher_persontrade_organizer_v2.save()
+                            publisher.publisher_persontrade_organizer_v2 = publisher_persontrade_organizer_v2
+                        if publisher_company_v2.name is not None:
+                            publisher_company_v2.save()
+                        if publisher_person_v2.inn is not None:
+                            publisher_person_v2.save()
+                            publisher.publisher_person_v2 = publisher_person_v2
+                        if publisher_centralbankrf_v2.name is not None:
+                            publisher_centralbankrf_v2.save()
+                            publisher.publisher_centralbankrf_v2 = publisher_centralbankrf_v2
+                        if publisher_asv_v2.name is not None:
+                            publisher_asv_v2.save()
+                            publisher.publisher_asv_v2 = publisher_asv_v2
+                        if publisher_fnsdepartment_v2.name is not None:
+                            publisher_fnsdepartment_v2.save()
+                            publisher.publisher_fnsdepartment_v2 = publisher_fnsdepartment_v2
+                        if publisher_efrsb_v2.name is not None:
+                            publisher_efrsb_v2.save()
+                            publisher.publisher_efrsb_v2 = publisher_efrsb_v2
+                        if publisher_mfc_v2.name is not None:
+                            publisher_mfc_v2.save()
+                            publisher.publisher_mfc_v2 = publisher_mfc_v2
                         publisher.save()
-                except:
-                    pass
+                except Exception as ex:
+                    print("#"*50)
+                    print(ex)
+
 
                 try:
                     if bankrupt:
@@ -7668,27 +7931,104 @@ def update_products_xml(json_datafile):
                             court_decision.save()
                             message_types.arbitral_decree = court_decision
                         if auction.text is not None:
+                            if auction_lot_classifier.name is not None:
+                                auction_lot_classifier.save()
+                            if application.rules is not None:
+                                application.save()
+                                auction.application = application
+                            if auction_lot.order is not None:
+                                if auction_lot_classifier.name is not None:
+                                    auction_lot_classifier.save()
+                                    auction_lot.classifier_collection = auction_lot_classifier
+                                auction_lot.save()
+                                lot_table.auction_lot = auction_lot
+                                lot_table.save()
+                                auction.lot_table = lot_table
                             auction.save()
                             message_types.auction = auction
-                        if meeting.text is not None:
-                            meeting.save()
-                            message_types.meeting = meeting
+                        try:
+                            if meeting.text is not None:
+                                # if auction.text is not None:
+                                #     auction.save()
+                                #     meeting.auction = auction
+                                meeting.save()
+                                message_types.meeting = meeting
+                        except Exception as ex:
+                            print(ex)
+                            print(">"*50)
+                            # exit()
                         if meeting_result.text is not None:
                             meeting_result.save()
                             message_types.meeting_result = meeting_result
-                        if trade_result.text is not None:
-                            trade_result.save()
-                            message_types.trade_result = trade_result
+                        try:
+                            if trade_result.text is not None:
+                                if trade_result_lot.order is not None:
+                                    if auction_lot_classifier.name is not None:
+                                        auction_lot_classifier.save()
+                                        trade_result_lot.classifier_collection = auction_lot_classifier
+                                    if participant_person.price_offer is not None:
+                                        participant_person.save()
+                                        if status == "winner":
+                                            winner.participant_person = participant_person
+                                            winner.save()
+                                            trade_result_lot.winner = winner
+
+                                    if participant_company.price_offer is not None:
+                                        participant_company.save()
+                                        if status == "winner":
+                                            winner.participant_company = participant_company
+                                            winner.save()
+                                            trade_result_lot.winner = winner
+                                    trade_result_lot.save()
+
+                                    if participant_person.price_offer is not None:
+                                        participant_person.save()
+                                        if status == "buyer":
+                                            buyer.participant_person = participant_person
+                                            buyer.save()
+                                            trade_result_lot.buyer = buyer
+
+                                    if participant_company.price_offer is not None:
+                                        participant_company.save()
+                                        if status == "buyer":
+                                            buyer.participant_company = participant_company
+                                            buyer.save()
+                                            trade_result_lot.buyer = buyer
+                                    trade_result_lot.save()
+
+                                    # lot_table.trade_result_lot = trade_result_lot
+                                    trade_result.lot_table = trade_result_lot
+                                trade_result.save()
+                                message_types.trade_result = trade_result
+                        except Exception as ex:
+                            print(ex)
+                            print("!"*50)
+                            # exit()
+
                         if other.text is not None:
                             other.save()
                             message_types.other = other
-                        if appoint_administration.text is not None:
-                            appoint_administration.save()
-                            message_types.appoint_administration = appoint_administration
+                        try:
+
+                            if appoint_administration.decision_name is not None:
+                                if director.name is not None:
+                                    director.save()
+                                    appoint_administration.director = director
+                                appoint_administration.save()
+                                message_types.appoint_administration = appoint_administration
+                        except Exception as ex:
+                            print(ex)
+                            # exit()
                         if change_administration.text is not None:
+                            if director.name is not None:
+                                director.save()
+                                change_administration.director = director
                             change_administration.save()
                             message_types.change_administration = change_administration
                         if termination_administration.text is not None:
+                            if director.name is not None:
+                                director.save()
+                                termination_administration.director = director
                             termination_administration.save()
                             message_types.termination_administration = termination_administration
                         if begin_executory_process.text is not None:
@@ -7707,12 +8047,63 @@ def update_products_xml(json_datafile):
                             property_evaluation_report.save()
                             message_types.property_evaluation_report = property_evaluation_report
                         if assessment_report.text is not None:
+                            if appraiser.inn is not None:
+                                if fio.first_name is not None:
+                                    fio.save()
+                                    appraiser.fio = fio
+                                if sro.name is not None:
+                                    sro.save()
+                                    appraiser.sro = sro
+                                appraiser.save()
+                                appraisers.appraiser = appraiser
+                                appraisers.save()
+                                assessment_report.appraisers = appraisers
+                            if expert_decision.number is not None or expert_decision.result is not None:
+                                if expert.inn is not None:
+                                    if fio.first_name is not None:
+                                        fio.save()
+                                        expert.fio = fio
+                                    if sro.name is not None:
+                                        sro.save()
+                                        expert.sro = sro
+                                    expert.save()
+                                    experts.expert = expert
+                                    experts.save()
+                                    expert_decision.experts = experts
+                                expert_decision.save()
+
+                                assessment_report.expert_decision = expert_decision
+                            if object_of_assessment.balance_value is not None:
+                                if classifier.name is not None:
+                                    classifier.save()
+                                    object_of_assessment.classifier = classifier
+                                object_of_assessment.save()
+                                objects_of_assessments.object_of_assessment = object_of_assessment
+                                assessment_report.objects_of_assessments = objects_of_assessments
+                            if report.number is not None:
+                                report.save()
+                                assessment_report.report = report
                             assessment_report.save()
                             message_types.assessment_report = assessment_report
                         if sale_contract_result.text is not None:
+                            if failure_winner_info.name is not None:
+                                failure_winner_info.save()
+                                sale_contract_result.failure_winner_info = failure_winner_info
+                                if purchaser_info.name is not None:
+                                    sale_contract_result.save()
+                                    sale_contract_result.purchaser_info = purchaser_info
                             sale_contract_result.save()
                             message_types.sale_contract_result = sale_contract_result
                         if sale_contract_result2.text is not None:
+                            if sale_contract_info.lot_number is not None:
+
+                                if failure_winner_info.name is not None:
+                                    failure_winner_info.save()
+                                    sale_contract_info.failure_winner_info = failure_winner_info
+                                sale_contract_info.save()
+                                contracts.sale_contract_info = sale_contract_info
+                                contracts.save()
+                                sale_contract_result2.contracts = contracts
                             sale_contract_result2.save()
                             message_types.sale_contract_result2 = sale_contract_result2
                         if committee.text is not None:
@@ -7741,44 +8132,171 @@ def update_products_xml(json_datafile):
                             buying_property.save()
                             message_types.buying_property =buying_property
                         if declaration_person_damages.text is not None:
+                            if bankrupt_supervisory_person.bankrupt_supervisory_person is not None:
+                                bankrupt_supervisory_person.save()
+                                bankrupt_supervisory_persons.bankrupt_supervisory_person = bankrupt_supervisory_person
+                                bankrupt_supervisory_person.save()
+                                declaration_person_damages.bankrupt_supervisory_person = bankrupt_supervisory_person
+                            if person_for_responsibility.type_person_responsibility is not None:
+                                person_for_responsibility.save()
+                                another_person_for_responsibility.person_for_responsibility = person_for_responsibility
+                                another_person_for_responsibility.save()
+                                declaration_person_damages.another_person_for_responsibility = another_person_for_responsibility
                             declaration_person_damages.save()
                             message_types.declaration_person_damages = declaration_person_damages
                         if act_person_damages.text is not None:
+                            if bankrupt_supervisory_person.bankrupt_supervisory_person is not None:
+                                bankrupt_supervisory_person.save()
+                                bankrupt_supervisory_persons.bankrupt_supervisory_person = bankrupt_supervisory_person
+                                bankrupt_supervisory_person.save()
+                                act_person_damages.bankrupt_supervisory_person = bankrupt_supervisory_person
+                            if person_for_responsibility.type_person_responsibility is not None:
+                                person_for_responsibility.save()
+                                another_person_for_responsibility.person_for_responsibility = person_for_responsibility
+                                another_person_for_responsibility.save()
+                                act_person_damages.another_person_for_responsibility = another_person_for_responsibility
                             act_person_damages.save()
                             message_types.act_person_damages =act_person_damages
-                        if act_review_person_damages.text is not None:
+                        if act_review_person_damages.pk is not None:
+                            if bankrupt_supervisory_person.bankrupt_supervisory_person is not None:
+                                bankrupt_supervisory_person.save()
+                                bankrupt_supervisory_persons.bankrupt_supervisory_person = bankrupt_supervisory_person
+                                bankrupt_supervisory_person.save()
+                                act_review_person_damages.bankrupt_supervisory_person = bankrupt_supervisory_person
+                            if person_for_responsibility.type_person_responsibility is not None:
+                                person_for_responsibility.save()
+                                another_person_for_responsibility.person_for_responsibility = person_for_responsibility
+                                another_person_for_responsibility.save()
+                                act_review_person_damages.another_person_for_responsibility = another_person_for_responsibility
                             act_review_person_damages.save()
                             message_types.act_review_person_damages =act_review_person_damages
                         if deal_invalid.text is not None:
+                            if deal_participant.name is not None:
+                                deal_participant.save()
+                                deal_participants.deal_participant=deal_participant
+                                deal_participants.save()
+                                deal_invalid.deal_participants = deal_participants
                             deal_invalid.save()
                             message_types.deal_invalid = deal_invalid
                         if act_deal_invalid.text is not None:
+                            if deal_participant.name is not None:
+                                deal_participant.save()
+                                deal_participants.deal_participant = deal_participant
+                                deal_participants.save()
+                                act_deal_invalid.deal_participants = deal_participants
                             act_deal_invalid.save()
                             message_types.act_deal_invalid = act_deal_invalid
-                        if act_deal_invalid2.text is not None:
-                            act_deal_invalid2.save()
-                            message_types.act_deal_invalid2 = act_deal_invalid2
+                        try:
+                            if act_deal_invalid2.text is not None:
+                                if deal_info.deal_invalid_message_id is not None:
+                                    if deal_participant.name is not None:
+                                        deal_participant.save()
+                                        deal_participants.deal_participant = deal_participant
+                                        deal_participants.save()
+                                        deal_info.deal_participants = deal_participants
+                                    deal_info.save()
+                                    deals.deal_info = deal_info
+                                    deals.save()
+                                    act_deal_invalid2.deal = deals
+                                act_deal_invalid2.save()
+
+                                message_types.act_deal_invalid2 = act_deal_invalid2
+                        except Exception as ex:
+                            print(ex)
                         if act_review_deal_invalid.text is not None:
+                            if deal_participant.name is not None:
+                                deal_participant.save()
+                                deal_participants.deal_participant = deal_participant
+                                deal_participants.save()
+                                act_review_deal_invalid.deal_participants = deal_participants
                             act_review_deal_invalid.save()
                             message_types.act_review_deal_invalid =act_review_deal_invalid
-                        if act_review_deal_invalid2.text is not None:
-                            act_review_deal_invalid2.save()
-                            message_types.act_review_deal_invalid2 =act_review_deal_invalid2
+                        try:
+                            if act_review_deal_invalid2.text is not None:
+                                if act_info.act_deal_invalid_message_id is not None:
+                                    if deal_info.deal_invalid_message_id is not None:
+                                        if deal_participant.name is not None:
+                                            deal_participant.save()
+                                            deal_participants.deal_participant = deal_participant
+                                            deal_participants.save()
+                                            deal_info.deal_participants = deal_participants
+
+                                        deal_info.save()
+                                        deals.deal_info = deal_info
+                                        deals.save()
+                                        act_info.deals = deals
+                                    act_info.save()
+                                    acts.act_info = act_info
+                                    acts.save()
+                                    act_review_deal_invalid2.acts = acts
+                                act_review_deal_invalid2.save()
+                                message_types.act_review_deal_invalid2 =act_review_deal_invalid2
+                        except Exception as ex:
+                            print(ex)
+                            # exit()
                         if declaration_person_subsidiary.text is not None:
+                            if bankrupt_supervisory_person.bankrupt_supervisory_person is not None:
+                                bankrupt_supervisory_person.save()
+                                bankrupt_supervisory_persons.bankrupt_supervisory_person = bankrupt_supervisory_person
+                                bankrupt_supervisory_person.save()
+                                declaration_person_subsidiary.bankrupt_supervisory_person = bankrupt_supervisory_person
+                            if person_for_responsibility.type_person_responsibility is not None:
+                                person_for_responsibility.save()
+                                another_person_for_responsibility.person_for_responsibility = person_for_responsibility
+                                another_person_for_responsibility.save()
+                                declaration_person_subsidiary.another_person_for_responsibility = another_person_for_responsibility
                             declaration_person_subsidiary.save()
                             message_types.declaration_person_subsidiary = declaration_person_subsidiary
                         if act_person_subsidiary.text is not None:
+                            if bankrupt_supervisory_person.bankrupt_supervisory_person is not None:
+                                bankrupt_supervisory_person.save()
+                                bankrupt_supervisory_persons.bankrupt_supervisory_person = bankrupt_supervisory_person
+                                bankrupt_supervisory_person.save()
+                                act_person_subsidiary.bankrupt_supervisory_person = bankrupt_supervisory_person
                             act_person_subsidiary.save()
                             message_types.act_person_subsidiary =act_person_subsidiary
-                        if act_person_subsidiary2.text is not None:
-                            act_person_subsidiary2.save()
-                            message_types.act_person_subsidiary2 =act_person_subsidiary2
+                        try:
+                            if act_person_subsidiary2.text is not None:
+                                if message.number is not None:
+                                    if bankrupt_supervisory_person.name is not None:
+                                        bankrupt_supervisory_person.save()
+                                        bankrupt_supervisory_persons.bankrupt_supervisory_person = bankrupt_supervisory_person
+                                        bankrupt_supervisory_persons.save()
+                                        message.bankrupt_supervisory_persons = bankrupt_supervisory_persons
+                                    message.save()
+                                    declaration_person_subsidiary_info_messages.message = message
+                                    declaration_person_subsidiary_info_messages.save()
+                                    act_person_subsidiary2.declaration_person_subsidiary_info_message = declaration_person_subsidiary_info_messages
+
+                                act_person_subsidiary2.save()
+                                message_types.act_person_subsidiary2 =act_person_subsidiary2
+                        except Exception as ex:
+                            print(ex)
+                            # exit()
                         if act_review_person_subsidiary.text is not None:
+                            if bankrupt_supervisory_person.name is not None:
+                                bankrupt_supervisory_person.save()
+                                bankrupt_supervisory_persons.bankrupt_supervisory_person = bankrupt_supervisory_person
+                                bankrupt_supervisory_persons.save()
+                                act_review_person_subsidiary.bankrupt_supervisory_persons = bankrupt_supervisory_persons
                             act_review_person_subsidiary.save()
                             message_types.act_review_person_subsidiary = act_review_person_subsidiary
-                        if act_review_person_subsidiary2.text is not None:
-                            act_review_person_subsidiary2.save()
-                            message_types.act_review_person_subsidiary2 = act_review_person_subsidiary2
+                        try:
+                            if act_review_person_subsidiary2.text is not None:
+                                if bankrupt_supervisory_person.name is not None:
+                                    bankrupt_supervisory_person.save()
+                                    bankrupt_supervisory_persons.bankrupt_supervisory_person = bankrupt_supervisory_person
+                                    bankrupt_supervisory_persons.save()
+                                    message.bankrupt_supervisory_persons = bankrupt_supervisory_persons
+                                message.save()
+                                act_person_subsidiary_info_messages.message = message
+                                act_person_subsidiary_info_messages.save()
+                                act_review_person_subsidiary2.act_person_subsidiary_info_messages = act_person_subsidiary_info_messages
+                                act_review_person_subsidiary2.save()
+                                message_types.act_review_person_subsidiary2 = act_review_person_subsidiary2
+                        except Exception as ex:
+                            print(ex)
+                            # exit()
                         if meeting_worker.text is not None:
                             meeting_worker.save()
                             message_types.meeting_worker = meeting_worker
@@ -7790,17 +8308,32 @@ def update_products_xml(json_datafile):
                             message_types.view_draft_restructuring_plan = view_draft_restructuring_plan
                         if view_exec_restructuring_plan.text is not None:
                             view_exec_restructuring_plan.save()
-                            messsage_types.view_exec_restructuring_plan =view_exec_restructuring_plan
-                        if transfer_ownership_real_estate.text is not None:
-                            transfer_ownership_real_estate.save()
-                            message_types.transfer_ownership_real_estate =transfer_ownership_real_estate
+                            message_types.view_exec_restructuring_plan =view_exec_restructuring_plan
+                        try:
+                            if transfer_ownership_real_estate.text is not None:
+                                if land_plot.cadastral_number is not None or land_plot.ownership_right_description is not None:
+                                    land_plot.save()
+                                    land_plots.land_plot = land_plot
+                                    land_plots.save()
+                                    transfer_ownership_real_estate.land_plots = land_plots
+                                if uncompleted_building_project.cadastral_number is not None or uncompleted_building_project.address is not None :
+                                    uncompleted_building_project.save()
+                                    uncompleted_building_projects.uncompleted_building_project = uncompleted_building_project
+                                    uncompleted_building_projects.save()
+                                    transfer_ownership_real_estate.uncompleted_building_projects = uncompleted_building_projects
+                                transfer_ownership_real_estate.save()
+                                message_types.transfer_ownership_real_estate =transfer_ownership_real_estate
+                        except Exception as ex:
+                            print(ex)
+                            # exit()
                         if cancel_auction_trade_result.text is not None:
                             cancel_auction_trade_result.save()
                             message_types.cancel_auction_trade_result = cancel_auction_trade_result
                         if cancel_deliberate_bankruptcy.text is not None:
                             cancel_deliberate_bankruptcy.save()
                             message_types.cancel_deliberate_bankruptcy = cancel_deliberate_bankruptcy
-                        # if change_auction.
+                        if change_auction.id_changed_message is not None or change_auction.text is not None:
+                            change_auction.save()
                         if change_deliberate_bankruptcy.text is not None:
                             change_deliberate_bankruptcy.save()
                             message_types.change_deliberate_bankruptcy = change_deliberate_bankruptcy
@@ -7809,18 +8342,159 @@ def update_products_xml(json_datafile):
                             message_types.reducing_size_share_capital = reducing_size_share_capital
                         if selection_purchaser_assets.text is not None:
                             selection_purchaser_assets.save()
-                        # Str number 2380 foreign keys estimates_current_expenses
-
+                        if estimates_current_expenses.text is not None:
+                            estimates_current_expenses.save()
+                            message_types.estimates_current_expenses = estimates_current_expenses
+                        if order_and_timing_calculations.text is not None:
+                            order_and_timing_calculations.save()
+                            message_types.order_and_timing_calculations = order_and_timing_calculations
+                        if information_about_bankruptcy.text is not None:
+                            information_about_bankruptcy.save()
+                            message_types.information_about_bankruptcy =information_about_bankruptcy
+                        if estimates_and_unsold_assets.text is not None:
+                            estimates_and_unsold_assets.save()
+                            message_types.estimates_and_unsold_assets =estimates_and_unsold_assets
+                        if remaining_assets_and_right.text is not None:
+                            remaining_assets_and_right.save()
+                            message_types.remaining_assets_and_right =remaining_assets_and_right
+                        if impending_transfer_assets.text is not None:
+                            if credit_organization_info.name is not None or  credit_organization_info.address is not None:
+                                credit_organization_info.save()
+                                credit_organizations.credit_organization_info = credit_organization_info
+                                credit_organizations.save()
+                                impending_transfer_assets.credit_organizations =credit_organizations
+                            impending_transfer_assets.save()
+                            message_types.impending_transfer_assets =impending_transfer_assets
+                        if transfer_assets.text is not None:
+                            transfer_assets.save()
+                            message_types.transfer_assets =transfer_assets
+                        if transfer_insurance_portfolio.text is not None:
+                            if insurance_organization.name is not None or insurance_organization.address is not None:
+                                insurance_organization.save()
+                                transfer_insurance_portfolio.insurance_organization = insurance_organization
+                            transfer_insurance_portfolio.save()
+                            message_types.transfer_insurance_portfolio = transfer_insurance_portfolio
+                        if bank_open_account_debtor.text is not None:
+                            bank_open_account_debtor.save()
+                            message_types.bank_open_account_debtor =bank_open_account_debtor
+                        if procedure_granting_indemnity.text is not None:
+                            procedure_granting_indemnity.save()
+                            message_types.procedure_granting_indemnity = procedure_granting_indemnity
+                        if right_unsold_asset.text is not None:
+                            right_unsold_asset.save()
+                            message_types.right_unsold_asset =right_unsold_asset
+                        if transfer_responsibilities_fund.text is not None:
+                            transfer_responsibilities_fund.save()
+                            message_types.transfer_responsibilities_fund = transfer_responsibilities_fund
+                        if extension_administration.text is not None:
+                            extension_administration.save()
+                            message_types.extension_administration = extension_administration
+                        if meeting_participants_building.text is not None:
+                            meeting_participants_building.save()
+                            message_types.meeting_participants_building = meeting_participants_building
+                        if meeting_part_build_result.text is not None:
+                            meeting_part_build_result.save()
+                            message_types.meeting_part_build_result = meeting_part_build_result
+                        if part_build_monetary_claim.text is not None:
+                            part_build_monetary_claim.save()
+                            message_types.part_build_monetary_claim =part_build_monetary_claim
+                        if start_settlement.text is not None:
+                            start_settlement.save()
+                            message_types.start_settlement =start_settlement
+                        if process_inventory_debtor.text is not None:
+                            process_inventory_debtor.save()
+                            message_types.process_inventory_debtor =process_inventory_debtor
+                        if rebuttal.text is not None:
+                            rebuttal.save()
+                            message_types.rebuttal =rebuttal
+                        if creditor_choice_right_subsidiary.text is not None:
+                            creditor_choice_right_subsidiary.save()
+                            message_types.creditor_choice_right_subsidiary = creditor_choice_right_subsidiary
+                        if accession_declaration_subsidiary.text is not None:
+                            accession_declaration_subsidiary.save()
+                            message_types.accession_declaration_subsidiary = accession_declaration_subsidiary
+                        if disqualification_arbitration_manager.text is not None:
+                            if arbitr_manager.snils is not None or arbitr_manager.fio is not None:
+                                arbitr_manager.save()
+                                disqualification_arbitration_manager.arbitr_manager = arbitr_manager
+                            if court.name is not None or court.code is not None:
+                                court.save()
+                                disqualification_arbitration_manager.court = court
+                            disqualification_arbitration_manager.save()
+                            message_types.disqualification_arbitration_manager =disqualification_arbitration_manager
+                        if disqualification_arbitration_manager2.text is not None:
+                            if arbitr_manager.snils is not None or arbitr_manager.fio is not None:
+                                arbitr_manager.save()
+                                disqualification_arbitration_manager2.arbitr_manager = arbitr_manager
+                            if court.name is not None or court.code is not None:
+                                court.save()
+                                disqualification_arbitration_manager2.court = court
+                            if duration.day is not None or duration.month is not None or duration.year is not None:
+                                duration.save()
+                                disqualification_arbitration_manager2.duration = duration
+                            disqualification_arbitration_manager2.save()
+                            message_types.disqualification_arbitration_manager2 = disqualification_arbitration_manager2
+                        if change_estimates_current_expenses.text is not None:
+                            change_estimates_current_expenses.save()
+                            message_types.change_estimates_current_expenses =change_estimates_current_expenses
+                        if return_of_application_on_extrajudicial_bankruptcy.date is not None or return_of_application_on_extrajudicial_bankruptcy.no_return_of_enforcement_documen is not None:
+                            return_of_application_on_extrajudicial_bankruptcy.save()
+                            message_types.return_of_application_on_extrajudicial_bankruptcy = return_of_application_on_extrajudicial_bankruptcy
+                        if start_of_extrajudicial_bankruptcy.pk is not None:
+                            if bank.name is not None or bank.bank_identifier is not None:
+                                bank.save()
+                                banks.bank = bank
+                                banks.save()
+                                start_of_extrajudicial_bankruptcy.banks = banks
+                            if creditors_non_from_entrepreneurship.non_monetary_obligations is not None:
+                                if monetary_obligation.creditor_name is not None or monetary_obligation.creditor_region is not None:
+                                    monetary_obligation.save()
+                                    monetary_obligations.monetary_obligation = monetary_obligation
+                                    monetary_obligations.save()
+                                    creditors_non_from_entrepreneurship.monetary_obligations = monetary_obligations
+                                if obligatory_payment.name is not None:
+                                    obligatory_payment.save()
+                                    obligatory_payments.obligatory_payment = obligatory_payment
+                                    obligatory_payments.save()
+                                    creditors_non_from_entrepreneurship.obligatory_payments = obligatory_payments
+                                creditors_non_from_entrepreneurship.save()
+                                start_of_extrajudicial_bankruptcy.creditors_non_from_entrepreneurship = creditors_non_from_entrepreneurship
+                            if creditors_from_entrepreneurship.non_monetary_obligations is not None:
+                                if monetary_obligation.creditor_name is not None or monetary_obligation.creditor_region is not None:
+                                    monetary_obligation.save()
+                                    monetary_obligations.monetary_obligation = monetary_obligation
+                                    monetary_obligations.save()
+                                    creditors_from_entrepreneurship.monetary_obligations = monetary_obligations
+                                if obligatory_payment.name is not None:
+                                    obligatory_payment.save()
+                                    obligatory_payments.obligatory_payment = obligatory_payment
+                                    obligatory_payments.save()
+                                    creditors_from_entrepreneurship.obligatory_payments = obligatory_payments
+                                creditors_from_entrepreneurship.save()
+                                start_of_extrajudicial_bankruptcy.creditors_from_entrepreneurship = creditors_from_entrepreneurship
+                            start_of_extrajudicial_bankruptcy.save()
+                            message_types.start_of_extrajudicial_bankruptcy =start_of_extrajudicial_bankruptcy
+                        if termination_of_extrajudicial_bankruptcy.pk is not None:
+                            termination_of_extrajudicial_bankruptcy.save()
+                            message_types.termination_of_extrajudicial_bankruptcy = termination_of_extrajudicial_bankruptcy
+                        if completion_of_extrajudicial_bankruptcy.pk is not None:
+                            completion_of_extrajudicial_bankruptcy.save()
+                            message_types.completion_of_extrajudicial_bankruptcy = completion_of_extrajudicial_bankruptcy
                         message_types.save()
+                        message_info.message_types = message_types
                         message_info.save()
-                except:
-                    pass
+                except Exception as ex:
+                    print(ex)
+                    print("$"*50)
+                    # pass
                 try:
                     if message_data.id_message_data is not None:
+                        message_data.publisher = publisher
+                        message_data.message_info = message_info
 
                         message_data.save()
-                except:
-                    pass
+                except Exception as ex:
+                    print(ex)
             except Exception as ex:
                 print(ex)
     except Exception as ex:
