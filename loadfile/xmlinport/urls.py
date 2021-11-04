@@ -4,6 +4,6 @@ from loadfile import  *
 
 urlpatterns = [
     path("list/", list, name="list"),
-    path("xml/", list_xml, name="xml_list"),
-    path('xml_load/',list_xml,name="load"),
+    # path("xml/", list_xml, name="xml_list"),
+    path('',list_xml,name="load"),
 ]

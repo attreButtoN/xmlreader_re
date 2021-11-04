@@ -14,66 +14,63 @@ import pandas as pd
 
 
 def list_xml(request):
+    counter = 0
     if request.method == "POST":
 
-        # form = DocumentForm(request.POST, request.FILES)
-        # if form.is_valid():
 
-        # for file in request.FILES.getlist("docfile"):
-        # if file.content_type == "text/xml":  # "text/xml":
-            # filename = str(file)
-
-            # newdoc = Document(docfile=file)
-            # l = []
-            # l = newdoc
-            # newdoc.save()
-            # print(newdoc)
-            # print(file)
-            # sleep(25)
-            # global name
-            # for doc in Document.objects.all():
-            #     document = doc.docfile
-            #     print(document)
-            #     name = document
-            #     doc.delete()
-            # # sleep(20)
-            # pathfile = str("")
-            # print(pathfile)
             print("working")
+
             file_list = list()
-            files = os.listdir(settings.FILES_PATH)
-            shutil.register_unpack_format('7z', ['.7z'], unpack_7zarchive)
+            files = os.listdir("media/put_xml_here/")
+            print(files)
+
+            for folder in files:
+                try:
+                    files = os.listdir(f"media/put_xml_here/{folder}")
+                    print(folder)
+                    print(files)
+                    for file in files:
+                        print(f'media/put_xml_here/{folder}/{file}')
+                        shutil.move(f'media/put_xml_here/{folder}/{file}', f'media/put_xml_here/')
+                    os.rmdir(f"media/put_xml_here/{folder}")
+                except:
+                    pass
+            files = os.listdir("media/put_xml_here/")
+            try:
+                shutil.register_unpack_format('7z', ['.7z'], unpack_7zarchive)
+            except:
+                pass
             for file in files:
                 if file.endswith(".7z"):
                     print(file)
 
-                    shutil.unpack_archive(f'{settings.FILES_PATH}/{file}', f'{settings.FILES_PATH}/')
-                    os.remove(f'{settings.FILES_PATH}/{file}')
+                    shutil.unpack_archive(f'media/put_xml_here/{file}', 'media/put_xml_here/')
+                    os.remove(f'media/put_xml_here/{file}')
 
                 # file_list.append(file)
             print(files)
             # data_folder = ""
-            counter = 0
             try:
-                files = os.listdir(f"{settings.FILES_PATH}/")
+                files = os.listdir("media/put_xml_here/")
                 for file in files:
-                    with open(f"{settings.FILES_PATH}/{file}", "r", encoding="utf-16") as xml_file:
+                    with open(f"media/put_xml_here/{file}", "r", encoding="utf-16") as xml_file:
                         data_dict = xmltodict.parse(xml_file.read())
                         xml_file.close()
 
                         json_data = json.dumps(data_dict)
-
+                        os.remove(f"media/put_xml_here/{file}")
                         with open("media/xml/data.json", "w") as json_file:
                             json_file.write(json_data)
                             json_file.close()
                     file = open("media/xml/data.json", "r")
                     json_datafile = file.read()
                     file.close()
-                    # os.remove(f"media/{pathfile}")
+
                     json_datafile = json.loads(json_datafile)
-                    counter+=1
-                    print(f"{counter}")
-                    sleep(25)
+                    counter +=1
+                    print(counter)
+                    print("*_"*50)
+                    sleep(5)
                     update_products_xml(json_datafile)
             except Exception as ex:
                 print(ex)

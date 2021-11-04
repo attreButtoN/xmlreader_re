@@ -28,7 +28,7 @@ DEBUG = True
 load_dotenv()
 FILES_PATH = os.getenv('FILES_PATH')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -85,8 +85,8 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "django_db_xml",
         "USER": "postgres",
-        "PASSWORD": "055997511",
-        "HOST": "127.0.0.1",
+        "PASSWORD": "123456",
+        "HOST": "db",
         "PORT": "5432",
     }
 }
