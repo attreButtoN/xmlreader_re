@@ -7,6 +7,8 @@
 
 (Если добавление файлов происходит не в первый раз достаточно одной команды docker-compose up -d  --build	)
 
+Сделайте билд  docker-compose up -d  --build
+Проведите миграции docker-compose exec web python manage.py migrate --noinput
 
 Запустите контейнер используя команду docker-compose up -d  --build
 
