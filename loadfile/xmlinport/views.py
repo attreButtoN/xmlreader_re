@@ -8,13 +8,13 @@ import shutil
 import xmltodict
 from django.shortcuts import render
 
-
 from xmlload.load import update_products_xml
 import pandas as pd
 
 
+counter = 0
 def list_xml(request):
-    counter = 0
+
     if request.method == "POST":
 
 
@@ -23,14 +23,17 @@ def list_xml(request):
             file_list = list()
             files = os.listdir("media/put_xml_here/")
             print(files)
-
+            file = open("file_view_log.txt", "a")
+            file.write("Обработка папок,распаковывание архивов...\n")
+            file.close()
+            print("Обработка папок,распаковывание архивов...",flush=True)
             for folder in files:
                 try:
                     files = os.listdir(f"media/put_xml_here/{folder}")
-                    print(folder)
-                    print(files)
+                    # print(folder)
+                    # print(files)
                     for file in files:
-                        print(f'media/put_xml_here/{folder}/{file}')
+                        # print(f'media/put_xml_here/{folder}/{file}')
                         shutil.move(f'media/put_xml_here/{folder}/{file}', f'media/put_xml_here/')
                     os.rmdir(f"media/put_xml_here/{folder}")
                 except:
@@ -56,7 +59,7 @@ def list_xml(request):
                     with open(f"media/put_xml_here/{file}", "r", encoding="utf-16") as xml_file:
                         data_dict = xmltodict.parse(xml_file.read())
                         xml_file.close()
-
+                        name = file
                         json_data = json.dumps(data_dict)
                         os.remove(f"media/put_xml_here/{file}")
                         with open("media/xml/data.json", "w") as json_file:
@@ -67,15 +70,23 @@ def list_xml(request):
                     file.close()
 
                     json_datafile = json.loads(json_datafile)
+                    global counter
                     counter +=1
-                    print(counter)
-                    print("*_"*50)
-                    sleep(5)
+                    file = open("file_view_log.txt", "a")
+                    file.write(f"В процессе: Файл №{counter},Имя:{name},Файлов осталось {len(files)-counter} \n")
+                    file.close()
+                    print(f"В процессе: Файл №{counter},Имя:{name},Файлов осталось {len(files)-counter}", flush=True)
                     update_products_xml(json_datafile)
+
             except Exception as ex:
-                print(ex)
+                file = open("file_view_log.txt", "a")
+                file.write(f"Ошибка: {ex},Имя:{name} \n")
+
+                file.close()
+                print(f"Ошибка: {ex},Имя:{name}",flush=True)
         # return HttpResponseRedirect(reverse("xml_list"))
 # else:
 #     form = DocumentForm()
     #
     return render(request, "xmlinport/list_xml.html")
+

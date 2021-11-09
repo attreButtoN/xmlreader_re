@@ -21,7 +21,7 @@ def update_products_xml(json_datafile):
         for i in range(len(data_json["TradePlaceList"]["TradePlace"])):
             try:
                 for tradelists in data_json["TradePlaceList"]["TradePlace"][i]["TradeList"]:
-                    # print(tradelists)
+                    # #print(tradelists)
                     # trades_list.append(data_json["TradePlaceList"]["TradePlace"][i]["TradeList"])
                     trades_list.append(tradelists)
                     inn = data_json["TradePlaceList"]["TradePlace"][i]["@INN"]
@@ -30,8 +30,8 @@ def update_products_xml(json_datafile):
                 pass
 
     except Exception as ex:
-        print(ex)
-        print("first")
+        pass
+        #print("first")
 
     try:
         for k in range(len(data_json["TradePlaceList"]["TradePlace"]["TradeList"])):
@@ -42,27 +42,27 @@ def update_products_xml(json_datafile):
                 inn = data_json["TradePlaceList"]["TradePlace"]["@INN"]
                 trade_places_inn.append(inn)
             except Exception as ex:
-                print(ex)
+                pass
 
     except Exception as ex:
-        print(ex)
-        print("second")
+        pass
+        #print("second")
 
     j = -1
     for trade in trades_list:
-        print(type(trades_list))
-        print(type(trade))
-        file = open("otus.txt", "w")
-        file.write(str(trade))
-        file.close()
+        #print(type(trades_list))
+        #print(type(trade))
+        # file = open("otus.txt", "w")
+        # file.write(str(trade))
+        # file.close()
         # exit()
 
-        # print(trade)
+        # #print(trade)
         # sleep(5)
         j += 1
 
         try:
-            print("do ifa")
+            #print("do ifa")
             if type({}) == type(trade["Trade"]["Message"]):
                 bidding_fail = BiddingFail()  # BiddingFail
                 bidding_proccess_info = BiddingProcessInfo()
@@ -138,18 +138,18 @@ def update_products_xml(json_datafile):
 
                 try:
                     id_efrsb = trade["Trade"]["@ID_EFRSB"]
-                    # print(id_efrsb)
+                    # #print(id_efrsb)
                     trade_model.id_efrsb = id_efrsb
                 except:
                     pass
                 Id = trade["Trade"]["Message"]["@ID"]  # Message ID
-                # print(Id)
+                # #print(Id)
                 # sleep(20)
 
                 try:
                     id_external = trade["Trade"]["@ID_EXTERNAL"]
                     trade_model.id_external = id_external
-                    # print(id_external)
+                    # #print(id_external)
                 except:
                     pass
                 Id = trade["Trade"]["Message"]["@ID"]  # Message ID
@@ -190,39 +190,39 @@ def update_products_xml(json_datafile):
                 try:
                     message_id = trade["Trade"]["Message"]["@ID"]
                     # trade_model.
-                    # print(message_id)
+                    # #print(message_id)
                 except:
                     pass
                 try:
                     xmlns_xsi = envelope["@xmlns:xsi"]
-                    # print("xmlns_xsi", xmlns_xsi)
+                    # #print("xmlns_xsi", xmlns_xsi)
                 except:
                     pass
                 try:
                     xmlns_xsd = envelope["@xmlns:xsd"]
-                    # print("xmlns_xsd", xmlns_xsd)
+                    # #print("xmlns_xsd", xmlns_xsd)
                 except:
                     pass
                 try:
                     xmlns_soap = envelope["@xmlns:soap"]
-                    # print("xmlns_soap", xmlns_soap)
+                    # #print("xmlns_soap", xmlns_soap)
                 except:
                     pass
                 # Содержимое SetApplicationSessionStatistic ниже
                 try:
                     xmlns = envelope["SetApplicationSessionStatistic"]["@xmlns"]
-                    # print("xmlns", xmlns)
+                    # #print("xmlns", xmlns)
                 except:
                     pass
                 try:
                     xmlns = envelope["SetBiddingFail"]["@xmlns"]
-                    # print("xmlns", xmlns)
+                    # #print("xmlns", xmlns)
                 except:
                     pass
                 # SetBiddingProcessInfo
                 try:
                     xmlns = envelope["SetBiddingProcessInfo"]["@xmlns"]
-                    # print("xmlns", xmlns)
+                    # #print("xmlns", xmlns)
                 except:
                     pass
                 # Содержимое ApplicationSessionStatistic ниже
@@ -230,7 +230,7 @@ def update_products_xml(json_datafile):
                     trade_id = envelope["SetApplicationSessionStatistic"]["ApplicationSessionStatistic"][
                         "@TradeId"]
                     application_session_statistic.trade_id = trade_id
-                    print('TradeID', trade_id)
+                    #print('TradeID', trade_id)
 
 
                 except:
@@ -241,7 +241,7 @@ def update_products_xml(json_datafile):
                         "@TradeId"]
 
                     bidding_fail.trade_id = trade_id
-                    # print("TradeId", trade_id)
+                    # #print("TradeId", trade_id)
 
                 except:
                     pass
@@ -249,23 +249,23 @@ def update_products_xml(json_datafile):
                     trade_id = envelope["SetBiddingProcessInfo"]["BiddingProcessInfo"][
                         "@TradeId"]
                     bidding_proccess_info.trade_id = trade_id
-                    print("TradeId", trade_id)
-                    print("_" * 50)
+                    #print("TradeId", trade_id)
+                    #print("_" * 50)
                 except:
                     pass
                 try:
                     trade_id = envelope["SetApplicationSessionStart"]["ApplicationSessionStart"][
                         "@TradeId"]
                     application_session_start.trade_id = trade_id
-                    print("TradeId", trade_id)
-                    print("_" * 50)
+                    #print("TradeId", trade_id)
+                    #print("_" * 50)
                 except:
                     pass
                 try:
                     trade_id = envelope["SetApplicationSessionEnd"]["ApplicationSessionEnd"]["@TradeId"]
                     application_session_end.trade_id = trade_id
 
-                    # print('tradeid', trade_id)
+                    # #print('tradeid', trade_id)
 
                 except:
                     pass
@@ -273,14 +273,14 @@ def update_products_xml(json_datafile):
                     event_time = envelope["SetApplicationSessionEnd"]["ApplicationSessionEnd"][
                         "@EventTime"]
                     application_session_end.event_time = event_time
-                    # print("eventtimeEnd", event_time2)
+                    # #print("eventtimeEnd", event_time2)
                 except:
                     pass
                 try:
                     lot_number = envelope["SetApplicationSessionEnd"]["ApplicationSessionEnd"][
                         "LotList"]["LotInfo"]["@LotNumber"]
                     lot_info.lot_number = lot_number
-                    # print("eventtimeEnd", event_time2)
+                    # #print("eventtimeEnd", event_time2)
                 except:
                     pass
 
@@ -288,7 +288,7 @@ def update_products_xml(json_datafile):
                     trade_id = envelope["SetBiddingResult"]["BiddingResult"][
                         "@TradeId"]
                     bidding_result.trade_id = trade_id
-                    # print("TradeId", trade_id)
+                    # #print("TradeId", trade_id)
                 except:
                     pass
                 try:
@@ -298,7 +298,7 @@ def update_products_xml(json_datafile):
                             "FailureTradeResult"]["Substantiation"]
                     failure_trade_result.substantiation = substantiation
 
-                    # print("substantiation", substantiation)
+                    # #print("substantiation", substantiation)
                 except:
                     pass
                 try:
@@ -308,14 +308,14 @@ def update_products_xml(json_datafile):
                             "FailureTradeResult"]["Price"]
                     failure_trade_result.price = price
 
-                    # print("price", price)
+                    # #print("price", price)
                 except:
                     pass
                 try:
                     trade_id = envelope["SetBiddingCancel"]["BiddingCancel"][
                         "@TradeId"]
                     bidding_cancel.trade_id = trade_id
-                    # print("TradeId", trade_id)
+                    # #print("TradeId", trade_id)
                 except:
                     pass
                 try:
@@ -329,14 +329,14 @@ def update_products_xml(json_datafile):
                     event_time = envelope["SetContractSale"]["ContractSale"][
                         "@EventTime"]
                     contract_sale.event_time = event_time
-                    # print("EventTime", event_time)
+                    # #print("EventTime", event_time)
                 except:
                     pass
                 try:
                     lot_number = envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
                         "@LotNumber"]
                     lot_contract_sale.lot_number = lot_number
-                    # print("LotNumber", lot_number)
+                    # #print("LotNumber", lot_number)
                 except:
                     pass
                 # #winnerCompany
@@ -346,7 +346,7 @@ def update_products_xml(json_datafile):
                 #             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                 #             "WinnerCompany"]["@FullName"]
                 #     winner_company.full_name= full_name
-                #     #print("FullName", full_name)
+                #     ##print("FullName", full_name)
                 # except:
                 #     pass
                 #
@@ -356,7 +356,7 @@ def update_products_xml(json_datafile):
                 #             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                 #             "WinnerCompany"]["@ShortName"]
                 #     winner_company.short_name = short_name
-                #     #print("ShortName", short_name)
+                #     ##print("ShortName", short_name)
                 # except:
                 #     pass
                 # try:
@@ -365,7 +365,7 @@ def update_products_xml(json_datafile):
                 #             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                 #             "WinnerCompany"]["@INN"]
                 #     winner_company.inn= inn
-                #     #print("INN", inn)
+                #     ##print("INN", inn)
                 # except:
                 #     pass
                 # try:
@@ -374,7 +374,7 @@ def update_products_xml(json_datafile):
                 #             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                 #             "WinnerCompany"]["@OGRN"]
                 #     winner_company.ogrn= ogrn
-                #     #print("OGRN", ogrn)
+                #     ##print("OGRN", ogrn)
                 # except:
                 #     pass
                 # try:
@@ -383,18 +383,18 @@ def update_products_xml(json_datafile):
                 #             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                 #             "WinnerCompany"]["@LegalAddress"]
                 #     winner_company.legal_address = legal_address
-                #     #print("Address", address)
+                #     ##print("Address", address)
                 # except:
                 #     pass
                 # #WinnerCompanyEnd
-                print("in if")
+                #print("in if")
                 try:
                     contract_number = \
                         envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
                             "ContractInfo"][
                             "ContractNumber"]
                     contract_info.contract_number = contract_number
-                    # print("ContractNumber", contract_number)
+                    # #print("ContractNumber", contract_number)
                 except:
                     pass
                 try:
@@ -405,7 +405,7 @@ def update_products_xml(json_datafile):
                     if len(date_contract.split("+")) > 1:
                         date_contract = date_contract.split("+")[0]
                     contract_info.date_contract = date_contract
-                    # print("DateContract", date_contract)
+                    # #print("DateContract", date_contract)
                 except:
                     pass
 
@@ -414,7 +414,7 @@ def update_products_xml(json_datafile):
                         "ContractInfo"][
                         "Price"]
                     contract_info.price = price
-                    # print("Price", price)
+                    # #print("Price", price)
                 except:
                     pass
                 try:
@@ -422,7 +422,7 @@ def update_products_xml(json_datafile):
                         "ContractParticipantList"][
                         "ContractParticipant"]["@Name"]
                     contract_participant.name = name
-                    # print("Name", name)
+                    # #print("Name", name)
                 except:
                     pass
                 try:
@@ -430,7 +430,7 @@ def update_products_xml(json_datafile):
                         "ContractParticipantList"][
                         "ContractParticipant"]["@INN"]
                     contract_participant.inn = inn
-                    # print("inn", inn)
+                    # #print("inn", inn)
                 except:
                     pass
                 try:
@@ -438,7 +438,7 @@ def update_products_xml(json_datafile):
                         "ContractParticipantList"][
                         "ContractParticipant"]["@OGRN"]
                     contract_participant.ogrn = ogrn
-                    # print("OGRN", ogrn)
+                    # #print("OGRN", ogrn)
                 except:
                     pass
                 try:
@@ -448,7 +448,7 @@ def update_products_xml(json_datafile):
                     # contract_participant.is_winner = is_winner
                     contract_participant.is_winner = json.loads(is_winner)
 
-                    # print("IsWinner", is_winner)
+                    # #print("IsWinner", is_winner)
                 except:
                     pass
                 try:
@@ -458,7 +458,7 @@ def update_products_xml(json_datafile):
                     # contract_participant.is_buyer = is_buyer
                     contract_participant.is_buyer = json.loads(is_buyer)
 
-                    # print("IsBuyer", is_buyer)
+                    # #print("IsBuyer", is_buyer)
                 except:
                     pass
                 # ++++++---------------------------------------------------------------
@@ -466,42 +466,42 @@ def update_products_xml(json_datafile):
                     event_time = envelope["SetApplicationSessionStart"]["ApplicationSessionStart"][
                         "@EventTime"]
                     application_session_start.event_time = event_time
-                    # print("EventTime", event_time)
+                    # #print("EventTime", event_time)
                 except:
                     pass
                 try:
                     event_time = envelope["SetBiddingProcessInfo"]["BiddingProcessInfo"][
                         "@EventTime"]
                     bidding_proccess_info.event_time = event_time
-                    # print("EventTime", event_time)
+                    # #print("EventTime", event_time)
                 except:
                     pass
                 try:
                     event_time = envelope["SetBiddingResult"]["BiddingResult"][
                         "@EventTime"]
                     bidding_result.event_time = event_time
-                    # print("EventTime", event_time)
+                    # #print("EventTime", event_time)
                 except:
                     pass
                 try:
                     lot_number = envelope["SetBiddingProcessInfo"]["BiddingProcessInfo"][
                         "PriceInfo"]["@LotNumber"]
                     price_info.lot_number = lot_number
-                    # print("LotNumber", lot_number)
+                    # #print("LotNumber", lot_number)
                 except:
                     pass
                 try:
                     lot_number = envelope["SetApplicationSessionStart"]["ApplicationSessionStart"][
                         "LotList"]["LotInfo"]["@LotNumber"]
                     lot_info.lot_number = lot_number
-                    # print("LotNumber", lot_number)
+                    # #print("LotNumber", lot_number)
                 except:
                     pass
                 try:
                     new_price = envelope["SetBiddingProcessInfo"]["BiddingProcessInfo"][
                         "PriceInfo"]["@NewPrice"]
                     price_info.new_price = new_price
-                    # print("NewPrice", new_price)
+                    # #print("NewPrice", new_price)
                 except:
                     pass
                 try:
@@ -509,7 +509,7 @@ def update_products_xml(json_datafile):
                         "ApplicationSessionStatistic"][
                         "@EventTime"]
                     application_session_statistic.event_time = event_time
-                    # print('EventTime', event_time)
+                    # #print('EventTime', event_time)
 
                 except:
                     pass
@@ -517,7 +517,7 @@ def update_products_xml(json_datafile):
                     event_time = envelope["SetBiddingFail"]["BiddingFail"][
                         "@EventTime"]
                     bidding_fail.event_time = event_time
-                    # print('EventTime', event_time)
+                    # #print('EventTime', event_time)
 
                 except:
                     pass
@@ -525,7 +525,7 @@ def update_products_xml(json_datafile):
                     event_time = envelope["SetBiddingCancel"]["BiddingCancel"][
                         "@EventTime"]
                     bidding_cancel.event_time = event_time
-                    # print('EventTime', event_time)
+                    # #print('EventTime', event_time)
 
                 except:
                     pass
@@ -536,7 +536,7 @@ def update_products_xml(json_datafile):
                     if len(date_begin.split("+")) > 1:
                         date_begin = date_begin.split("+")[0]
                     application_session_statistic.date_begin = date_begin
-                    # print("DateBegin", date_begin)
+                    # #print("DateBegin", date_begin)
 
                 except:
                     pass
@@ -545,7 +545,7 @@ def update_products_xml(json_datafile):
                     lot_number = envelope["SetApplicationSessionStatistic"][
                         "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["@LotNumber"]
                     lot_statistic.lot_number = lot_number
-                    # print("LotNumber", lot_number)
+                    # #print("LotNumber", lot_number)
 
                 except:
                     pass
@@ -553,7 +553,7 @@ def update_products_xml(json_datafile):
                     lot_number = envelope["SetBiddingResult"][
                         "BiddingResult"]["LotList"]["LotTradeResult"]["@LotNumber"]
                     lot_trade_result.lot_number = lot_number
-                    # print("LotNumber", lot_number)
+                    # #print("LotNumber", lot_number)
 
                 except:
                     pass
@@ -561,7 +561,7 @@ def update_products_xml(json_datafile):
                 try:
                     lot_number = envelope["SetBiddingFail"]["BiddingFail"][
                         "LotList"]["BiddingStateLotInfo"]["@LotNumber"]
-                    # print("LotNumber", lot_number)
+                    # #print("LotNumber", lot_number)
                     bidding_state_lot_info.lot_number = lot_number
 
                 except:
@@ -569,28 +569,28 @@ def update_products_xml(json_datafile):
                 try:
                     reason = envelope["SetBiddingFail"]["BiddingFail"][
                         "LotList"]["BiddingStateLotInfo"]["@Reason"]
-                    # print("Reason", reason)
+                    # #print("Reason", reason)
                     bidding_state_lot_info.reason = reason
 
                 except:
                     pass
                 try:
                     reason = envelope["SetBiddingCancel"]["BiddingCancel"]["@Reason"]
-                    # print("Reason", reason)
+                    # #print("Reason", reason)
                     bidding_cancel.reason = reason
 
                 except:
                     pass
                 try:
                     reason = envelope["SetBiddingFail"]["BiddingFail"]["@Reason"]
-                    # print("Reason", reason)
+                    # #print("Reason", reason)
                     bidding_fail.reason = reason
 
                 except:
                     pass
                 try:
                     reason = envelope["SetBiddingFail"]["BiddingFail"]["LotList"]["BiddingStateLotInfo"]["@Reason"]
-                    # print("Reason", reason)
+                    # #print("Reason", reason)
                     bidding_fail.reason = reason
 
                 except:
@@ -599,7 +599,7 @@ def update_products_xml(json_datafile):
                     reason = envelope["SetApplicationSessionStatistic"]["ApplicationSessionStatistic"][
                         "LotList"]["BiddingStateLotInfo"]["@Reason"]
                     bidding_state_lot_info.reason = reason
-                    # print("Reason", reason)
+                    # #print("Reason", reason)
 
                 except:
                     pass
@@ -607,7 +607,7 @@ def update_products_xml(json_datafile):
                     accept_count = envelope["SetApplicationSessionStatistic"][
                         "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["@AcceptCount"]
                     lot_statistic.accept_count = accept_count
-                    # print("AcceptCount", accept_count)
+                    # #print("AcceptCount", accept_count)
 
                 except:
                     pass
@@ -615,7 +615,7 @@ def update_products_xml(json_datafile):
                     entry_count = envelope["SetApplicationSessionStatistic"][
                         "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["@EntryCount"]
                     lot_statistic.entry_count = entry_count
-                    # print("EntryCount", entry_count)
+                    # #print("EntryCount", entry_count)
                     # "@EntryCount"
                 except:
                     pass
@@ -625,7 +625,7 @@ def update_products_xml(json_datafile):
                         "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"]["ApplicationData"][
                         "@Result"]
                     application_dataa.result = result
-                    # print("result", result)
+                    # #print("result", result)
 
                 except:
                     pass
@@ -633,17 +633,17 @@ def update_products_xml(json_datafile):
                 #     result = envelope["SetApplicationSessionStatistic"][
                 #         "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"]["ApplicationData"]
                 #     for i in range(len(result)):
-                #         #print(i)
+                #         ##print(i)
                 #         sleep(2)
                 #         res = result[i]
-                #         #print(res)
+                #         ##print(res)
                 #         sleep(2)
                 #         result = res["@Result"]
-                #         #print(result)
+                #         ##print(result)
                 #         sleep(2)
                 #         application_dataa.result = result
                 #         application_dataa.save()
-                #     #print("result", result)
+                #     ##print("result", result)
                 #
                 # except:
                 #     pass
@@ -652,7 +652,7 @@ def update_products_xml(json_datafile):
                         "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"]["ApplicationData"][
                         "@CauseOfRefuse"]
                     application_dataa.cause_of_refuse = cause_of_refuse
-                    # print("CauseOfRefuse", cause_of_refuse)
+                    # #print("CauseOfRefuse", cause_of_refuse)
 
                 except:
                     pass
@@ -661,7 +661,7 @@ def update_products_xml(json_datafile):
                         "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"]["ApplicationData"][
                         "@CauseOfRefuse"]
                     application_dataa.cause_of_refuse = cause_of_refuse
-                    # print("CauseOfRefuse", cause_of_refuse)
+                    # #print("CauseOfRefuse", cause_of_refuse)
 
                 except:
                     pass
@@ -671,7 +671,7 @@ def update_products_xml(json_datafile):
                     filename = envelope["SetApplicationSessionStatistic"][
                         "ApplicationSessionStatistic"]["Attach"]["FileName"]
                     attach.file_name = filename
-                    # print("FileName", filename)
+                    # #print("FileName", filename)
 
                 except:
                     pass
@@ -691,8 +691,8 @@ def update_products_xml(json_datafile):
                     filename = envelope["SetBiddingInvitation"][
                         "BiddingInvitation"]["Attach"]["FileName"]
                     attach.file_name = filename
-                    print(filename)
-                    # print("FileName", filename)
+                    #print(filename)
+                    # #print("FileName", filename)
 
                 except:
                     pass
@@ -713,8 +713,8 @@ def update_products_xml(json_datafile):
                     filename = envelope["SetBiddingInvitation"][
                         "BiddingInvitation"]["TradeInfo"]["Attach"]["FileName"]
                     attach.file_name = filename
-                    print(filename)
-                    # print("FileName", filename)
+                    #print(filename)
+                    # #print("FileName", filename)
 
                 except:
                     pass
@@ -735,7 +735,7 @@ def update_products_xml(json_datafile):
                     filename = envelope["SetBiddingFail"][
                         "BiddingFail"]["Attach"]["FileName"]
                     attach.file_name = filename
-                    # print("FileName", filename)
+                    # #print("FileName", filename)
 
                 except:
                     pass
@@ -758,7 +758,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                             "WinnerPerson"]["@FirstName"]
                     winner_person.first_name = first_name
-                    # print("FirstName", first_name)
+                    # #print("FirstName", first_name)
                 except:
                     pass
 
@@ -768,7 +768,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                             "WinnerPerson"]["@MiddleName"]
                     winner_person.middle_name = middle_name
-                    # print("MiddleName", middle_name)
+                    # #print("MiddleName", middle_name)
                 except:
                     pass
                 try:
@@ -777,7 +777,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                             "WinnerPerson"]["@LastName"]
                     winner_person.last_name = last_name
-                    # print("LastName", last_name)
+                    # #print("LastName", last_name)
                 except:
                     pass
                 try:
@@ -786,7 +786,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                             "WinnerPerson"]["@INN"]
                     winner_person.inn = inn_person
-                    # print("INN", inn_person)
+                    # #print("INN", inn_person)
                 except:
                     pass
                 try:
@@ -795,7 +795,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                             "WinnerPerson"]["@Address"]
                     winner_person.address = address
-                    # print("Address", address)
+                    # #print("Address", address)
                 except:
                     pass
                 try:
@@ -804,7 +804,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                             "WinnerPerson"]["@Phone"]
                     winner_person.phone = phone
-                    # print("Phone", phone)
+                    # #print("Phone", phone)
                 except:
                     pass
 
@@ -814,7 +814,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                             "WinnerPerson"]["@Email"]
                     winner_person.email = email
-                    # print("Email", email)
+                    # #print("Email", email)
                 except:
                     pass
                 try:
@@ -823,10 +823,10 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                             "WinnerPerson"]["@SNILS"]
                     winner_person.snils = snils
-                    # print("Email", email)
+                    # #print("Email", email)
                 except:
                     pass
-                # print("Winner")
+                # #print("Winner")
                 ##
                 try:
                     first_name = \
@@ -835,7 +835,7 @@ def update_products_xml(json_datafile):
                             "BuyerPerson"]["@FirstName"]
                     buyer_person.first_name = first_name
                     # buyer_company.save()
-                    # print("BuyerCompany FullName", full_name)
+                    # #print("BuyerCompany FullName", full_name)
                 except:
                     pass
                 try:
@@ -844,7 +844,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['FailureTradeResult'][
                             "BuyerPerson"]["@MiddleName"]
                     buyer_person.middle_name = middle_name
-                    # print("ShortName", short_name)
+                    # #print("ShortName", short_name)
                 except:
                     pass
                 try:
@@ -853,7 +853,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['FailureTradeResult'][
                             "BuyerPerson"]["@LastName"]
                     buyer_person.last_name = last_name
-                    # print("ShortName", short_name)
+                    # #print("ShortName", short_name)
                 except:
                     pass
                 try:
@@ -862,7 +862,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['FailureTradeResult'][
                             "BuyerPerson"]["@INN"]
                     buyer_person.inn = inn
-                    # print("INN", inn)
+                    # #print("INN", inn)
                 except:
                     pass
 
@@ -872,7 +872,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['FailureTradeResult'][
                             "BuyerPerson"]["@Address"]
                     buyer_person.address = address
-                    # print("OGRN", ogrn)
+                    # #print("OGRN", ogrn)
                 except:
                     pass
                 ##
@@ -883,7 +883,7 @@ def update_products_xml(json_datafile):
                             "BuyerCompany"]["@FullName"]
                     buyer_company.full_name = full_name
                     # buyer_company.save()
-                    # print("BuyerCompany FullName", full_name)
+                    # #print("BuyerCompany FullName", full_name)
                 except:
                     pass
                 try:
@@ -892,7 +892,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['FailureTradeResult'][
                             "BuyerCompany"]["@ShortName"]
                     buyer_company.short_name = short_name
-                    # print("ShortName", short_name)
+                    # #print("ShortName", short_name)
                 except:
                     pass
                 try:
@@ -901,7 +901,7 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['FailureTradeResult'][
                             "BuyerCompany"]["@INN"]
                     buyer_company.inn = inn
-                    # print("INN", inn)
+                    # #print("INN", inn)
                 except:
                     pass
                 # ==============================Debtors
@@ -913,7 +913,7 @@ def update_products_xml(json_datafile):
                             "@FullName"]
                     debtor_company.full_name = full_name
 
-                    # print("DebtorCompanyFullName", full_name)
+                    # #print("DebtorCompanyFullName", full_name)
                 except:
                     pass
                 try:
@@ -921,7 +921,7 @@ def update_products_xml(json_datafile):
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:Debtor"]["ns1:DebtorPerson"][
                             "@ShortName"]
                     debtor_company.short_name = short_name
-                    # print("DebtorCompanyShortName", short_name)
+                    # #print("DebtorCompanyShortName", short_name)
                 except:
                     pass
 
@@ -931,7 +931,7 @@ def update_products_xml(json_datafile):
                             "ns1:DebtorCompany"][
                             "@INN"]
                     debtor_company.inn = inn
-                    # print("DebtorPersonINN", inn)
+                    # #print("DebtorPersonINN", inn)
                 except:
                     pass
                 try:
@@ -940,50 +940,50 @@ def update_products_xml(json_datafile):
                             "ns1:DebtorCompany"][
                             "@OGRN"]
                     debtor_company.ogrn = ogrn
-                    # print("DebtorOGRN", ogrn)
+                    # #print("DebtorOGRN", ogrn)
                 except:
                     pass
                 # Annulment
                 try:
                     trade_id = envelope["SetAnnulment"]["AnnulmentMessage"]["@TradeId"]
                     annulment.trade_id = trade_id
-                    # print("BiddingInvitationTradeID", trade_id)
+                    # #print("BiddingInvitationTradeID", trade_id)
                 except:
                     pass
                 try:
                     event_time = envelope["SetAnnulment"]["AnnulmentMessage"]["@EventTime"]
                     annulment.event_time = event_time
-                    # print("DebtorPersonEventTime", event_time)
+                    # #print("DebtorPersonEventTime", event_time)
                 except:
                     pass
                 try:
                     id_annulment = envelope["SetAnnulment"]["AnnulmentMessage"]["ID_Annulment"]
                     annulment.id_annulment = id_annulment
-                    # print("DebtorPersonEventTime", event_time)
+                    # #print("DebtorPersonEventTime", event_time)
                 except:
                     pass
                 try:
                     reason = envelope["SetAnnulment"]["AnnulmentMessage"]["Reason"]
                     annulment.reason = reason
-                    # print("DebtorPersonEventTime", event_time)
+                    # #print("DebtorPersonEventTime", event_time)
                 except:
                     pass
                 # DebtorPeson
                 try:
                     trade_id = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["@TradeId"]
                     bidding_invitation.trade_id = trade_id
-                    # print("BiddingInvitationTradeID", trade_id)
+                    # #print("BiddingInvitationTradeID", trade_id)
                 except:
                     pass
                 try:
                     event_time = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["@EventTime"]
                     bidding_invitation.event_time = event_time
-                    # print("DebtorPersonEventTime", event_time)
+                    # #print("DebtorPersonEventTime", event_time)
                 except:
                     pass
                 try:
                     id_efrsb = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:IDEFRSB"]
-                    # print("DebtorPersonIDEFRSB", id_efrsb)
+                    # #print("DebtorPersonIDEFRSB", id_efrsb)
                     bidding_invitation.idefrsb = id_efrsb
                 except:
                     pass
@@ -992,7 +992,7 @@ def update_products_xml(json_datafile):
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:Debtor"]["ns1:DebtorPerson"][
                             "@FirstName"]
                     debtor_person.first_name = first_name
-                    # print("DebtorPersonFirsName", first_name)
+                    # #print("DebtorPersonFirsName", first_name)
                     # sleep()
                 except:
                     pass
@@ -1001,7 +1001,7 @@ def update_products_xml(json_datafile):
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:Debtor"]["ns1:DebtorPerson"][
                             "@LastName"]
                     debtor_person.last_name = last_name
-                    # print("DebtorPersonLastName", last_name)
+                    # #print("DebtorPersonLastName", last_name)
                 except:
                     pass
                 try:
@@ -1009,7 +1009,7 @@ def update_products_xml(json_datafile):
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:Debtor"]["ns1:DebtorPerson"][
                             "@MiddleName"]
                     debtor_person.middle_name = middle_name
-                    # print("DebtorPersonMiddleName", middle_name)
+                    # #print("DebtorPersonMiddleName", middle_name)
                 except:
                     pass
                 try:
@@ -1017,7 +1017,7 @@ def update_products_xml(json_datafile):
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:Debtor"]["ns1:DebtorPerson"][
                             "@INN"]
                     debtor_person.inn = inn
-                    # print("DebtorPersonINN", inn)
+                    # #print("DebtorPersonINN", inn)
                 except:
                     pass
                 try:
@@ -1025,30 +1025,30 @@ def update_products_xml(json_datafile):
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:Debtor"]["ns1:DebtorPerson"][
                             "@SNILS"]
                     debtor_person.snils = snils
-                    # print("DebtorPersonSNILS", snils)
+                    # #print("DebtorPersonSNILS", snils)
 
                 except:
                     pass
-                # print("after debtor")
+                # #print("after debtor")
 
                 try:
                     case_number = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:LegalCase"][
                         "@CaseNumber"]
                     legal_case.case_number = case_number
-                    # print("CaseNumber", case_number)
+                    # #print("CaseNumber", case_number)
                 except:
                     pass
                 try:
                     court_name = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:LegalCase"][
                         "@CourtName"]
                     legal_case.court_name = court_name
-                    # print("CourtName", court_name)
+                    # #print("CourtName", court_name)
                 except:
                     pass
                 try:
                     base = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:LegalCase"]["@Base"]
                     legal_case.base = base
-                    # print("Base", base)
+                    # #print("Base", base)
                 except:
                     pass
                 # ArbitrManager
@@ -1056,43 +1056,43 @@ def update_products_xml(json_datafile):
                     sro_name = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
                         "@SROName"]
                     arbitr_manager.sro_name = sro_name
-                    # print("SroName", sro_name)
+                    # #print("SroName", sro_name)
                 except:
                     pass
                 try:
                     reg_num = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
                         "@RegNum"]
                     arbitr_manager.reg_num = reg_num
-                    # print("RegNum", reg_num)
+                    # #print("RegNum", reg_num)
                 except:
                     pass
                 try:
                     first_name = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
                         "@FirstName"]
-                    # print(first_name)
+                    # #print(first_name)
                     # sleep(30)
                     arbitr_manager.first_name = first_name
-                    # print("ArbitrManagerFirsName", first_name)
+                    # #print("ArbitrManagerFirsName", first_name)
                 except:
                     pass
                 try:
                     last_name = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
                         "@LastName"]
                     arbitr_manager.last_name = last_name
-                    # print("ArbitrManagerLastName", last_name)
+                    # #print("ArbitrManagerLastName", last_name)
                 except:
                     pass
                 try:
                     middle_name = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
                         "@MiddleName"]
                     arbitr_manager.middle_name = middle_name
-                    # print("ArbitrManagerMiddleName", middle_name)
+                    # #print("ArbitrManagerMiddleName", middle_name)
                 except:
                     pass
                 try:
                     inn = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"]["@INN"]
                     arbitr_manager.inn = inn
-                    # print("ArbitrINN", inn)
+                    # #print("ArbitrINN", inn)
                 except:
                     pass
 
@@ -1102,7 +1102,7 @@ def update_products_xml(json_datafile):
                         "ns1:TradeOrganizerPerson"][
                         "@FirstName"]
                     trade_organizer_person.first_name = first_name
-                    # print("TradeOrganizerFirstName", first_name)
+                    # #print("TradeOrganizerFirstName", first_name)
                 except:
                     pass
                 try:
@@ -1110,7 +1110,7 @@ def update_products_xml(json_datafile):
                         "ns1:TradeOrganizerPerson"][
                         "@LastName"]
                     trade_organizer_person.last_name = last_name
-                    # print("TradeOrganizerLastName", last_name)
+                    # #print("TradeOrganizerLastName", last_name)
                 except:
                     pass
                 try:
@@ -1118,14 +1118,14 @@ def update_products_xml(json_datafile):
                         "ns1:TradeOrganizerPerson"][
                         "@MiddleName"]
                     trade_organizer_person.middle_name = middle_name
-                    # print("TradeOrganizerMiddleName", middle_name)
+                    # #print("TradeOrganizerMiddleName", middle_name)
                 except:
                     pass
                 try:
                     inn = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeOrganizer"][
                         "ns1:TradeOrganizerPerson"]["@INN"]
                     trade_organizer_person.inn = inn
-                    # print("TradeOrganizerINN", inn)
+                    # #print("TradeOrganizerINN", inn)
                 except:
                     pass
                 try:
@@ -1133,7 +1133,7 @@ def update_products_xml(json_datafile):
                         "ns1:TradeOrganizerPerson"][
                         "@SNILS"]
                     trade_organizer_person.snils = snils
-                    # print("TradeOrganizerSnils", snils)
+                    # #print("TradeOrganizerSnils", snils)
                 except:
                     pass
                 # TradeInfo
@@ -1141,14 +1141,14 @@ def update_products_xml(json_datafile):
                     auction_type = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
                         "@AuctionType"]
                     trade_info.auction_type = auction_type
-                    # print("AuctionType", auction_type)
+                    # #print("AuctionType", auction_type)
                 except:
                     pass
                 try:
                     form_price = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
                         "@FormPrice"]
                     trade_info.form_price = form_price
-                    # print("FormPrice", form_price)
+                    # #print("FormPrice", form_price)
                 except:
                     pass
                 try:
@@ -1156,7 +1156,7 @@ def update_products_xml(json_datafile):
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:OpenForm"][
                             "@TimeBegin"]
                     open_form.time_begin = time_begin
-                    # print("TimeBegin", time_begin)
+                    # #print("TimeBegin", time_begin)
                 except:
                     pass
                 try:
@@ -1164,7 +1164,7 @@ def update_products_xml(json_datafile):
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:CloseForm"][
                             "@TimeResult"]
                     close_form.time_result = time_result
-                    # print("TimeBegin", time_result)
+                    # #print("TimeBegin", time_result)
                 except:
                     pass
                 try:
@@ -1172,7 +1172,7 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["OpenForm"][
                             "@TimeBegin"]
                     open_form.time_begin = time_begin
-                    # print("TimeBegin", time_begin)
+                    # #print("TimeBegin", time_begin)
                 except:
                     pass
                 try:
@@ -1180,7 +1180,7 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["CloseForm"][
                             "@TimeResult"]
                     close_form.time_result = time_result
-                    # print("TimeBegin", time_result)
+                    # #print("TimeBegin", time_result)
                 except:
                     pass
 
@@ -1189,7 +1189,7 @@ def update_products_xml(json_datafile):
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:OpenForm"][
                             "@TimeEnd"]
                     open_form.time_end = time_end
-                    # print("TimeBegin", time_end)
+                    # #print("TimeBegin", time_end)
                 except:
                     pass
                 try:
@@ -1199,7 +1199,7 @@ def update_products_xml(json_datafile):
                             "@TimeBegin"]
                     application.time_begin = time_begin_appl
 
-                    # print("ApplicationTimeBegin", time_begin_appl)
+                    # #print("ApplicationTimeBegin", time_begin_appl)
                 except:
                     pass
                 try:
@@ -1209,7 +1209,7 @@ def update_products_xml(json_datafile):
                             "@TimeEnd"]
                     application.time_end = time_end_appl
 
-                    # print("ApplicationTimeEnd", time_end_appl)
+                    # #print("ApplicationTimeEnd", time_end_appl)
                 except:
                     pass
                 try:
@@ -1219,7 +1219,7 @@ def update_products_xml(json_datafile):
                             "ns1:Rules"]
                     application.rules = rules
 
-                    # print("ApplicationTimeEnd", rules)  # "ns1:LotList"
+                    # #print("ApplicationTimeEnd", rules)  # "ns1:LotList"
                 except:
                     pass
                 # lotlist
@@ -1228,7 +1228,7 @@ def update_products_xml(json_datafile):
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:LotList"][
                             "ns1:Lot"]["@LotNumber"]
                     lot.lot_number = lot_number
-                    # print("LotNumber", lot_number)
+                    # #print("LotNumber", lot_number)
                 except:
                     pass
                 try:
@@ -1237,7 +1237,7 @@ def update_products_xml(json_datafile):
                             "ns1:Lot"]["ns1:StartPrice"]
                     lot.start_price = start_price
 
-                    # print("ns1:StartPrice", start_price)
+                    # #print("ns1:StartPrice", start_price)
                 except:
                     pass
                 try:
@@ -1247,7 +1247,7 @@ def update_products_xml(json_datafile):
                             "ns1:StepPrice"]
                     lot.step_price = step_price
 
-                    # print("ns1:StepPrice", step_price)
+                    # #print("ns1:StepPrice", step_price)
                 except:
                     pass
                 try:
@@ -1257,8 +1257,8 @@ def update_products_xml(json_datafile):
                             "ns1:StepPrice"]["@xsi:nil"]
 
                     step_price_model.nil = json.loads(nil)
-                    print(step_price_model.nil)
-                    print("<" * 50)
+                    #print(step_price_model.nil)
+                    #print("<" * 50)
 
                 except:
                     pass
@@ -1268,8 +1268,8 @@ def update_products_xml(json_datafile):
                             "Lot"][
                             "StepPrice"]["@xsi:nil"]
                     step_price_model.nil = json.loads(nil)
-                    print(step_price_model.nil)
-                    print("<" * 50)
+                    #print(step_price_model.nil)
+                    #print("<" * 50)
 
                 except:
                     pass
@@ -1280,7 +1280,7 @@ def update_products_xml(json_datafile):
                             "ns1:TradeObjectHtml"]
                     lot.trade_object_html = trade_obj_html
 
-                    # print("ns1:TradeObjectHtml", trade_obj_html)
+                    # #print("ns1:TradeObjectHtml", trade_obj_html)
                 except:
                     pass
                 try:
@@ -1290,7 +1290,7 @@ def update_products_xml(json_datafile):
                             "ns1:PriceReduction"]
                     lot.price_reduction = price_reduction
 
-                    # print("ns1:PriceReduction", price_reduction)
+                    # #print("ns1:PriceReduction", price_reduction)
                 except:
                     pass
                 try:
@@ -1300,7 +1300,7 @@ def update_products_xml(json_datafile):
                             "ns1:Participants"]
                     lot.participants = participants
 
-                    # print("ns1:Participants", participants)
+                    # #print("ns1:Participants", participants)
                 except:
                     pass
                 try:
@@ -1310,7 +1310,7 @@ def update_products_xml(json_datafile):
                             "ns1:PaymentInfo"]
                     lot.payment_info = payment_info
 
-                    # print("ns1:PaymentInfo", payment_info)
+                    # #print("ns1:PaymentInfo", payment_info)
                 except:
                     pass
                 try:
@@ -1319,7 +1319,7 @@ def update_products_xml(json_datafile):
                             "ns1:SaleAgreement"]
                     lot.sale_agreement = sale_agreement
 
-                    # print("ns1:SaleAgreement", sale_agreement)
+                    # #print("ns1:SaleAgreement", sale_agreement)
                 except:
                     pass
                 try:
@@ -1328,7 +1328,7 @@ def update_products_xml(json_datafile):
                             "ns1:Lot"][
                             "ns1:Classification"]["ns1:IDClass"]
                     classificaition.idclass = id_class
-                    # print("ns1:IDClass", id_class)
+                    # #print("ns1:IDClass", id_class)
                 except:
                     pass
 
@@ -1339,7 +1339,7 @@ def update_products_xml(json_datafile):
                     full_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"][
                         "DebtorCompany"]["@FullName"]
                     debtor_company.full_name = full_name
-                    # print("DebtorCompanyFullName", full_name)
+                    # #print("DebtorCompanyFullName", full_name)
                 except:
                     pass
                 try:
@@ -1347,7 +1347,7 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"]["DebtorCompany"][
                             "@ShortName"]
                     debtor_company.short_name = short_name
-                    # print("DebtorCompanyShortName", short_name)
+                    # #print("DebtorCompanyShortName", short_name)
                 except:
                     pass
 
@@ -1355,14 +1355,14 @@ def update_products_xml(json_datafile):
                     inn = envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"][
                         "DebtorCompany"]["@INN"]
                     debtor_company.inn = inn
-                    # print("DebtorCompanyINN", inn)
+                    # #print("DebtorCompanyINN", inn)
                 except:
                     pass
                 try:
                     ogrn = envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"][
                         "DebtorCompany"]["@OGRN"]
                     debtor_company.ogrn = ogrn
-                    # print("DebtorOGRN", ogrn)
+                    # #print("DebtorOGRN", ogrn)
                 except:
                     pass
 
@@ -1370,21 +1370,21 @@ def update_products_xml(json_datafile):
                 try:
                     trade_id = envelope["SetBiddingInvitation"]["BiddingInvitation"]["@TradeId"]
                     bidding_invitation.trade_id = trade_id
-                    # print("BiddingInvitationTradeID", trade_id)
+                    # #print("BiddingInvitationTradeID", trade_id)
                 except:
                     pass
                 try:
                     event_time = envelope["SetBiddingInvitation"]["BiddingInvitation"]["@EventTime"]
                     bidding_invitation.event_time = event_time
-                    # print("BiddingInvitationEventTime", event_time)
+                    # #print("BiddingInvitationEventTime", event_time)
                 except:
                     pass
 
                 try:
                     id_efrsb = envelope["SetBiddingInvitation"]["BiddingInvitation"]["IDEFRSB"]
                     bidding_invitation.idefrsb = id_efrsb
-                    # print("BiddingInvitationIDEFRSB", id_efrsb)
-                    # print(bidding_invitation)
+                    # #print("BiddingInvitationIDEFRSB", id_efrsb)
+                    # #print(bidding_invitation)
                 except:
                     pass
                 # try:
@@ -1407,7 +1407,7 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"]["DebtorPerson"][
                             "@FirstName"]
                     debtor_person.first_name = first_name
-                    # print("DebtorPersonFirsName", first_name)
+                    # #print("DebtorPersonFirsName", first_name)
                 except:
                     pass
                 try:
@@ -1415,7 +1415,7 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"]["DebtorPerson"][
                             "@LastName"]
                     debtor_person.last_name = last_name
-                    # print("DebtorPersonLastName", last_name)
+                    # #print("DebtorPersonLastName", last_name)
                 except:
                     pass
                 try:
@@ -1423,7 +1423,7 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"]["DebtorPerson"][
                             "@MiddleName"]
                     debtor_person.middle_name = middle_name
-                    # print("DebtorPersonMiddleName", middle_name)
+                    # #print("DebtorPersonMiddleName", middle_name)
                 except:
                     pass
                 try:
@@ -1431,7 +1431,7 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"]["DebtorPerson"][
                             "@INN"]
                     debtor_person.inn = inn
-                    # print("DebtorPersonINN", inn)
+                    # #print("DebtorPersonINN", inn)
                 except:
                     pass
                 try:
@@ -1439,27 +1439,27 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"]["DebtorPerson"][
                             "@SNILS"]
                     debtor_person.snils = snils
-                    # print("DebtorPersonSNILS", snils)
+                    # #print("DebtorPersonSNILS", snils)
                 except:
                     pass
                 try:
                     case_number = envelope["SetBiddingInvitation"]["BiddingInvitation"]["LegalCase"][
                         "@CaseNumber"]
                     legal_case.case_number = case_number
-                    # print("CaseNumber", case_number)
+                    # #print("CaseNumber", case_number)
                 except:
                     pass
                 try:
                     court_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["LegalCase"][
                         "@CourtName"]
                     legal_case.court_name = court_name
-                    # print("CourtName", court_name)
+                    # #print("CourtName", court_name)
                 except:
                     pass
                 try:
                     base = envelope["SetBiddingInvitation"]["BiddingInvitation"]["LegalCase"]["@Base"]
                     legal_case.base = base
-                    # print("Base", base)
+                    # #print("Base", base)
                 except:
                     pass
                 # ArbitrManager
@@ -1467,21 +1467,21 @@ def update_products_xml(json_datafile):
                     sro_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
                         "@SROName"]
                     # !
-                    # print("SroName", sro_name)
+                    # #print("SroName", sro_name)
                 except:
                     pass
                 try:
                     first_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
                         "@FirstName"]
                     arbitr_manager.first_name = first_name
-                    # print("ArbitrManagerFirsName", first_name)
+                    # #print("ArbitrManagerFirsName", first_name)
                 except:
                     pass
                 try:
                     last_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
                         "@LastName"]
                     arbitr_manager.last_name = last_name
-                    # print("ArbitrManagerLastName", last_name)
+                    # #print("ArbitrManagerLastName", last_name)
                 except:
                     pass
                 try:
@@ -1489,7 +1489,7 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
                             "@MiddleName"]
                     arbitr_manager.middle_name = middle_name
-                    # print("ArbitrManagerMiddleName", middle_name)
+                    # #print("ArbitrManagerMiddleName", middle_name)
                 except:
                     pass
                 try:
@@ -1497,14 +1497,14 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
                             "@RegNum"]
                     arbitr_manager.reg_num = reg_num
-                    # print("RegNum", reg_num)
+                    # #print("RegNum", reg_num)
                 except:
                     pass
                 # arbitr_manager.reg_num = reg_num
                 try:
                     inn = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"]["@INN"]
                     arbitr_manager.inn = inn
-                    # print("ArbitrINN", inn)
+                    # #print("ArbitrINN", inn)
                 except:
                     pass
 
@@ -1515,7 +1515,7 @@ def update_products_xml(json_datafile):
                             "TradeOrganizerPerson"][
                             "@FirstName"]
                     trade_organizer_person.first_name = first_name
-                    # print("TradeOrganizerFirstName", first_name)
+                    # #print("TradeOrganizerFirstName", first_name)
                 except:
                     pass
                 try:
@@ -1524,7 +1524,7 @@ def update_products_xml(json_datafile):
                             "TradeOrganizerPerson"][
                             "@LastName"]
                     trade_organizer_person.last_name = last_name
-                    # print("TradeOrganizerLastName", last_name)
+                    # #print("TradeOrganizerLastName", last_name)
                 except:
                     pass
                 try:
@@ -1533,7 +1533,7 @@ def update_products_xml(json_datafile):
                             "TradeOrganizerPerson"][
                             "@MiddleName"]
                     trade_organizer_person.middle_name = middle_name
-                    # print("TradeOrganizerMiddleName", middle_name)
+                    # #print("TradeOrganizerMiddleName", middle_name)
                 except:
                     pass
                 try:
@@ -1542,7 +1542,7 @@ def update_products_xml(json_datafile):
                             "TradeOrganizerPerson"][
                             "@INN"]
                     trade_organizer_person.inn = inn
-                    # print("TradeOrganizerINN", inn)
+                    # #print("TradeOrganizerINN", inn)
                 except:
                     pass
                 try:
@@ -1551,7 +1551,7 @@ def update_products_xml(json_datafile):
                             "TradeOrganizerPerson"][
                             "@SNILS"]
                     trade_organizer_person.snils = snils
-                    # print("TradeOrganizerSnils", snils)
+                    # #print("TradeOrganizerSnils", snils)
                 except:
                     pass
 
@@ -1562,7 +1562,7 @@ def update_products_xml(json_datafile):
                             "TradeOrganizerCompany"][
                             "@FullName"]
                     trade_organizer_company.full_name = full_name
-                    # print("TradeOrganizerFirstName", full_name)
+                    # #print("TradeOrganizerFirstName", full_name)
                 except:
                     pass
                 try:
@@ -1571,7 +1571,7 @@ def update_products_xml(json_datafile):
                             "TradeOrganizerCompany"][
                             "@ShortName"]
                     trade_organizer_company.short_name = short_name
-                    # print("TradeOrganizerShortName", short_name)
+                    # #print("TradeOrganizerShortName", short_name)
                 except:
                     pass
                 try:
@@ -1580,7 +1580,7 @@ def update_products_xml(json_datafile):
                             "TradeOrganizerCompany"][
                             "@INN"]
                     trade_organizer_company.inn = inn
-                    # print("TradeOrganizerCompanyINN", inn)
+                    # #print("TradeOrganizerCompanyINN", inn)
                 except:
                     pass
                 try:
@@ -1589,7 +1589,7 @@ def update_products_xml(json_datafile):
                             "TradeOrganizerCompany"][
                             "@OGRN"]
                     trade_organizer_company.ogrn = ogrn
-                    # print("TradeOrganizerOGRN", ogrn)
+                    # #print("TradeOrganizerOGRN", ogrn)
                 except:
                     pass
                 if trade_organizer_person.first_name is not None:
@@ -1607,21 +1607,21 @@ def update_products_xml(json_datafile):
                     auction_type = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
                         "@AuctionType"]
                     trade_info.auction_type = auction_type
-                    # print("AuctionType", auction_type)
+                    # #print("AuctionType", auction_type)
                 except:
                     pass
                 try:
                     date_publish_smi = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
                         "DatePublishSMI"]
                     trade_info.date_publish_smi = date_publish_smi
-                    # print("AuctionType", auction_type)
+                    # #print("AuctionType", auction_type)
                 except:
                     pass
                 try:
                     form_price = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
                         "@FormPrice"]
                     trade_info.form_price = form_price
-                    # print("FormPrice", form_price)
+                    # #print("FormPrice", form_price)
                 except:
                     pass
                 try:
@@ -1629,7 +1629,7 @@ def update_products_xml(json_datafile):
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["OpenForm"][
                             "@TimeBegin"]
                     open_form.time_begin = time_begin
-                    # print("TimeBegin", time_begin)
+                    # #print("TimeBegin", time_begin)
                 except:
                     pass
                 try:
@@ -1638,7 +1638,7 @@ def update_products_xml(json_datafile):
                             "Application"]["@TimeBegin"]
                     application.time_begin = time_begin_appl
 
-                    # print("ApplicationTimeBegin", time_begin_appl)
+                    # #print("ApplicationTimeBegin", time_begin_appl)
                 except:
                     pass
                 try:
@@ -1646,7 +1646,7 @@ def update_products_xml(json_datafile):
                         "Application"]["@TimeEnd"]
                     application.time_end = time_end_appl
 
-                    # print("ApplicationTimeEnd", time_end_appl)
+                    # #print("ApplicationTimeEnd", time_end_appl)
                 except:
                     pass
                 try:
@@ -1654,7 +1654,7 @@ def update_products_xml(json_datafile):
                         "Application"]["Rules"]
                     application.rules = rules
 
-                    # print("ApplicationTimeEnd", rules)  # "ns1:LotList"
+                    # #print("ApplicationTimeEnd", rules)  # "ns1:LotList"
                 except:
                     pass
                 # lotlist
@@ -1664,7 +1664,7 @@ def update_products_xml(json_datafile):
                             "Lot"]["@LotNumber"]
                     lot.lot_number = lot_number
 
-                    # print("LotNumber", lot_number)
+                    # #print("LotNumber", lot_number)
                 except:
                     pass
                 try:
@@ -1673,7 +1673,7 @@ def update_products_xml(json_datafile):
                             "Lot"]["@LotNumber"]
                     lot.lot_number = lot_number
 
-                    # print("LotNumber", lot_number)
+                    # #print("LotNumber", lot_number)
                 except:
                     pass
                 try:
@@ -1682,7 +1682,7 @@ def update_products_xml(json_datafile):
                             "Lot"]["StartPrice"]
                     lot.start_price = start_price
 
-                    # print("StartPrice", start_price)
+                    # #print("StartPrice", start_price)
                 except:
                     pass
                 try:
@@ -1692,7 +1692,7 @@ def update_products_xml(json_datafile):
                             "StepPrice"]
                     lot.step_price = step_price
 
-                    # print("StepPrice", step_price)
+                    # #print("StepPrice", step_price)
                 except:
                     pass
                 try:
@@ -1702,7 +1702,7 @@ def update_products_xml(json_datafile):
                             "TradeObjectHtml"]
                     lot.trade_object_html = trade_obj_html
 
-                    # print("TradeObjectHtml", trade_obj_html)
+                    # #print("TradeObjectHtml", trade_obj_html)
                 except:
                     pass
                 try:
@@ -1712,7 +1712,7 @@ def update_products_xml(json_datafile):
                             "PriceReduction"]
                     lot.price_reduction = price_reduction
 
-                    # print("PriceReduction", price_reduction)
+                    # #print("PriceReduction", price_reduction)
                 except:
                     pass
                 try:
@@ -1722,7 +1722,7 @@ def update_products_xml(json_datafile):
                             "Participants"]
                     lot.participants = participants
 
-                    # print("Participants", participants)
+                    # #print("Participants", participants)
                 except:
                     pass
                 try:
@@ -1732,7 +1732,7 @@ def update_products_xml(json_datafile):
                             "PaymentInfo"]
                     lot.payment_info = payment_info
 
-                    # print("PaymentInfo", payment_info)
+                    # #print("PaymentInfo", payment_info)
                 except:
                     pass
                 try:
@@ -1741,7 +1741,7 @@ def update_products_xml(json_datafile):
                             "SaleAgreement"]
                     lot.sale_agreement = sale_agreement
 
-                    # print("SaleAgreement", sale_agreement)
+                    # #print("SaleAgreement", sale_agreement)
                 except:
                     pass
                 try:
@@ -1751,7 +1751,7 @@ def update_products_xml(json_datafile):
                             "Classification"]["IDClass"]
                     classificaition.idclass = id_class
 
-                    # print("IDClass", id_class)
+                    # #print("IDClass", id_class)
                 except:
                     pass
                 ###########################################################################
@@ -1759,8 +1759,8 @@ def update_products_xml(json_datafile):
                     if attach.file_name is not None:
                         attach.save()
                 except Exception as ex:
-                    print("Attach EX" * 50)
-                    print(ex)
+                    #print("Attach EX" * 50)
+                    pass
                 try:
                     if step_price_model.nil is not None:
                         step_price_model.save()
@@ -1771,11 +1771,11 @@ def update_products_xml(json_datafile):
 
                     if lot.lot_number:
                         lot.save()
-                        print(lot)
+                        #print(lot)
                         lot_list.lot = lot
                         lot_list.save()
                 except Exception as ex:
-                    print(ex, "lotlist")
+                    pass
                 try:
                     if lot_info.lot_number:
                         lot_info.save()
@@ -1788,7 +1788,7 @@ def update_products_xml(json_datafile):
                     lot_type = \
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
                             "Lot"]
-                    print("SAVE POINT" * 50)
+                    #print("SAVE POINT" * 50)
                     if type(lot_type) == type([]):
                         for lot_i in range(len(lot_type)):
                             lot = Lot()
@@ -1799,14 +1799,14 @@ def update_products_xml(json_datafile):
                                 auction_type = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
                                     "@AuctionType"]
                                 trade_info.auction_type = auction_type
-                                # print("AuctionType", auction_type)
+                                # #print("AuctionType", auction_type)
                             except:
                                 pass
                             try:
                                 form_price = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
                                     "@FormPrice"]
                                 trade_info.form_price = form_price
-                                # print("FormPrice", form_price)
+                                # #print("FormPrice", form_price)
                             except:
                                 pass
                             try:
@@ -1814,7 +1814,7 @@ def update_products_xml(json_datafile):
                                     envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["OpenForm"][
                                         "@TimeBegin"]
                                 open_form.time_begin = time_begin
-                                # print("TimeBegin", time_begin)
+                                # #print("TimeBegin", time_begin)
                             except:
                                 pass
                             try:
@@ -1823,7 +1823,7 @@ def update_products_xml(json_datafile):
                                         "Application"]["@TimeBegin"]
                                 application.time_begin = time_begin_appl
 
-                                # print("ApplicationTimeBegin", time_begin_appl)
+                                # #print("ApplicationTimeBegin", time_begin_appl)
                             except:
                                 pass
                             try:
@@ -1831,7 +1831,7 @@ def update_products_xml(json_datafile):
                                     "Application"]["@TimeEnd"]
                                 application.time_end = time_end_appl
 
-                                # print("ApplicationTimeEnd", time_end_appl)
+                                # #print("ApplicationTimeEnd", time_end_appl)
                             except:
                                 pass
                             try:
@@ -1839,7 +1839,7 @@ def update_products_xml(json_datafile):
                                     "Application"]["Rules"]
                                 application.rules = rules
 
-                                # print("ApplicationTimeEnd", rules)  # "ns1:LotList"
+                                # #print("ApplicationTimeEnd", rules)  # "ns1:LotList"
                             except:
                                 pass
                             try:
@@ -1847,7 +1847,7 @@ def update_products_xml(json_datafile):
                                     envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
                                         "Lot"][lot_i]["@LotNumber"]
                                 lot.lot_number = lot_number
-                                print("LotNumber", lot_number)
+                                #print("LotNumber", lot_number)
                             except:
                                 pass
                             try:
@@ -1856,7 +1856,7 @@ def update_products_xml(json_datafile):
                                         "Lot"][lot_i]["StartPrice"]
                                 lot.start_price = start_price
 
-                                print("StartPrice", start_price)
+                                #print("StartPrice", start_price)
                             except:
                                 pass
                             try:
@@ -1866,7 +1866,7 @@ def update_products_xml(json_datafile):
                                         "StepPrice"]
                                 lot.step_price = step_price
 
-                                print("StepPrice", step_price)
+                                #print("StepPrice", step_price)
                             except:
                                 pass
                             try:
@@ -1887,7 +1887,7 @@ def update_products_xml(json_datafile):
                                         "TradeObjectHtml"]
                                 lot.trade_object_html = trade_obj_html
 
-                                print("TradeObjectHtml", trade_obj_html)
+                                #print("TradeObjectHtml", trade_obj_html)
                             except:
                                 pass
                             try:
@@ -1905,7 +1905,7 @@ def update_products_xml(json_datafile):
                                         "Participants"]
                                 lot.participants = participants
 
-                                print("Participants", participants)
+                                #print("Participants", participants)
                             except:
                                 pass
                             try:
@@ -1915,7 +1915,7 @@ def update_products_xml(json_datafile):
                                         "PaymentInfo"]
                                 lot.payment_info = payment_info
 
-                                print("PaymentInfo", payment_info)
+                                #print("PaymentInfo", payment_info)
                             except:
                                 pass
                             try:
@@ -1931,19 +1931,19 @@ def update_products_xml(json_datafile):
                                         "Lot"][lot_i][
                                         "Classification"]["IDClass"]
                                 classificaition.idclass = id_class
-                                # print("ns1:IDClass", id_class)
+                                # #print("ns1:IDClass", id_class)
                             except:
                                 pass
-                            print(lot)
+                            #print(lot)
                             # exit()
                             lot.save()
                             lot_list.lot = lot
                             lot_list.save()
-                            print(lot)
+                            #print(lot)
 
                 except Exception as ex:
-                    print(ex)
-                    print("lot list type ex" * 50)
+                    pass
+                    #print("lot list type ex" * 50)
 
                 try:
                     if debtor_person.first_name is not None:
@@ -1997,7 +1997,7 @@ def update_products_xml(json_datafile):
                     pass
 
                 try:
-                    # print(lot_list)
+                    # #print(lot_list)
                     if application_session_start.trade_id is not None:
                         if lot_info.lot_number is not None:
                             application_session_start.lot_list = lot_list
@@ -2009,8 +2009,8 @@ def update_products_xml(json_datafile):
 
 
                 except Exception as ex:
-                    print(ex)
-                    print("EX" * 50)
+                    pass
+                    #print("EX" * 50)
 
                 try:
                     if lot_statistic.lot_number is not None:
@@ -2030,9 +2030,9 @@ def update_products_xml(json_datafile):
                         body.set_application_session_statistic = set_application_session_statistic
 
                 except Exception as ex:
-                    print(ex)
-                    print("statistic")
-                    # print("statistic")
+                    pass
+                    #print("statistic")
+                    # #print("statistic")
                     # sleep(5)
 
                 try:
@@ -2055,8 +2055,8 @@ def update_products_xml(json_datafile):
                             trade_info.attach = attach
                         trade_info.save()
                 except Exception as ex:
-                    print(ex)
-                    print("EXCEPTION" * 50)
+                    pass
+                    #print("EXCEPTION" * 50)
 
                 try:
                     if buyer_person.first_name is not None:
@@ -2066,11 +2066,11 @@ def update_products_xml(json_datafile):
                 try:
                     if buyer_company.full_name is not None:
                         buyer_company.save()
-                        print(buyer_company)
-                        print(">" * 50)
+                        #print(buyer_company)
+                        #print(">" * 50)
                 except Exception as ex:
-                    print(ex)
-                    print(">" * 50)
+                    pass
+                    #print(">" * 50)
                 try:
                     if success_trade_result.price is not None:
                         if winner_company.full_name is not None:
@@ -2166,8 +2166,8 @@ def update_products_xml(json_datafile):
                         set_annulment.save()
                         body.set_annulment = set_annulment
                 except Exception as ex:
-                    print(ex)
-                    print(":" * 50)
+                    pass
+                    #print(":" * 50)
                 try:
                     if bidding_end.trade_id is not None:
                         # lot_list.save()
@@ -2279,14 +2279,14 @@ def update_products_xml(json_datafile):
                 try:
                     body.save()
                 except Exception as ex:
-                    print(ex)
-                    print("*" * 50)
-                    print(body)
-                    print("*" * 50)
+                    pass
+                    #print("*" * 50)
+                    #print(body)
+                    #print("*" * 50)
 
-                # print("*" * 50)
-                # print(body)
-                # print("*" * 50)
+                # #print("*" * 50)
+                # #print(body)
+                # #print("*" * 50)
                 envelope_model.body = body
                 # envelope_model.body = body_model
                 envelope_model.save()
@@ -2305,9 +2305,9 @@ def update_products_xml(json_datafile):
                 trade_place.save()
                 trade_place_list.trade_place = trade_place
                 trade_place_list.save()
-                # #print(trade_model.message_id)
+                # ##print(trade_model.message_id)
 
-                # print("Id", Id)
+                # #print("Id", Id)
 
                 # ===================================msJstfgox2Jsr21345Cjs==============================winnerperson
 
@@ -2316,7 +2316,7 @@ def update_products_xml(json_datafile):
                     for i in range(len(
                             envelope["SetBiddingResult"]["BiddingResult"]["LotList"]["LotTradeResult"][
                                 "Participants"]["Participant"])):
-                        # print("Participant", i)
+                        # #print("Participant", i)
                         try:
                             first_name = \
                                 envelope["SetBiddingResult"]["BiddingResult"][
@@ -2325,7 +2325,7 @@ def update_products_xml(json_datafile):
                                     "@FirstName"]
                             participant_person.first_name = first_name
 
-                            # print(first_name)
+                            # #print(first_name)
 
                         except:
                             pass
@@ -2337,7 +2337,7 @@ def update_products_xml(json_datafile):
                                     'ParticipantPerson'][
                                     "@LastName"]
                             participant_person.last_name = last_name
-                            # print(last_name)
+                            # #print(last_name)
                         except:
                             pass
                         try:
@@ -2347,7 +2347,7 @@ def update_products_xml(json_datafile):
                                     'ParticipantPerson'][
                                     "@MiddleName"]
                             participant_person.middle_name = middle_name
-                            # print(middle_name)
+                            # #print(middle_name)
                         except:
                             pass
                         try:
@@ -2357,7 +2357,7 @@ def update_products_xml(json_datafile):
                                     'ParticipantPerson'][
                                     "@INN"]
                             participant_person.inn = inn
-                            # print(inn)
+                            # #print(inn)
                         except:
                             pass
                         try:
@@ -2367,7 +2367,7 @@ def update_products_xml(json_datafile):
                                     'ParticipantPerson'][
                                     "@Address"]
                             participant_person.address = address
-                            # print(address)
+                            # #print(address)
                         except:
                             pass
                         try:
@@ -2377,7 +2377,7 @@ def update_products_xml(json_datafile):
                                     'ParticipantPerson'][
                                     "@Phone"]
                             participant_person.phone = phone
-                            # print(phone)
+                            # #print(phone)
                         except:
                             pass
                         try:
@@ -2387,25 +2387,25 @@ def update_products_xml(json_datafile):
                                     'ParticipantPerson'][
                                     "@Email"]
                             participant_person.email = email
-                            # print(email)
+                            # #print(email)
                         except:
                             pass
                         participant_person.save()
                 except:
                     pass
 
-                # print("True Dict")
+                # #print("True Dict")
         except Exception as ex:
-            print(ex)
-            print("From dict")
+            pass
+            #print("From dict")
         try:
             if type([]) == type(trade["Trade"]["Message"]):
 
                 for message in trade["Trade"]["Message"]:
                     # message = trade["Trade"]["Message"][message]
-                    print(len(trade["Trade"]["Message"]))
+                    #print(len(trade["Trade"]["Message"]))
 
-                    # print(message)
+                    # #print(message)
                     # exit()
                     bidding_fail = BiddingFail()  # BiddingFail
                     bidding_proccess_info = BiddingProcessInfo()
@@ -2472,14 +2472,14 @@ def update_products_xml(json_datafile):
                     set_annulment = SetAnnulment()
                     try:
                         id_efrsb = trade["Trade"]["@ID_EFRSB"]
-                        # print(id_efrsb)
+                        # #print(id_efrsb)
                         trade_model.id_efrsb = id_efrsb
                     except:
                         pass
                     try:
                         id_external = trade["Trade"]["@ID_EXTERNAL"]
                         trade_model.id_external = id_external
-                        # print(id_external)
+                        # #print(id_external)
                     except:
                         pass
                     id = message["@ID"]
@@ -2517,33 +2517,33 @@ def update_products_xml(json_datafile):
                         xmlns_xsi = envelopefor["@xmlns:xsi"]
                         xmlns_xsd = envelopefor["@xmlns:xsd"]
                         xmlns_soap = envelopefor["@xmlns:soap"]
-                        # print("xmlns_xsi", xmlns_xsi)
-                        # print("xmlns_xsd", xmlns_xsd)
-                        # print("xmlns_soap", xmlns_soap)
+                        # #print("xmlns_xsi", xmlns_xsi)
+                        # #print("xmlns_xsd", xmlns_xsd)
+                        # #print("xmlns_soap", xmlns_soap)
                     except:
                         pass
-                    # #print("ID", id)
+                    # ##print("ID", id)
 
                     try:
                         xmlns = envelope["SetApplicationSessionEnd"]["@xmlns"]
-                        # print("xmlns", xmlns)
+                        # #print("xmlns", xmlns)
                     except:
                         pass
                     try:
                         xmlns = envelope["SetBiddingProcessInfo"]["@xmlns"]
-                        # print("xmlns", xmlns)
+                        # #print("xmlns", xmlns)
 
                     except:
                         pass
                     try:
                         xmlns = envelope["SetBiddingResult"]["@xmlns"]
-                        # print("xmlns", xmlns)
+                        # #print("xmlns", xmlns)
 
                     except:
                         pass
                     try:
                         xmlns = envelope["SetApplicationSessionStatistic"]["@xmlns"]
-                        # print("xmlns", xmlns)
+                        # #print("xmlns", xmlns)
 
                     except:
                         pass
@@ -2551,155 +2551,155 @@ def update_products_xml(json_datafile):
                         trade_id = envelope["SetApplicationSessionEnd"]["ApplicationSessionEnd"]["@TradeId"]
 
                         application_session_end.trade_id = trade_id
-                        # print('tradeid', trade_id)
+                        # #print('tradeid', trade_id)
 
                     except:
                         pass
                     try:
                         trade_id = envelope["SetBiddingProcessInfo"]["BiddingProccesInfo"]["@TradeId"]
                         bidding_proccess_info.trade_id = trade_id
-                        # print('tradeid', trade_id)
+                        # #print('tradeid', trade_id)
                     except:
                         pass
                     try:
                         trade_id = envelope["SetBiddingCancel"]["BiddingCancel"][
                             "@TradeId"]
                         bidding_cancel.trade_id = trade_id
-                        # print("TradeId", trade_id)
+                        # #print("TradeId", trade_id)
                     except:
                         pass
                     try:
                         trade_id = envelope["SetBiddingEnd"]["BiddingEnd"][
                             "@TradeId"]
                         bidding_end.trade_id = trade_id
-                        print("BiddingEND" * 50, trade_id)
+                        #print("BiddingEND" * 50, trade_id)
                     except:
                         pass
                     try:
                         trade_id = envelope["SetBiddingFail"]["BiddingFail"]["@TradeId"]
-                        # print(trade_id)
+                        # #print(trade_id)
                         bidding_fail.trade_id = trade_id
-                        # print("TradeId", trade_id)
+                        # #print("TradeId", trade_id)
                     except:
                         pass
                     # Annulment
                     try:
                         trade_id = envelope["SetAnnulment"]["AnnulmentMessage"]["@TradeId"]
                         annulment.trade_id = trade_id
-                        # print("BiddingInvitationTradeID", trade_id)
+                        # #print("BiddingInvitationTradeID", trade_id)
                     except:
                         pass
                     try:
                         event_time = envelope["SetAnnulment"]["AnnulmentMessage"]["@EventTime"]
                         annulment.event_time = event_time
-                        # print("DebtorPersonEventTime", event_time)
+                        # #print("DebtorPersonEventTime", event_time)
                     except:
                         pass
                     try:
                         id_annulment = envelope["SetAnnulment"]["AnnulmentMessage"]["ID_Annulment"]
                         annulment.id_annulment = id_annulment
-                        # print("DebtorPersonEventTime", event_time)
+                        # #print("DebtorPersonEventTime", event_time)
                     except:
                         pass
                     try:
                         reason = envelope["SetAnnulment"]["AnnulmentMessage"]["Reason"]
                         annulment.reason = reason
-                        # print("DebtorPersonEventTime", event_time)
+                        # #print("DebtorPersonEventTime", event_time)
                     except:
                         pass
                     #
                     try:
                         trade_id = envelope["SetBiddingResult"]["BiddingResult"]["@TradeId"]
                         bidding_result.trade_id = trade_id
-                        # print('tradeid', trade_id)
+                        # #print('tradeid', trade_id)
                     except:
                         pass
                     try:
                         trade_id = envelope["SetBiddingStart"]["BiddingStart"]["@TradeId"]
                         bidding_start.trade_id = trade_id
-                        # print('tradeid', trade_id)
+                        # #print('tradeid', trade_id)
                     except:
                         pass
                     try:
                         trade_id = envelope["SetApplicationSessionStatistic"]["ApplicationSessionStatistic"][
                             "@TradeId"]
                         application_session_statistic.trade_id = trade_id
-                        # print('tradeid', trade_id)
+                        # #print('tradeid', trade_id)
                     except:
                         pass
                     try:
                         trade_id = envelope["SetBiddingProcessInfo"]["BiddingProcessInfo"][
                             "@TradeId"]
                         bidding_proccess_info.trade_id = trade_id
-                        # print("TradeId", trade_id)
+                        # #print("TradeId", trade_id)
                     except:
                         pass
                     try:
                         event_time = envelope["SetBiddingProcessInfo"]["BiddingProcessInfo"][
                             "@EventTime"]
                         bidding_proccess_info.event_time = event_time
-                        # print("EventTime", event_time)
+                        # #print("EventTime", event_time)
                     except:
                         pass
                     try:
                         event_time = envelope["SetBiddingCancel"]["BiddingCancel"][
                             "@EventTime"]
                         bidding_cancel.event_time = event_time
-                        # print("EventTime", event_time)
+                        # #print("EventTime", event_time)
                     except:
                         pass
                     try:
                         event_time = envelope["SetBiddingEnd"]["BiddingEnd"][
                             "@EventTime"]
                         bidding_end.event_time = event_time
-                        # print("EventTime", event_time)
+                        # #print("EventTime", event_time)
                     except:
                         pass
                     try:
                         event_time = envelope["SetApplicationSessionEnd"]["ApplicationSessionEnd"][
                             "@EventTime"]
                         application_session_end.event_time = event_time
-                        # print("eventtimeEnd", event_time2)
+                        # #print("eventtimeEnd", event_time2)
                     except:
                         pass
                     try:
                         event_time = envelope["SetBiddingFail"]["BiddingFail"][
                             "@EventTime"]
                         bidding_fail.event_time = event_time
-                        # print("EventTime", event_time)
+                        # #print("EventTime", event_time)
                     except:
                         pass
                     try:
                         lot_number = envelope["SetBiddingProcessInfo"]["BiddingProcessInfo"]["PriceInfo"][
                             "@LotNumber"]
                         price_info.lot_number = lot_number
-                        # print("LotNumber", lot_number)
+                        # #print("LotNumber", lot_number)
                     except:
                         pass
                     try:
                         lot_number = envelope["SetApplicationSessionEnd"]["ApplicationSessionEnd"][
                             "LotList"]["LotInfo"]["@LotNumber"]
                         lot_info.lot_number = lot_number
-                        # print("eventtimeEnd", event_time2)
+                        # #print("eventtimeEnd", event_time2)
                     except:
                         pass
                     try:
                         reason = envelope["SetBiddingCancel"]["BiddingCancel"]["@Reason"]
-                        # print("Reason", reason)
+                        # #print("Reason", reason)
                         bidding_cancel.reason = reason
 
                     except:
                         pass
                     try:
                         reason = envelope["SetBiddingFail"]["BiddingFail"]["@Reason"]
-                        # print("Reason", reason)
+                        # #print("Reason", reason)
                         bidding_fail.reason = reason
 
                     except:
                         pass
                     try:
                         reason = envelope["SetBiddingFail"]["BiddingFail"]["LotList"]["BiddingStateLotInfo"]["@Reason"]
-                        # print("Reason", reason)
+                        # #print("Reason", reason)
                         bidding_fail.reason = reason
 
                     except:
@@ -2708,20 +2708,20 @@ def update_products_xml(json_datafile):
                         new_price = envelope["SetBiddingProcessInfo"]["BiddingProcessInfo"]["PriceInfo"][
                             "@NewPrice"]
                         price_info.new_price = new_price
-                        # print("NewPrice", new_price)
+                        # #print("NewPrice", new_price)
                     except:
-                        print("Some ERror")
+                        pass
                     try:
                         event_time1 = envelope["SetBiddingProcessInfo"]["BiddingProccesInfo"]["@EventTime"]
                         bidding_proccess_info.event_time = event_time1
-                        # print("eventtimeProccesInfo", event_time1)
+                        # #print("eventtimeProccesInfo", event_time1)
                     except:
                         pass
                     try:
                         event_time = envelope["SetApplicationSessionEnd"]["ApplicationSessionEnd"][
                             "@EventTime"]
                         application_session_end.event_time = event_time
-                        # print("eventtimeEnd", event_time2)
+                        # #print("eventtimeEnd", event_time2)
                     except:
                         pass
                     try:
@@ -2729,32 +2729,32 @@ def update_products_xml(json_datafile):
                             envelope["SetApplicationSessionStatistic"]["ApplicationSessionStatistic"][
                                 "@EventTime"]
                         application_session_statistic.event_time = event_time
-                        # print("eventtimeStat", event_time)
+                        # #print("eventtimeStat", event_time)
                     except:
                         pass
                     try:
                         event_time = envelope["SetBiddingResult"]["BiddingResult"]["@EventTime"]
                         bidding_result.event_time = event_time
-                        # print('eventtime', event_time)
+                        # #print('eventtime', event_time)
                     except:
                         pass
                     try:
                         event_time = envelope["SetBiddingStart"]["BiddingStart"]["@EventTime"]
                         bidding_start.event_time = event_time
-                        # print('eventtime', event_time)
+                        # #print('eventtime', event_time)
                     except:
                         pass
                     try:
                         event_time = envelope["SetBiddingEnd"]["BiddingEnd"]["@EventTime"]
                         bidding_end.event_time = event_time
-                        # print('eventtime', event_time)
+                        # #print('eventtime', event_time)
                     except:
                         pass
                     try:
                         lot_number = envelope["SetBiddingEnd"]["BiddingEnd"]["LotList"]["LotInfo"][
                             "@LotNumber"]
                         lot_info.lot_number = lot_number
-                        # print('eventtime', lot_number)
+                        # #print('eventtime', lot_number)
                     except:
                         pass
                     try:
@@ -2762,7 +2762,7 @@ def update_products_xml(json_datafile):
                             "DateBegin"]
 
                         application_session_statistic.date_begin = date_begin
-                        # print("DateBegin", date_begin)
+                        # #print("DateBegin", date_begin)
                     except:
                         pass
                     try:
@@ -2772,7 +2772,7 @@ def update_products_xml(json_datafile):
                                 "@LotNumber"]
                         lot_info.lot_number = lot_number
 
-                        # print("LotNumber", lot_number)
+                        # #print("LotNumber", lot_number)
                     except:
                         pass
                     try:
@@ -2781,7 +2781,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotStatistic"][
                                 "@LotNumber"]
                         lot_statistic.lot_number = lot_number
-                        # print("LotNumber", lot_number)
+                        # #print("LotNumber", lot_number)
                     except:
                         pass
                     try:
@@ -2790,7 +2790,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"][
                                 "@LotNumber"]
                         lot_trade_result.lot_number = lot_number
-                        # print("LotNumber", lot_number)
+                        # #print("LotNumber", lot_number)
                     except:
                         pass
                     try:
@@ -2799,13 +2799,13 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"][
                                 "FailureTradeResult"]["Substantiation"]
                         failure_trade_result.substantiation = substantiation
-                        print(failure_trade_result)
+                        #print(failure_trade_result)
 
-                        # print("substantiation", substantiation)
+                        # #print("substantiation", substantiation)
                     except Exception as ex:
-                        print(ex)
+                        pass
 
-                        print("SUB" * 50)
+                        #print("SUB" * 50)
 
                     try:
                         substantiation = \
@@ -2814,7 +2814,7 @@ def update_products_xml(json_datafile):
                                 "ns1:FailureTradeResult"]["ns1:Substantiation"]
                         failure_trade_result.substantiation = substantiation
 
-                        # print("substantiation", substantiation)
+                        # #print("substantiation", substantiation)
                     except:
                         pass
                     try:
@@ -2824,7 +2824,7 @@ def update_products_xml(json_datafile):
                                 "FailureTradeResult"]["Price"]
                         failure_trade_result.price = price
 
-                        # print("price", price)
+                        # #print("price", price)
                     except:
                         pass
                     try:
@@ -2834,7 +2834,7 @@ def update_products_xml(json_datafile):
                                 "Participants"]
                         lot_trade_result.participants = participants
 
-                        # print("Participants", participants)
+                        # #print("Participants", participants)
                     except:
                         pass
                     try:
@@ -2843,7 +2843,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "@Price"]
                         success_trade_result.price = price
-                        # print("Price", price)
+                        # #print("Price", price)
                     except:
                         pass
                     # winnerCompany
@@ -2862,7 +2862,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerCompany"]["@ShortName"]
                         winner_company.short_name = short_name
-                        # print("ShortName", short_name)
+                        # #print("ShortName", short_name)
                     except:
                         pass
                     try:
@@ -2871,7 +2871,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerCompany"]["@INN"]
                         winner_company.inn = inn
-                        # print("INN", inn)
+                        # #print("INN", inn)
                     except:
                         pass
                     try:
@@ -2880,7 +2880,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerCompany"]["@OGRN"]
                         winner_company.ogrn = ogrn
-                        # print("OGRN", ogrn)
+                        # #print("OGRN", ogrn)
                     except:
                         pass
                     try:
@@ -2889,7 +2889,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerCompany"]["@LegalAddress"]
                         winner_company.legal_address = legal_address
-                        # print("LegalAddress", legal_address)
+                        # #print("LegalAddress", legal_address)
                     except:
                         pass
                     try:
@@ -2898,7 +2898,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerCompany"]["@Phone"]
                         winner_company.phone = phone
-                        # print("Phone", phone)
+                        # #print("Phone", phone)
                     except:
                         pass
                     try:
@@ -2907,7 +2907,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerCompany"]["@PostAddress"]
                         winner_company.post_address = post_address
-                        # print("PostAddress", post_address)
+                        # #print("PostAddress", post_address)
                     except:
                         pass
                     try:
@@ -2916,7 +2916,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerCompany"]["@Email"]
                         winner_company.email = email
-                        # print("LegalAddress", email)
+                        # #print("LegalAddress", email)
                     except:
                         pass
                     # if winner_person.first_name is not None:
@@ -2930,7 +2930,7 @@ def update_products_xml(json_datafile):
                                 "SuccessTradeResult"]["Substantiation"]
                         success_trade_result.substantiation = substantiation
 
-                        # print("substantiation", substantiation)
+                        # #print("substantiation", substantiation)
                     except:
                         pass
                     try:
@@ -2940,7 +2940,7 @@ def update_products_xml(json_datafile):
                                 "ns1:SuccessTradeResult"]["Substantiation"]
                         success_trade_result.substantiation = substantiation
 
-                        # print("substantiation", substantiation)
+                        # #print("substantiation", substantiation)
                     except:
                         pass
 
@@ -2951,7 +2951,7 @@ def update_products_xml(json_datafile):
                                 "SuccessTradeResult"]["@Price"]
                         success_trade_result.price = price
 
-                        # print("price", price)
+                        # #print("price", price)
                     except:
                         pass
                     try:
@@ -2961,7 +2961,7 @@ def update_products_xml(json_datafile):
                                 "ns1:SuccessTradeResult"]["@Price"]
                         success_trade_result.price = price
 
-                        # print("price", price)
+                        # #print("price", price)
                     except:
                         pass
                     # try:
@@ -2970,13 +2970,13 @@ def update_products_xml(json_datafile):
                     #         success_trade_result.winner_person = winner_person
                     #         success_trade_result.save()
                     # except Exception as ex:
-                    #     #print(ex)
-                    #     #print("tradres")
+                    #     #pass
+                    #     ##print("tradres")
                     #     sleep(5)
                     # WinnerCompanyEnd
                     ##ParticipantPerson
 
-                    # print("Participant", i)
+                    # #print("Participant", i)
                     try:
                         first_name = \
                             envelope["SetBiddingResult"]["BiddingResult"][
@@ -2985,7 +2985,7 @@ def update_products_xml(json_datafile):
                                 "@FirstName"]
                         participant_person.first_name = first_name
 
-                        # print(first_name)
+                        # #print(first_name)
 
                     except:
                         pass
@@ -2997,7 +2997,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantPerson'][
                                 "@LastName"]
                         participant_person.last_name = last_name
-                        # print(last_name)
+                        # #print(last_name)
                     except:
                         pass
                     try:
@@ -3007,7 +3007,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantPerson'][
                                 "@MiddleName"]
                         participant_person.middle_name = middle_name
-                        # print(middle_name)
+                        # #print(middle_name)
                     except:
                         pass
                     try:
@@ -3017,7 +3017,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantPerson'][
                                 "@INN"]
                         participant_person.inn = inn
-                        # print(inn)
+                        # #print(inn)
                     except:
                         pass
                     try:
@@ -3027,7 +3027,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantPerson'][
                                 "@Address"]
                         participant_person.address = address
-                        # print(address)
+                        # #print(address)
                     except:
                         pass
                     try:
@@ -3037,7 +3037,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantPerson'][
                                 "@Phone"]
                         participant_person.phone = phone
-                        # print(phone)
+                        # #print(phone)
                     except:
                         pass
                     try:
@@ -3047,7 +3047,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantPerson'][
                                 "@Email"]
                         participant_person.email = email
-                        # print(email)
+                        # #print(email)
                     except:
                         pass
                     ##_
@@ -3058,9 +3058,9 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]["Participants"]["Participant"][
                                 'ParticipantCompany']["@FullName"]
                         participant_company.full_name = full_name
-                        print(full_name)
-                        print("F" * 50)
-                        # print(first_name)
+                        #print(full_name)
+                        #print("F" * 50)
+                        # #print(first_name)
 
                     except:
                         pass
@@ -3072,7 +3072,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantCompany'][
                                 "@ShortName"]
                         participant_company.short_name = short_name
-                        # print(last_name)
+                        # #print(last_name)
                     except:
                         pass
                     try:
@@ -3082,7 +3082,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantCompany'][
                                 "@INN"]
                         participant_company.inn = inn
-                        # print(middle_name)
+                        # #print(middle_name)
                     except:
                         pass
                     try:
@@ -3092,7 +3092,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantCompany'][
                                 "@OGRN"]
                         participant_company.ogrn = ogrn
-                        # print(inn)
+                        # #print(inn)
                     except:
                         pass
                     try:
@@ -3102,7 +3102,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantCompany'][
                                 "@LegalAddress"]
                         participant_company.legal_address = legal_address
-                        # print(address)
+                        # #print(address)
                     except:
                         pass
                     try:
@@ -3112,7 +3112,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantCompany'][
                                 "@PostAddress"]
                         participant_company.post_address = post_address
-                        # print(phone)
+                        # #print(phone)
                     except:
                         pass
                     try:
@@ -3122,7 +3122,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantCompany'][
                                 "@Phone"]
                         participant_company.phone = phone
-                        # print(phone)
+                        # #print(phone)
                     except:
                         pass
                     try:
@@ -3132,7 +3132,7 @@ def update_products_xml(json_datafile):
                                 'ParticipantCompany'][
                                 "@Email"]
                         participant_company.email = email
-                        # print(email)
+                        # #print(email)
                     except:
                         pass
                     ###########################
@@ -3143,7 +3143,7 @@ def update_products_xml(json_datafile):
                                 "BuyerPerson"]["@FirstName"]
                         buyer_person.first_name = first_name
                         # buyer_company.save()
-                        # print("BuyerCompany FullName", full_name)
+                        # #print("BuyerCompany FullName", full_name)
                     except:
                         pass
                     try:
@@ -3152,7 +3152,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['FailureTradeResult'][
                                 "BuyerPerson"]["@MiddleName"]
                         buyer_person.middle_name = middle_name
-                        # print("ShortName", short_name)
+                        # #print("ShortName", short_name)
                     except:
                         pass
                     try:
@@ -3161,7 +3161,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['FailureTradeResult'][
                                 "BuyerPerson"]["@LastName"]
                         buyer_person.last_name = last_name
-                        # print("ShortName", short_name)
+                        # #print("ShortName", short_name)
                     except:
                         pass
                     try:
@@ -3170,7 +3170,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['FailureTradeResult'][
                                 "BuyerPerson"]["@INN"]
                         buyer_person.inn = inn
-                        # print("INN", inn)
+                        # #print("INN", inn)
                     except:
                         pass
 
@@ -3180,7 +3180,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['FailureTradeResult'][
                                 "BuyerPerson"]["@Address"]
                         buyer_person.address = address
-                        # print("OGRN", ogrn)
+                        # #print("OGRN", ogrn)
                     except:
                         pass
                     ##
@@ -3191,7 +3191,7 @@ def update_products_xml(json_datafile):
                                 "BuyerCompany"]["@FullName"]
                         buyer_company.full_name = full_name
                         # buyer_company.save()
-                        # print("BuyerCompany FullName", full_name)
+                        # #print("BuyerCompany FullName", full_name)
                     except:
                         pass
                     try:
@@ -3200,7 +3200,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['FailureTradeResult'][
                                 "BuyerCompany"]["@ShortName"]
                         buyer_company.short_name = short_name
-                        # print("ShortName", short_name)
+                        # #print("ShortName", short_name)
                     except:
                         pass
                     try:
@@ -3209,7 +3209,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['FailureTradeResult'][
                                 "BuyerCompany"]["@INN"]
                         buyer_company.inn = inn
-                        # print("INN", inn)
+                        # #print("INN", inn)
                     except:
                         pass
                     try:
@@ -3237,7 +3237,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['FailureTradeResult'][
                                 "BuyerCompany"]["@OGRN"]
                         buyer_company.ogrn = ogrn
-                        # print("OGRN", ogrn)
+                        # #print("OGRN", ogrn)
                     except:
                         pass
                     try:
@@ -3246,7 +3246,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['FailureTradeResult'][
                                 "BuyerCompany"]["@LegalAddress"]
                         buyer_company.legal_address = legal_address
-                        # print("OGRN", ogrn)
+                        # #print("OGRN", ogrn)
                     except:
                         pass
 
@@ -3257,7 +3257,7 @@ def update_products_xml(json_datafile):
                     #             "TradeOrganizerPerson"][
                     #             "@FirstName"]
                     #     trade_organizer_person.first_name = first_name
-                    #     #print("TradeOrganizerFirstName", first_name)
+                    #     ##print("TradeOrganizerFirstName", first_name)
                     # except:
                     #     pass
                     # try:
@@ -3266,7 +3266,7 @@ def update_products_xml(json_datafile):
                     #             "TradeOrganizerPerson"][
                     #             "@LastName"]
                     #     trade_organizer_person.last_name = last_name
-                    #     #print("TradeOrganizerLastName", last_name)
+                    #     ##print("TradeOrganizerLastName", last_name)
                     # except:
                     #     pass
                     # try:
@@ -3275,7 +3275,7 @@ def update_products_xml(json_datafile):
                     #             "TradeOrganizerPerson"][
                     #             "@MiddleName"]
                     #     trade_organizer_person.middle_name = middle_name
-                    #     #print("TradeOrganizerMiddleName", middle_name)
+                    #     ##print("TradeOrganizerMiddleName", middle_name)
                     # except:
                     #     pass
                     # try:
@@ -3284,7 +3284,7 @@ def update_products_xml(json_datafile):
                     #             "TradeOrganizerPerson"][
                     #             "@INN"]
                     #     trade_organizer_person.inn = inn
-                    #     #print("TradeOrganizerINN", inn)
+                    #     ##print("TradeOrganizerINN", inn)
                     # except:
                     #     pass
                     # try:
@@ -3293,7 +3293,7 @@ def update_products_xml(json_datafile):
                     #             "TradeOrganizerPerson"][
                     #             "@SNILS"]
                     #     trade_organizer_person.snils = snils
-                    #     #print("TradeOrganizerSnils", snils)
+                    #     ##print("TradeOrganizerSnils", snils)
                     # except:
                     #     pass
                     # #_________
@@ -3304,7 +3304,7 @@ def update_products_xml(json_datafile):
                                 "@FullName"]
                         debtor_company.full_name = full_name
 
-                        # print("DebtorCompanyFullName", full_name)
+                        # #print("DebtorCompanyFullName", full_name)
                     except:
                         pass
                     try:
@@ -3313,7 +3313,7 @@ def update_products_xml(json_datafile):
                                 "ns1:DebtorPerson"][
                                 "@ShortName"]
                         debtor_company.short_name = short_name
-                        # print("DebtorCompanyShortName", short_name)
+                        # #print("DebtorCompanyShortName", short_name)
                     except:
                         pass
 
@@ -3323,7 +3323,7 @@ def update_products_xml(json_datafile):
                                 "ns1:DebtorCompany"][
                                 "@INN"]
                         debtor_company.inn = inn
-                        # print("DebtorPersonINN", inn)
+                        # #print("DebtorPersonINN", inn)
                     except:
                         pass
                     try:
@@ -3332,7 +3332,7 @@ def update_products_xml(json_datafile):
                                 "ns1:DebtorCompany"][
                                 "@OGRN"]
                         debtor_company.ogrn = ogrn
-                        # print("DebtorOGRN", ogrn)
+                        # #print("DebtorOGRN", ogrn)
                     except:
                         pass
 
@@ -3342,7 +3342,7 @@ def update_products_xml(json_datafile):
                                 "ns1:DebtorPerson"][
                                 "@FirstName"]
                         debtor_person.first_name = first_name
-                        # print("DebtorPersonFirsName", first_name)
+                        # #print("DebtorPersonFirsName", first_name)
                         # sleep()
                     except:
                         pass
@@ -3352,7 +3352,7 @@ def update_products_xml(json_datafile):
                                 "ns1:DebtorPerson"][
                                 "@LastName"]
                         debtor_person.last_name = last_name
-                        # print("DebtorPersonLastName", last_name)
+                        # #print("DebtorPersonLastName", last_name)
                     except:
                         pass
                     try:
@@ -3361,7 +3361,7 @@ def update_products_xml(json_datafile):
                                 "ns1:DebtorPerson"][
                                 "@MiddleName"]
                         debtor_person.middle_name = middle_name
-                        # print("DebtorPersonMiddleName", middle_name)
+                        # #print("DebtorPersonMiddleName", middle_name)
                     except:
                         pass
                     try:
@@ -3370,7 +3370,7 @@ def update_products_xml(json_datafile):
                                 "ns1:DebtorPerson"][
                                 "@INN"]
                         debtor_person.inn = inn
-                        # print("DebtorPersonINN", inn)
+                        # #print("DebtorPersonINN", inn)
                     except:
                         pass
                     try:
@@ -3379,7 +3379,7 @@ def update_products_xml(json_datafile):
                                 "ns1:DebtorPerson"][
                                 "@SNILS"]
                         debtor_person.snils = snils
-                        # print("DebtorPersonSNILS", snils)
+                        # #print("DebtorPersonSNILS", snils)
 
                     except:
                         pass
@@ -3392,17 +3392,17 @@ def update_products_xml(json_datafile):
 
                         winner_person.first_name = first_name
                         # winner_person.save()
-                        # print("FirstName--------------", first_name)
+                        # #print("FirstName--------------", first_name)
                     except KeyError as ex:
-                        print(ex)
-                        # print("except firstName")
+                        pass
+                        # #print("except firstName")
                     try:
                         middle_name = \
                             envelope["SetBiddingResult"]["BiddingResult"][
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerPerson"]["@MiddleName"]
                         winner_person.middle_name = middle_name
-                        # print("MiddleName---------", middle_name)
+                        # #print("MiddleName---------", middle_name)
                     except:
                         pass
                     try:
@@ -3411,7 +3411,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerPerson"]["@LastName"]
                         winner_person.last_name = last_name
-                        # print("LastName------------", last_name)
+                        # #print("LastName------------", last_name)
                     except:
                         pass
                     try:
@@ -3420,7 +3420,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerPerson"]["@INN"]
                         winner_person.inn = inn_person
-                        # print("INN", inn_person)
+                        # #print("INN", inn_person)
                     except:
                         pass
                     try:
@@ -3429,7 +3429,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerPerson"]["@Address"]
                         winner_person.address = address
-                        # print("Address", address)
+                        # #print("Address", address)
                     except:
                         pass
                     try:
@@ -3438,7 +3438,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerPerson"]["@Phone"]
                         winner_person.phone = phone
-                        # print("Phone", phone)
+                        # #print("Phone", phone)
                     except:
                         pass
 
@@ -3448,7 +3448,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerPerson"]["@Email"]
                         winner_person.email = email
-                        # print("Email", email)
+                        # #print("Email", email)
                     except:
                         pass
                     try:
@@ -3457,10 +3457,10 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['SuccessTradeResult'][
                                 "WinnerPerson"]["@SNILS"]
                         winner_person.snils = snils
-                        # print("Email", email)
+                        # #print("Email", email)
                     except:
                         pass
-                    # print("Winner")
+                    # #print("Winner")
                     try:
                         first_name = \
                             envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
@@ -3469,15 +3469,15 @@ def update_products_xml(json_datafile):
 
                         winner_person.first_name = first_name
                     except KeyError as ex:
-                        print(ex)
-                        # print("except firstName")
+                        pass
+                        # #print("except firstName")
                     try:
                         middle_name = \
                             envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
                                 "ns1:LotList"]["ns1:LotTradeResult"]['ns1:SuccessTradeResult'][
                                 "ns1:WinnerPerson"]["@MiddleName"]
                         winner_person.middle_name = middle_name
-                        # print("MiddleName---------", middle_name)
+                        # #print("MiddleName---------", middle_name)
                     except:
                         pass
                     try:
@@ -3486,7 +3486,7 @@ def update_products_xml(json_datafile):
                                 "ns1:LotList"]["ns1:LotTradeResult"]['ns1:SuccessTradeResult'][
                                 "ns1:WinnerPerson"]["@LastName"]
                         winner_person.last_name = last_name
-                        # print("LastName------------", last_name)
+                        # #print("LastName------------", last_name)
                     except:
                         pass
                     try:
@@ -3495,7 +3495,7 @@ def update_products_xml(json_datafile):
                                 "ns1:LotList"]["ns1:LotTradeResult"]['ns1:SuccessTradeResult'][
                                 "ns1:WinnerPerson"]["@INN"]
                         winner_person.inn = inn_person
-                        # print("INN", inn_person)
+                        # #print("INN", inn_person)
                     except:
                         pass
                     try:
@@ -3504,7 +3504,7 @@ def update_products_xml(json_datafile):
                                 "ns1:LotList"]["ns1:LotTradeResult"]['ns1:SuccessTradeResult'][
                                 "ns1:WinnerPerson"]["@Address"]
                         winner_person.address = address
-                        # print("Address", address)
+                        # #print("Address", address)
                     except:
                         pass
                     try:
@@ -3513,7 +3513,7 @@ def update_products_xml(json_datafile):
                                 "ns1:LotList"]["ns1:LotTradeResult"]['ns1:SuccessTradeResult'][
                                 "ns1:WinnerPerson"]["@Phone"]
                         winner_person.phone = phone
-                        # print("Phone", phone)
+                        # #print("Phone", phone)
                     except:
                         pass
                     try:
@@ -3522,7 +3522,7 @@ def update_products_xml(json_datafile):
                                 "ns1:CloseForm"][
                                 "@TimeResult"]
                         close_form.time_result = time_result
-                        # print("TimeBegin", time_result)
+                        # #print("TimeBegin", time_result)
                     except:
                         pass
                     try:
@@ -3530,7 +3530,7 @@ def update_products_xml(json_datafile):
                             envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["OpenForm"][
                                 "@TimeBegin"]
                         open_form.time_begin = time_begin
-                        # print("TimeBegin", time_begin)
+                        # #print("TimeBegin", time_begin)
                     except:
                         pass
                     try:
@@ -3538,7 +3538,7 @@ def update_products_xml(json_datafile):
                             envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["CloseForm"][
                                 "@TimeResult"]
                         close_form.time_result = time_result
-                        # print("TimeBegin", time_result)
+                        # #print("TimeBegin", time_result)
                     except:
                         pass
 
@@ -3548,7 +3548,7 @@ def update_products_xml(json_datafile):
                                 "ns1:OpenForm"][
                                 "@TimeEnd"]
                         open_form.time_end = time_end
-                        # print("TimeBegin", time_end)
+                        # #print("TimeBegin", time_end)
                     except:
                         pass
                     try:
@@ -3557,7 +3557,7 @@ def update_products_xml(json_datafile):
                                 "ns1:LotList"]["ns1:LotTradeResult"]['ns1:SuccessTradeResult'][
                                 "ns1:WinnerPerson"]["@Email"]
                         winner_person.email = email
-                        # print("Email", email)
+                        # #print("Email", email)
                     except:
                         pass
                     try:
@@ -3566,7 +3566,7 @@ def update_products_xml(json_datafile):
                                 "ns1:LotList"]["ns1:LotTradeResult"]['ns1:SuccessTradeResult'][
                                 "ns1:WinnerPerson"]["@SNILS"]
                         winner_person.snils = snils
-                        # print("Email", email)
+                        # #print("Email", email)
                     except:
                         pass
                     try:
@@ -3575,7 +3575,7 @@ def update_products_xml(json_datafile):
                                 "ns1:LotList"]["ns1:LotTradeResult"]['ns1:SuccessTradeResult'][
                                 "ns1:WinnerPerson"]["@OGRNIP"]
                         winner_person.ogrnip = ogrnip
-                        # print("Email", email)
+                        # #print("Email", email)
                     except:
                         pass
 
@@ -3585,7 +3585,7 @@ def update_products_xml(json_datafile):
                         for i in range(len(
                                 envelope["SetBiddingResult"]["BiddingResult"]["LotList"]["LotTradeResult"][
                                     "Participants"]["Participant"])):
-                            # print("Participant", i)
+                            # #print("Participant", i)
                             try:
                                 first_name = \
                                     envelope["SetBiddingResult"]["BiddingResult"][
@@ -3593,7 +3593,7 @@ def update_products_xml(json_datafile):
                                         'ParticipantPerson'][
                                         "@FirstName"]
                                 participant_person.first_name = first_name
-                                # print(first_name)
+                                # #print(first_name)
 
                             except:
                                 pass
@@ -3605,7 +3605,7 @@ def update_products_xml(json_datafile):
                                         'ParticipantPerson'][
                                         "@LastName"]
                                 participant_person.last_name = last_name
-                                # print(last_name)
+                                # #print(last_name)
                             except:
                                 pass
                             try:
@@ -3615,7 +3615,7 @@ def update_products_xml(json_datafile):
                                         'ParticipantPerson'][
                                         "@MiddleName"]
                                 participant_person.middle_name = middle_name
-                                # print(middle_name)
+                                # #print(middle_name)
                             except:
                                 pass
                             try:
@@ -3625,7 +3625,7 @@ def update_products_xml(json_datafile):
                                         'ParticipantPerson'][
                                         "@INN"]
                                 participant_person.inn = inn
-                                # print(inn)
+                                # #print(inn)
                             except:
                                 pass
                             try:
@@ -3635,7 +3635,7 @@ def update_products_xml(json_datafile):
                                         'ParticipantPerson'][
                                         "@Address"]
                                 participant_person.address = address
-                                # print(address)
+                                # #print(address)
                             except:
                                 pass
                             try:
@@ -3645,7 +3645,7 @@ def update_products_xml(json_datafile):
                                         'ParticipantPerson'][
                                         "@Phone"]
                                 participant_person.phone = phone
-                                # print(phone)
+                                # #print(phone)
                             except:
                                 pass
                             try:
@@ -3655,7 +3655,7 @@ def update_products_xml(json_datafile):
                                         'ParticipantPerson'][
                                         "@Email"]
                                 participant_person.email = email
-                                # print(email)
+                                # #print(email)
                             except:
                                 pass
                             # ===============================
@@ -3668,7 +3668,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]["Participants"]["Participant"]['ParticipantPerson'][
                                 "@FirstName"]
                         participant_person.first_name = first_name
-                        # print(first_name)
+                        # #print(first_name)
 
                     except:
                         pass
@@ -3679,7 +3679,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]["Participants"]["Participant"]['ParticipantPerson'][
                                 "@LastName"]
                         participant_person.last_name = last_name
-                        # print(last_name)
+                        # #print(last_name)
                     except:
                         pass
                     try:
@@ -3688,7 +3688,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]["Participants"]["Participant"]['ParticipantPerson'][
                                 "@MiddleName"]
                         participant_person.middle_name = middle_name
-                        # print(middle_name)
+                        # #print(middle_name)
                     except:
                         pass
                     try:
@@ -3697,7 +3697,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]["Participants"]["Participant"]['ParticipantPerson'][
                                 "@INN"]
                         participant_person.inn = inn
-                        # print(inn)
+                        # #print(inn)
                     except:
                         pass
                     try:
@@ -3706,7 +3706,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]["Participants"]["Participant"]['ParticipantPerson'][
                                 "@Address"]
                         participant_person.address = address
-                        # print(address)
+                        # #print(address)
                     except:
                         pass
                     try:
@@ -3715,7 +3715,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]["Participants"]["Participant"]['ParticipantPerson'][
                                 "@Phone"]
                         participant_person.phone = phone
-                        # print(phone)
+                        # #print(phone)
                     except:
                         pass
                     try:
@@ -3724,14 +3724,14 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]["Participants"]["Participant"]['ParticipantPerson'][
                                 "@Email"]
                         participant_person.email = email
-                        # print(email)
+                        # #print(email)
                     except:
                         pass
                     # _____________________________________________________-
                     try:
                         lot_number = envelope["SetBiddingFail"]["BiddingFail"][
                             "LotList"]["BiddingStateLotInfo"]["@LotNumber"]
-                        # print("LotNumber", lot_number)
+                        # #print("LotNumber", lot_number)
                         bidding_state_lot_info.lot_number = lot_number
 
                     except:
@@ -3739,7 +3739,7 @@ def update_products_xml(json_datafile):
                     try:
                         reason = envelope["SetBiddingFail"]["BiddingFail"][
                             "LotList"]["BiddingStateLotInfo"]["@Reason"]
-                        # print("Reason", reason)
+                        # #print("Reason", reason)
                         bidding_state_lot_info.reason = reason
 
                     except:
@@ -3747,29 +3747,29 @@ def update_products_xml(json_datafile):
                     try:
                         for lottraderesult in envelope["SetBiddingResult"]["BiddingResult"]["LotList"][
                             "LotTradeResult"]:
-                            # #print(j)
+                            # ##print(j)
                             # for i in///// range(len(
                             #         envelope["soap:Body"]["SetBiddingResult"]["BiddingResult"]["LotList"]["LotTradeResult"][
                             #             "Participants"]["Participant"])):
-                            # #print("Participant", i)
+                            # ##print("Participant", i)
                             try:
                                 lot_number = lottraderesult["@LotNumber"]
                                 lot_trade_result.lot_number = lot_number
-                                # print("LotNumber", lot_number)
+                                # #print("LotNumber", lot_number)
 
                             except:
                                 pass
                             try:
                                 price = lottraderesult["SuccessTradeResult"]["@Price"]
                                 success_trade_result.price = price
-                                # print("Price", price)
+                                # #print("Price", price)
 
                             except:
                                 pass
                             try:
                                 price = lottraderesult["ns1:SuccessTradeResult"]["@Price"]
                                 success_trade_result.price = price
-                                # print("Price", price)
+                                # #print("Price", price)
 
                             except:
                                 pass
@@ -3779,7 +3779,7 @@ def update_products_xml(json_datafile):
                                 first_name = lottraderesult["SuccessTradeResult"]["WinnerPerson"]["@FirstName"]
                                 winner_person.first_name = first_name
                                 # winner_person.save()
-                                # print(first_name, "winner")
+                                # #print(first_name, "winner")
 
 
                             except:
@@ -3790,7 +3790,7 @@ def update_products_xml(json_datafile):
                                     lottraderesult["SuccessTradeResult"]["WinnerPerson"][
                                         "@LastName"]
                                 winner_person.last_name = last_name
-                                # print(last_name)
+                                # #print(last_name)
                             except:
                                 pass
                             try:
@@ -3798,7 +3798,7 @@ def update_products_xml(json_datafile):
                                     lottraderesult["SuccessTradeResult"]["WinnerPerson"][
                                         "@MiddleName"]
                                 winner_person.middle_name = middle_name
-                                # print(middle_name)
+                                # #print(middle_name)
                             except:
                                 pass
                             try:
@@ -3806,7 +3806,7 @@ def update_products_xml(json_datafile):
                                     lottraderesult["SuccessTradeResult"]["WinnerPerson"][
                                         "@INN"]
                                 winner_person.inn = inn
-                                # print(inn)
+                                # #print(inn)
                             except:
                                 pass
                             try:
@@ -3814,7 +3814,7 @@ def update_products_xml(json_datafile):
                                     lottraderesult["SuccessTradeResult"]["WinnerPerson"][
                                         "@Address"]
                                 winner_person.address = address
-                                # print(address)
+                                # #print(address)
                             except:
                                 pass
                             try:
@@ -3822,7 +3822,7 @@ def update_products_xml(json_datafile):
                                     lottraderesult["SuccessTradeResult"]["WinnerPerson"][
                                         "@Phone"]
                                 winner_person.phone = phone
-                                # print(phone)
+                                # #print(phone)
                             except:
                                 pass
                             try:
@@ -3830,7 +3830,7 @@ def update_products_xml(json_datafile):
                                     lottraderesult["SuccessTradeResult"]["WinnerPerson"][
                                         "@Email"]
                                 winner_person.email = email
-                                # print(email)
+                                # #print(email)
                             except:
                                 pass
 
@@ -3838,28 +3838,28 @@ def update_products_xml(json_datafile):
                             #     if winner_person.first_name:
                             #         winner_person.save(zzz)
                             #         success_trade_result.winner_person = winner_person
-                            #         print("pre save")
-                            #         print(success_trade_result)
+                            #         #print("pre save")
+                            #         #print(success_trade_result)
                             #         success_trade_result.save()
-                            #         print(success_trade_result.pk)
-                            #         print("after save")
-                            #         print(">"*50)
+                            #         #print(success_trade_result.pk)
+                            #         #print("after save")
+                            #         #print(">"*50)
                             # except Exception as ex:
-                            #     print(ex)
-                            #     print("E"*50)
-                            try:
-                                print(lottraderesult["Participants"])
-                            except:
-                                pass
+                            #     pass
+                            #     #print("E"*50)
+                            # try:
+                            #     #print(lottraderesult["Participants"])
+                            # except:
+                            #     pass
                             try:
 
                                 first_name = lottraderesult["SuccessTradeResult"]["Participants"]["Participant"][
                                     "ParticipantPerson"]["@FirstName"]
                                 participant_person.first_name = first_name
-                                # print(first_name, "Participant ")
+                                # #print(first_name, "Participant ")
 
                             except:
-                                print("404 participant")
+                                pass
 
                             try:
                                 last_name = \
@@ -3867,7 +3867,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@LastName"]
                                 participant_person.last_name = last_name
-                                # print(last_name)
+                                # #print(last_name)
                             except:
                                 pass
                             try:
@@ -3876,7 +3876,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@MiddleName"]
                                 participant_person.middle_name = middle_name
-                                # print(middle_name)
+                                # #print(middle_name)
                             except:
                                 pass
                             try:
@@ -3885,7 +3885,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@INN"]
                                 participant_person.inn = inn
-                                # print(inn)
+                                # #print(inn)
                             except:
                                 pass
                             try:
@@ -3894,7 +3894,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@Address"]
                                 participant_person.address = address
-                                # print(address)
+                                # #print(address)
                             except:
                                 pass
                             try:
@@ -3903,7 +3903,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@Phone"]
                                 participant_person.phone = phone
-                                # print(phone)
+                                # #print(phone)
                             except:
                                 pass
                             try:
@@ -3912,7 +3912,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@Email"]
                                 participant_person.email = email
-                                # print(email)
+                                # #print(email)
                             except:
                                 pass
                             # ===============================
@@ -3921,10 +3921,10 @@ def update_products_xml(json_datafile):
                                 first_name = lottraderesult["Participants"]["Participant"][
                                     "ParticipantPerson"]["@FirstName"]
                                 participant_person.first_name = first_name
-                                # print(first_name, "Participant ")
+                                # #print(first_name, "Participant ")
 
                             except:
-                                print("404 participant")
+                                pass
 
                             try:
                                 last_name = \
@@ -3932,7 +3932,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@LastName"]
                                 participant_person.last_name = last_name
-                                # print(last_name)
+                                # #print(last_name)
                             except:
                                 pass
                             try:
@@ -3941,7 +3941,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@MiddleName"]
                                 participant_person.middle_name = middle_name
-                                # print(middle_name)
+                                # #print(middle_name)
                             except:
                                 pass
                             try:
@@ -3950,7 +3950,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@INN"]
                                 participant_person.inn = inn
-                                # print(inn)
+                                # #print(inn)
                             except:
                                 pass
                             try:
@@ -3959,7 +3959,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@Address"]
                                 participant_person.address = address
-                                # print(address)
+                                # #print(address)
                             except:
                                 pass
                             try:
@@ -3968,7 +3968,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@Phone"]
                                 participant_person.phone = phone
-                                # print(phone)
+                                # #print(phone)
                             except:
                                 pass
                             try:
@@ -3977,7 +3977,7 @@ def update_products_xml(json_datafile):
                                         "ParticipantPerson"][
                                         "@Email"]
                                 participant_person.email = email
-                                # print(email)
+                                # #print(email)
                             except:
                                 pass
 
@@ -3991,7 +3991,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotStatistic"][
                                 "@AcceptCount"]
                         lot_statistic.accept_count = accept_count
-                        # print("accept_count", accept_count)
+                        # #print("accept_count", accept_count)
                     except:
                         pass
                     try:
@@ -4000,7 +4000,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotStatistic"][
                                 "@EntryCount"]
                         lot_statistic.entry_count = entry_count
-                        # print("EntryCount", entry_count)
+                        # #print("EntryCount", entry_count)
                     except:
                         pass
                     try:
@@ -4009,7 +4009,7 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotStatistic"]["ApplicationList"]["ApplicationData"]["@Result"]
                         application_dataa.result = result
 
-                        # print("result", result)
+                        # #print("result", result)
                     except:
                         pass
 
@@ -4022,7 +4022,7 @@ def update_products_xml(json_datafile):
                     #             result = result[i]["@Result"]
                     #             application_dataa.result = result
                     #             application_dataa.save()
-                    #     #print("result", result)
+                    #     ##print("result", result)
                     #
                     # except:
                     #     pass
@@ -4030,11 +4030,11 @@ def update_products_xml(json_datafile):
                         filename = envelope["SetBiddingInvitation"][
                             "BiddingInvitation"]["TradeInfo"]["Attach"]["FileName"]
                         attach.file_name = filename
-                        print(filename)
-                        # print("FileName", filename)
+                        #print(filename)
+                        # #print("FileName", filename)
 
                     except Exception as ex:
-                        print(ex)
+                        pass
 
                     try:
                         Type = envelope["SetBiddingInvitation"][
@@ -4052,7 +4052,7 @@ def update_products_xml(json_datafile):
                         filename = envelope["SetBiddingInvitation"][
                             "BiddingInvitation"]["Attach"]["FileName"]
                         attach.file_name = filename
-                        # print("FileName", filename)
+                        # #print("FileName", filename)
 
                     except:
                         pass
@@ -4081,20 +4081,20 @@ def update_products_xml(json_datafile):
                         filename = \
                             envelope["SetBiddingResult"]["BiddingResult"][
                                 "Attach"]["FileName"]
-                        # print(envelope["SetBiddingResult"]["BiddingResult"])
+                        # #print(envelope["SetBiddingResult"]["BiddingResult"])
                         attach.file_name = filename
 
-                        # print("filename", filename)
+                        # #print("filename", filename)
                     except:
                         pass
                     try:
                         filename = \
                             envelope["SetBiddingResult"]["BiddingResult"]["TradeInfo"][
                                 "Attach"]["FileName"]
-                        print("filename", filename)
+                        #print("filename", filename)
                         attach.file_name = filename
 
-                        # print("filename", filename)
+                        # #print("filename", filename)
                     except:
                         pass
                     try:
@@ -4103,7 +4103,7 @@ def update_products_xml(json_datafile):
                                 "Attach"]["Type"]
                         attach.type = Type
 
-                        # print("Type", Type)
+                        # #print("Type", Type)
 
                     except:
                         pass
@@ -4114,7 +4114,7 @@ def update_products_xml(json_datafile):
                                 "Attach"]["Type"]
                         attach.type = Type
 
-                        # print("Type", Type)
+                        # #print("Type", Type)
                     except:
                         pass
                     try:
@@ -4123,7 +4123,7 @@ def update_products_xml(json_datafile):
                                 "Attach"]["Type"]
                         attach.type = Type
 
-                        # print("Type", Type)
+                        # #print("Type", Type)
                     except:
                         pass
                     try:
@@ -4132,7 +4132,7 @@ def update_products_xml(json_datafile):
                                 "Attach"]["Blob"]
                         attach.blob = Blob
                         # attach.save()
-                        # #print("Blob", Blob)
+                        # ##print("Blob", Blob)
                     except:
                         pass
                     try:
@@ -4140,7 +4140,7 @@ def update_products_xml(json_datafile):
                             envelope["SetBiddingResult"]["BiddingResult"][
                                 "Attach"]["Blob"]
                         attach.blob = Blob
-                        # #print("Blob", Blob)
+                        # ##print("Blob", Blob)
                     except:
                         pass
                     try:
@@ -4148,14 +4148,14 @@ def update_products_xml(json_datafile):
                             envelope["SetBiddingResult"]["BiddingResult"]["TradeInfo"][
                                 "Attach"]["Blob"]
                         attach.blob = Blob
-                        # #print("Blob", Blob)
+                        # ##print("Blob", Blob)
                     except:
                         pass
                     try:
                         filename = envelope["SetBiddingFail"][
                             "BiddingFail"]["Attach"]["FileName"]
                         attach.file_name = filename
-                        # print("FileName", filename)
+                        # #print("FileName", filename)
 
                     except:
                         pass
@@ -4179,11 +4179,11 @@ def update_products_xml(json_datafile):
                     try:
                         if buyer_company.full_name is not None:
                             buyer_company.save()
-                            print(buyer_company)
-                            print(">" * 50)
+                            #print(buyer_company)
+                            #print(">" * 50)
                     except Exception as ex:
-                        print(ex)
-                        print(">" * 50)
+                        pass
+                        #print(">" * 50)
 
                     try:
                         if success_trade_result.price is not None:
@@ -4196,7 +4196,7 @@ def update_products_xml(json_datafile):
                             success_trade_result.save()
                     except:
                         pass
-                    # print("?"*50)
+                    # #print("?"*50)
                     try:
                         if attach.file_name is not None:
                             attach.save()
@@ -4207,8 +4207,8 @@ def update_products_xml(json_datafile):
                             # failure_trade_result.buyer_company = buyer_company
                             failure_trade_result.save()
                     except Exception as ex:
-                        print(ex)
-                        print("SAVE" * 50)
+                        pass
+                        #print("SAVE" * 50)
                     try:
                         if application.time_begin is not None:
                             application.save()
@@ -4229,14 +4229,14 @@ def update_products_xml(json_datafile):
                             participant_company.save()
                             participant.participant_company = participant_company
                             participant.save()
-                            print("0" * 50)
-                            print(type(participant))
+                            #print("0" * 50)
+                            #print(type(participant))
 
                             participants_model.participant = participant
                             participants_model.save()
                     except Exception as ex:
-                        print(ex)
-                        print("$" * 50)
+                        pass
+                        #print("$" * 50)
                     try:
                         if application_dataa.result is not None:
                             application_dataa.save()
@@ -4257,13 +4257,13 @@ def update_products_xml(json_datafile):
                         pass
                     try:
                         if step_price_model.nil is not None:
-                            print(step_price_model)
-                            print("<" * 50)
+                            #print(step_price_model)
+                            #print("<" * 50)
                             step_price_model.save()
                             lot.step_price = step_price_model
                     except Exception as ex:
-                        print(ex)
-                        print("<" * 50)
+                        pass
+                        #print("<" * 50)
                     try:
                         if debtor_company.full_name is not None:
                             debtor_company.save()
@@ -4277,8 +4277,8 @@ def update_products_xml(json_datafile):
                             lot_list.lot_info = lot_info
                             lot_list.save()
                     except Exception as ex:
-                        print(ex)
-                        print("lotlist" * 60)
+                        pass
+                        #print("lotlist" * 60)
                     try:
                         if lot.lot_number:
                             lot.save()
@@ -4343,12 +4343,12 @@ def update_products_xml(json_datafile):
                     except:
                         pass
 
-                    # #print(bidding_fail)
-                    # #print("create bidding fail in list")
+                    # ##print(bidding_fail)
+                    # ##print("create bidding fail in list")
                     # sleep(5)
                     # success_trade_result.save()
 
-                    # print("SUCCESSTRADE")
+                    # #print("SUCCESSTRADE")
                     # sleep(5)
                     try:
                         if bidding_proccess_info.trade_id is not None:
@@ -4440,10 +4440,10 @@ def update_products_xml(json_datafile):
 
                     except:
                         pass
-                        # print( "in LIST")
+                        # #print( "in LIST")
                         # sleep(5
                         # )
-                        # print("^" * 50)
+                        # #print("^" * 50)
 
                         # body.set_bidding_proccess_info = set_bidding_proccess_info
                         # body.set_bidding_fail = set_bidding_fail
@@ -4461,10 +4461,10 @@ def update_products_xml(json_datafile):
                     #     body.set_application_session_statistic = set_application_session_statistic
                     # except:
                     #     pass
-                    print("*" * 50)
-                    print(body)
+                    #print("*" * 50)
+                    #print(body)
                     body.save()
-                    print(body)
+                    #print(body)
 
                     envelope_model.body = body
                     envelope_model.save()
@@ -4487,13 +4487,13 @@ def update_products_xml(json_datafile):
 
 
         except Exception as ex:
-            print(ex)
-            print('From list')
-        # print("END OF")
+            pass
+            #print('From list')
+        # #print("END OF")
         # sleep(5)
 
     # for msg_data in data_json["MessageList"]["MessageData"]:
-    #     print(msg_data,"0 dc")
+    #     #print(msg_data,"0 dc")
 
 
     try:
@@ -4666,9 +4666,9 @@ def update_products_xml(json_datafile):
                 change_auction = ChangeAuction()
                 message_types = MessageTypes()
                 # classifier_collection = Classifi
-                # print(msg_data.keys())
-                # print(msg_data["Id"])
-                print(msg_data)
+                # #print(msg_data.keys())
+                # #print(msg_data["Id"])
+                #print(msg_data)
                 try:
                     message_data.id_message_data = msg_data["Id"]
                 except:
@@ -4680,11 +4680,11 @@ def update_products_xml(json_datafile):
                 try:
                     message_data.case_number = msg_data["CaseNumber"]
                 except Exception as ex:
-                    print(ex)
-                    print("ex"*50)
+                    pass
+                    #print("ex"*50)
 
                 xsi_type = msg_data["Publisher"]["@xsi:type"]
-                print(xsi_type)
+                #print(xsi_type)
                 if xsi_type == "Publisher.ArbitrManager.v2":
                     try:
                         publisher_arbitr_manager_v2.inn = msg_data["Publisher"]["Inn"]
@@ -4735,8 +4735,8 @@ def update_products_xml(json_datafile):
                     try:
                         publisher_arbitr_manager_sro_v2.name = msg_data["Publisher"]["Name"]
                     except Exception as ex:
-                        print("#"*50)
-                        print(ex)
+                        #print("#"*50)
+                        pass
                     try:
                         publisher_arbitr_manager_sro_v2.ogrn = msg_data["Publisher"]["Ogrn"]
                     except:
@@ -5153,8 +5153,8 @@ def update_products_xml(json_datafile):
                     try:
                         meeting.text = msg_data["MessageInfo"]["Meeting"]["Text"]
                     except Exception as ex:
-                        print("^"*50)
-                        print(ex)
+                        #print("^"*50)
+                        pass
                     try:
                         meeting.meeting_date = msg_data["MessageInfo"]["Meeting"]["MeetingDate"]
                     except:
@@ -5550,7 +5550,7 @@ def update_products_xml(json_datafile):
                             "Director"]["SRO"]["INN"]
                     except:
                         pass
-                print("*"*50)
+                #print("*"*50)
 
                 if message_info.message_type == "ChangeAdministration":
                     try:
@@ -5638,8 +5638,8 @@ def update_products_xml(json_datafile):
                         pass
 
                 #
-                print("_"*50)
-                print(message_info.message_type)
+                #print("_"*50)
+                #print(message_info.message_type)
                 if message_info.message_type == "TerminationAdministration":
                     try:
                         termination_administration.text = msg_data["MessageInfo"]["TerminationAdministration"]["Text"]
@@ -5733,7 +5733,7 @@ def update_products_xml(json_datafile):
                             "Director"]["SRO"]["INN"]
                     except:
                         pass
-                print("-"*50)
+                #print("-"*50)
                 if message_info.message_type == "BeginExecutoryProcess":
                     try:
                         begin_executory_process.text = msg_data["MessageInfo"]["BeginExecutoryProcess"]["Text"]
@@ -5749,7 +5749,7 @@ def update_products_xml(json_datafile):
                             "NumberExecutoryProcess"]
                     except:
                         pass
-                #printed
+                ##printed
                 if message_info.message_type == "TransferAssertsForImplementation":
                     try:
                         transfer_assert_for_implementation.text = msg_data["MessageInfo"]["TransferAssertsForImplementation"][
@@ -5797,7 +5797,7 @@ def update_products_xml(json_datafile):
                         property_evaluation_report.text = msg_data["MessageInfo"]["PropertyEvaluationReport"]["Text"]
                     except:
                         pass
-                #printed
+                ##printed
                 if message_info.message_type == "SaleContractResult":
                     try:
                         sale_contract_result.text = msg_data["MessageInfo"]["SaleContractResult"]["Text"]
@@ -5849,7 +5849,7 @@ def update_products_xml(json_datafile):
                             "Inn"]
                     except:
                         pass
-                print("\\" * 50)
+                #print("\\" * 50)
                 try:
                     if message_info.message_type == "SaleContractResult2":
                         try:
@@ -5951,7 +5951,7 @@ def update_products_xml(json_datafile):
                         except:
                             pass
                 except Exception as ex:
-                    print(ex)
+                    pass
 
                 if message_info.message_type == "Committee":
                     try:
@@ -5972,7 +5972,7 @@ def update_products_xml(json_datafile):
                         other.text = msg_data["MessageInfo"]["Other"]["Text"]
                     except:
                         pass
-                #not printed
+                #not #printed
                 if message_info.message_type == "SaleOrderPledgedProperty":
                     try:
                         sale_order_pledged_property.text = msg_data["MessageInfo"]["SaleOrderPledgedProperty"]["Text"]
@@ -6020,7 +6020,7 @@ def update_products_xml(json_datafile):
                         except:
                             pass
                 except Exception as ex:
-                    print(ex)
+                    pass
                 if message_info.message_type == "DemandAnnouncement":
                     try:
                         other.text = msg_data["MessageInfo"]["Other"]["Text"]
@@ -7725,7 +7725,7 @@ def update_products_xml(json_datafile):
                 bankrupt_type = msg_data["Bankrupt"]["@xsi:type"]
                 # bankrupt_info.bankrupt_type = bankrupt_type
                 bankrupt.bankrupt = bankrupt_type
-                print(bankrupt_type)
+                # #print(bankrupt_type)
                 if bankrupt_type == "Bankrupt.Company.v2":
                     try:
                         bankrupt_company_v2.name =  msg_data["Bankrupt"]["Name"]
@@ -7815,13 +7815,13 @@ def update_products_xml(json_datafile):
                     file_info.name = msg_data["FileInfoList"]["FileInfo"]["Name"]
                     file_info.hash = msg_data["FileInfoList"]["FileInfo"]["Hash"]
                 except Exception as ex:
-                    print(ex)
+                    pass
                 else:
                     try:
                         file_info.name = msg_data["FileInfoList"]["FileInfo"][0]["Name"]
                         file_info.hash = msg_data["FileInfoList"]["FileInfo"][0]["Hash"]
                     except Exception as ex:
-                        print(ex)
+                        pass
                 #################################################################################
                 #Saving
                 try:
@@ -7847,7 +7847,7 @@ def update_products_xml(json_datafile):
                 #             publisher_arbitr_manager_v2.fio = fio
                 #         publisher_arbitr_manager_v2.save()
                 # except Exception as ex:
-                #     print(ex)
+                #     pass
                 try:
                     if publisher:
                         publisher.xsi_type = xsi_type
@@ -7894,8 +7894,7 @@ def update_products_xml(json_datafile):
                             publisher.publisher_mfc_v2 = publisher_mfc_v2
                         publisher.save()
                 except Exception as ex:
-                    print("#"*50)
-                    print(ex)
+                    pass
 
 
                 try:
@@ -7924,7 +7923,7 @@ def update_products_xml(json_datafile):
                         bankrupt.save()
                         message_data.bankrupt = bankrupt
                 except Exception as ex:
-                    print(ex)
+                    pass
                 try:
                     if message_info.message_type is not None:
                         if court_decision.text is not None:
@@ -7954,8 +7953,7 @@ def update_products_xml(json_datafile):
                                 meeting.save()
                                 message_types.meeting = meeting
                         except Exception as ex:
-                            print(ex)
-                            print(">"*50)
+                            pass
                             # exit()
                         if meeting_result.text is not None:
                             meeting_result.save()
@@ -8001,8 +7999,7 @@ def update_products_xml(json_datafile):
                                 trade_result.save()
                                 message_types.trade_result = trade_result
                         except Exception as ex:
-                            print(ex)
-                            print("!"*50)
+                            pass
                             # exit()
 
                         if other.text is not None:
@@ -8017,7 +8014,7 @@ def update_products_xml(json_datafile):
                                 appoint_administration.save()
                                 message_types.appoint_administration = appoint_administration
                         except Exception as ex:
-                            print(ex)
+                            pass
                             # exit()
                         if change_administration.text is not None:
                             if director.name is not None:
@@ -8202,7 +8199,7 @@ def update_products_xml(json_datafile):
 
                                 message_types.act_deal_invalid2 = act_deal_invalid2
                         except Exception as ex:
-                            print(ex)
+                            pass
                         if act_review_deal_invalid.text is not None:
                             if deal_participant.name is not None:
                                 deal_participant.save()
@@ -8232,7 +8229,7 @@ def update_products_xml(json_datafile):
                                 act_review_deal_invalid2.save()
                                 message_types.act_review_deal_invalid2 =act_review_deal_invalid2
                         except Exception as ex:
-                            print(ex)
+                            pass
                             # exit()
                         if declaration_person_subsidiary.text is not None:
                             if bankrupt_supervisory_person.bankrupt_supervisory_person is not None:
@@ -8271,7 +8268,7 @@ def update_products_xml(json_datafile):
                                 act_person_subsidiary2.save()
                                 message_types.act_person_subsidiary2 =act_person_subsidiary2
                         except Exception as ex:
-                            print(ex)
+                            pass
                             # exit()
                         if act_review_person_subsidiary.text is not None:
                             if bankrupt_supervisory_person.name is not None:
@@ -8295,7 +8292,7 @@ def update_products_xml(json_datafile):
                                 act_review_person_subsidiary2.save()
                                 message_types.act_review_person_subsidiary2 = act_review_person_subsidiary2
                         except Exception as ex:
-                            print(ex)
+                            pass
                             # exit()
                         if meeting_worker.text is not None:
                             meeting_worker.save()
@@ -8324,7 +8321,7 @@ def update_products_xml(json_datafile):
                                 transfer_ownership_real_estate.save()
                                 message_types.transfer_ownership_real_estate =transfer_ownership_real_estate
                         except Exception as ex:
-                            print(ex)
+                            pass
                             # exit()
                         if cancel_auction_trade_result.text is not None:
                             cancel_auction_trade_result.save()
@@ -8484,8 +8481,8 @@ def update_products_xml(json_datafile):
                         message_info.message_types = message_types
                         message_info.save()
                 except Exception as ex:
-                    print(ex)
-                    print("$"*50)
+                    pass
+                    #print("$"*50)
                     # pass
                 try:
                     if message_data.id_message_data is not None:
@@ -8494,8 +8491,8 @@ def update_products_xml(json_datafile):
 
                         message_data.save()
                 except Exception as ex:
-                    print(ex)
+                    pass
             except Exception as ex:
-                print(ex)
+                pass
     except Exception as ex:
-        print(ex)
+        pass
