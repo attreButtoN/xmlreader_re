@@ -48,3 +48,26 @@
 	 Username - postgres
 	 Password - 123456
 	 -> Save
+	 
+Для того чтобы достать какой-либо файл из контейнера введите команду docker ps скопируйте оттуда CONTAINER ID для loadfile_web
+используйте команду  docker cp айди_контейнера:/путь_к_файлу_внутри_конейнера /куда_сохранить файл
+к примеру  docker cp b436c9dc8d6b:app/file_view_log.txt /home/
+
+
+Если вам нужно отчистить базу введите docker exec -ti loadfile_web_1 /bin/sh
+затем python manage.py flush
+после чего оно предложит ввести yes 
+
+если возникнет ошибка, что файл manage.py не найден, вернитесь в loadfile 
+
+
+Чтобы достать дамп базы из контейнера введите:
+Где вместо <id> введите айди контейнера postgres из   docker ps , а после >напишите путь по которому нужно создать бэкап 
+ docker exec <id> pg_dump -U postgres -F t django_db_xml | gzip >(путь)/backup.tar.gz
+ к примеру
+ docker exec 2a5a5f9e2f5f pg_dump -U postgres -F t django_db_xml | gzip >/home/denis/backup/backup.tar.gz
+
+Если нужно освободить порт введите fuser -k 8000/tcp    
+
+
+
