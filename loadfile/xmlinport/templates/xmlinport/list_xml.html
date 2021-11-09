@@ -3,13 +3,7 @@
 <form action="{% url 'load' %}" method="post">
 
 {% csrf_token %}
- {% block content %}
- <div class = "Progress">
-  <p>Файлов пройдено</p> <p></p>
-  <p>Из</p>              <p>{{ all }}</p>
 
- </div>
- {% endblock %}
 
 <button type="submit" style = "margin: 50px 50px; width: 150px;" name='load' value={{excel_path}}>Запустить</button>
 
