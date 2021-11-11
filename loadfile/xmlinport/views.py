@@ -7,7 +7,7 @@ from py7zr import unpack_7zarchive
 import shutil
 import xmltodict
 from django.shortcuts import render
-
+from datetime import datetime
 from xmlload.load import update_products_xml
 import pandas as pd
 
@@ -24,9 +24,9 @@ def list_xml(request):
             files = os.listdir("media/put_xml_here/")
             print(files)
             file = open("file_view_log.txt", "a")
-            file.write("Обработка папок,распаковывание архивов...\n")
+            file.write(f"Обработка папок,распаковывание архивов...   {datetime.now()}\n")
             file.close()
-            print("Обработка папок,распаковывание архивов...",flush=True)
+            print(f"Обработка папок,распаковывание архивов...   {datetime.now()}",flush=True)
             for folder in files:
                 try:
                     files = os.listdir(f"media/put_xml_here/{folder}")
@@ -53,9 +53,10 @@ def list_xml(request):
                 # file_list.append(file)
             print(files)
             # data_folder = ""
-            try:
-                files = os.listdir("media/put_xml_here/")
-                for file in files:
+
+            files = os.listdir("media/put_xml_here/")
+            for file in files:
+                try:
                     with open(f"media/put_xml_here/{file}", "r", encoding="utf-16") as xml_file:
                         data_dict = xmltodict.parse(xml_file.read())
                         xml_file.close()
@@ -73,17 +74,19 @@ def list_xml(request):
                     global counter
                     counter +=1
                     file = open("file_view_log.txt", "a")
-                    file.write(f"В процессе: Файл №{counter},Имя:{name},Файлов осталось {len(files)-counter} \n")
+                    file.write(f"В процессе: Файл №{counter},Имя:{name},Файлов осталось {len(files)-counter}    {datetime.now()} \n")
                     file.close()
-                    print(f"В процессе: Файл №{counter},Имя:{name},Файлов осталось {len(files)-counter}", flush=True)
+                    print(f"В процессе: Файл №{counter},Имя:{name},Файлов осталось {len(files)-counter} {datetime.now()}", flush=True)
                     update_products_xml(json_datafile)
 
-            except Exception as ex:
-                file = open("file_view_log.txt", "a")
-                file.write(f"Ошибка: {ex},Имя:{name} \n")
+                except Exception as ex:
+                    file = open("file_view_log.txt", "a")
+                    file.write(f"Ошибка: {ex},Имя:{name}    {datetime.now()} \n")
 
-                file.close()
-                print(f"Ошибка: {ex},Имя:{name}",flush=True)
+                    file.close()
+                    print(f"Ошибка: {ex},Имя:{name}    {datetime.now()}",flush=True)
+                    print(f"Ошибка: {ex},Имя:{name}    {datetime.now()}",flush=True)
+
         # return HttpResponseRedirect(reverse("xml_list"))
 # else:
 #     form = DocumentForm()
