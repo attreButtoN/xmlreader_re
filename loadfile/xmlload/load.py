@@ -1946,6 +1946,48 @@ def update_products_xml(json_datafile):
                     #print("lot list type ex" * 50)
 
                 try:
+                    if type(envelope["SetBiddingCancel"]["BiddingCancel"][
+                                "LotList"]["BiddingStateLotInfo"]) == type([]):
+                        for i in range(len(envelope["SetBiddingCancel"]["BiddingCancel"][
+                                               "LotList"]["BiddingStateLotInfo"])):
+                            bidding_state_lot_info = BiddingStateLotInfo()
+                            bidding_cancel = BiddingCancel()
+                            set_bidding_cancel = SetBiddingCancel()
+                            lot_list = LotList()
+                            body = Body()
+                            try:
+                                bidding_cancel.trade_id = envelope["SetBiddingCancel"]["BiddingCancel"][
+                                    "@TradeId"]
+                            except:
+                                pass
+                            try:
+                                bidding_cancel.event_time = envelope["SetBiddingCancel"]["BiddingCancel"][
+                                    "@EventTime"]
+
+                            except:
+                                pass
+                            try:
+                                bidding_state_lot_info.reason = envelope["SetBiddingCancel"]["BiddingCancel"][
+                                    "LotList"]["BiddingStateLotInfo"][i]["@Reason"]
+                            except:
+                                pass
+                            try:
+                                bidding_state_lot_info.lot_number = envelope["SetBiddingCancel"]["BiddingCancel"][
+                                    "LotList"]["BiddingStateLotInfo"][i]["@LotNumber"]
+                            except:
+                                pass
+                            bidding_state_lot_info.save()
+
+                            lot_list.bidding_state_lot_info = bidding_state_lot_info
+                            lot_list.save()
+                            bidding_cancel.lot_list = lot_list
+                            bidding_cancel.save()
+                            set_bidding_cancel.bidding_cancel = bidding_cancel
+                            set_bidding_cancel.save()
+                            body.set_bidding_cancel = set_bidding_cancel
+                except Exception as ex:
+                    pass
+                try:
                     if debtor_person.first_name is not None:
                         debtor_person.save()
                         debtor.debtor_person = debtor_person
@@ -2221,6 +2263,7 @@ def update_products_xml(json_datafile):
                         bidding_proccess_info.price_info = price_info
                         bidding_proccess_info.save()
                         set_bidding_proccess_info.bidding_process_info = bidding_proccess_info
+                        set_bidding_proccess_info.save()
                         body.set_bidding_proccess_info = set_bidding_proccess_info
 
                 except:
@@ -2621,6 +2664,12 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
+                        trade_id = envelope["ns1:SetBiddingStart"]["ns1:BiddingStart"]["@TradeId"]
+                        bidding_start.trade_id = trade_id
+                        # #print('tradeid', trade_id)
+                    except:
+                        pass
+                    try:
                         trade_id = envelope["SetApplicationSessionStatistic"]["ApplicationSessionStatistic"][
                             "@TradeId"]
                         application_session_statistic.trade_id = trade_id
@@ -2740,6 +2789,12 @@ def update_products_xml(json_datafile):
                         pass
                     try:
                         event_time = envelope["SetBiddingStart"]["BiddingStart"]["@EventTime"]
+                        bidding_start.event_time = event_time
+                        # #print('eventtime', event_time)
+                    except:
+                        pass
+                    try:
+                        event_time = envelope["ns1:SetBiddingStart"]["ns1:BiddingStart"]["@EventTime"]
                         bidding_start.event_time = event_time
                         # #print('eventtime', event_time)
                     except:
@@ -3737,6 +3792,48 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
+                        if  type(envelope["SetBiddingCancel"]["BiddingCancel"][
+                            "LotList"]["BiddingStateLotInfo"]) == type([]):
+                            for i in  range(len(envelope["SetBiddingCancel"]["BiddingCancel"][
+                            "LotList"]["BiddingStateLotInfo"])):
+                                bidding_state_lot_info = BiddingStateLotInfo()
+                                bidding_cancel = BiddingCancel()
+                                set_bidding_cancel = SetBiddingCancel()
+                                lot_list = LotList()
+                                body = Body()
+                                try:
+                                    bidding_cancel.trade_id = envelope["SetBiddingCancel"]["BiddingCancel"][
+                                        "@TradeId"]
+                                except:
+                                    pass
+                                try:
+                                    bidding_cancel.event_time = envelope["SetBiddingCancel"]["BiddingCancel"][
+                                        "@EventTime"]
+
+                                except:
+                                    pass
+                                try:
+                                    bidding_state_lot_info.reason = envelope["SetBiddingCancel"]["BiddingCancel"][
+                                        "LotList"]["BiddingStateLotInfo"][i]["@Reason"]
+                                except:
+                                    pass
+                                try:
+                                    bidding_state_lot_info.lot_number = envelope["SetBiddingCancel"]["BiddingCancel"][
+                                        "LotList"]["BiddingStateLotInfo"][i]["@LotNumber"]
+                                except:
+                                    pass
+                                bidding_state_lot_info.save()
+
+                                lot_list.bidding_state_lot_info = bidding_state_lot_info
+                                lot_list.save()
+                                bidding_cancel.lot_list = lot_list
+                                bidding_cancel.save()
+                                set_bidding_cancel.bidding_cancel = bidding_cancel
+                                set_bidding_cancel.save()
+                                body.set_bidding_cancel = set_bidding_cancel
+                    except:
+                        pass
+                    try:
                         reason = envelope["SetBiddingFail"]["BiddingFail"][
                             "LotList"]["BiddingStateLotInfo"]["@Reason"]
                         # #print("Reason", reason)
@@ -4387,6 +4484,11 @@ def update_products_xml(json_datafile):
                         pass
                     try:
                         if bidding_cancel.trade_id is not None:
+                            if bidding_state_lot_info.lot_number is not None:
+                                bidding_state_lot_info.save()
+                                lot_list.bidding_state_lot_info = bidding_state_lot_info
+                                lot_list.save()
+                                bidding_cancel.lot_list = lot_list
                             # bidding_cancel.lot_list = lot_list
                             bidding_cancel.save()
                             set_bidding_cancel.bidding_cancel = bidding_cancel

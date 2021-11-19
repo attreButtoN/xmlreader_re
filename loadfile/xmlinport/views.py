@@ -57,7 +57,7 @@ def list_xml(request):
             files = os.listdir("media/put_xml_here/")
             for file in files:
                 try:
-                    with open(f"media/put_xml_here/{file}", "r", encoding="utf-16") as xml_file:
+                    with open(f"media/put_xml_here/{file}", "r", encoding="utf-16-le") as xml_file:
                         data_dict = xmltodict.parse(xml_file.read())
                         xml_file.close()
                         name = file
