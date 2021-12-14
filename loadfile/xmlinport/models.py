@@ -446,8 +446,8 @@ class FailureTradeResult(models.Model):
 class Lot(models.Model):
     lot_number = models.BigIntegerField(null=True, blank=True, verbose_name="LotNumber")
     start_price = models.FloatField(null=True, blank=True, verbose_name="StartPrice")
-    step_price = models.ForeignKey(
-        StepPrice, on_delete=models.CASCADE, null=True, verbose_name="StepPrice"
+    step_price = models.FloatField(
+        blank=True, null=True, verbose_name="StepPrice"
     )
     step_price_percent = models.FloatField(
         null=True, blank=True, verbose_name="StepPricePercent"
