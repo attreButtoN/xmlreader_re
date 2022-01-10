@@ -446,7 +446,7 @@ class FailureTradeResult(models.Model):
 class Lot(models.Model):
     lot_number = models.BigIntegerField(null=True, blank=True, verbose_name="LotNumber")
     start_price = models.FloatField(null=True, blank=True, verbose_name="StartPrice")
-    step_price = models.FloatField(
+    step_price = models.TextField(
         blank=True, null=True, verbose_name="StepPrice"
     )
     step_price_percent = models.FloatField(
@@ -838,8 +838,8 @@ class TradeInfo(models.Model):
     close_form = models.ForeignKey(
         CloseForm, null=True, on_delete=models.CASCADE, verbose_name="CloseForm"
     )
-    date_publish_smi = models.ForeignKey(
-        DatePublishSmi, null=True, on_delete=models.CASCADE, verbose_name="DatePublishSMI"
+    date_publish_smi = models.TextField(
+         null=True, verbose_name="DatePublishSMI"
     )
     date_publish_efir = models.TextField(
         null=True, blank=True, verbose_name="DatePublishEFIR"

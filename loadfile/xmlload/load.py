@@ -153,6 +153,7 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 Id = trade["Trade"]["Message"]["@ID"]  # Message ID
+
                 try:
                     envelop = trade["Trade"]["Message"]["soap:Envelope"]["soap:Body"]
                     envelope = envelop
@@ -235,9 +236,27 @@ def update_products_xml(json_datafile):
 
                 except:
                     pass
+                try:
+                    trade_id = envelope["ns1:SetApplicationSessionStatistic"]["ns1:ApplicationSessionStatistic"][
+                        "@TradeId"]
+                    application_session_statistic.trade_id = trade_id
+                    #print('TradeID', trade_id)
+
+
+                except:
+                    pass
 
                 try:
                     trade_id = envelope["SetBiddingFail"]["BiddingFail"][
+                        "@TradeId"]
+
+                    bidding_fail.trade_id = trade_id
+                    # #print("TradeId", trade_id)
+
+                except:
+                    pass
+                try:
+                    trade_id = envelope["ns1:SetBiddingFail"]["ns1:BiddingFail"][
                         "@TradeId"]
 
                     bidding_fail.trade_id = trade_id
@@ -262,7 +281,23 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
+                    trade_id = envelope["ns1:SetApplicationSessionStart"]["ns1:ApplicationSessionStart"][
+                        "@TradeId"]
+                    application_session_start.trade_id = trade_id
+                    #print("TradeId", trade_id)
+                    #print("_" * 50)
+                except:
+                    pass
+                try:
                     trade_id = envelope["SetApplicationSessionEnd"]["ApplicationSessionEnd"]["@TradeId"]
+                    application_session_end.trade_id = trade_id
+
+                    # #print('tradeid', trade_id)
+
+                except:
+                    pass
+                try:
+                    trade_id = envelope["ns1:SetApplicationSessionEnd"]["ns1:ApplicationSessionEnd"]["@TradeId"]
                     application_session_end.trade_id = trade_id
 
                     # #print('tradeid', trade_id)
@@ -283,9 +318,30 @@ def update_products_xml(json_datafile):
                     # #print("eventtimeEnd", event_time2)
                 except:
                     pass
+                try:
+                    event_time = envelope["ns1:SetApplicationSessionEnd"]["ns1:ApplicationSessionEnd"][
+                        "@EventTime"]
+                    application_session_end.event_time = event_time
+                    # #print("eventtimeEnd", event_time2)
+                except:
+                    pass
+                try:
+                    lot_number = envelope["ns1:SetApplicationSessionEnd"]["ns1:ApplicationSessionEnd"][
+                        "LotList"]["LotInfo"]["@LotNumber"]
+                    lot_info.lot_number = lot_number
+                    # #print("eventtimeEnd", event_time2)
+                except:
+                    pass
 
                 try:
                     trade_id = envelope["SetBiddingResult"]["BiddingResult"][
+                        "@TradeId"]
+                    bidding_result.trade_id = trade_id
+                    # #print("TradeId", trade_id)
+                except:
+                    pass
+                try:
+                    trade_id = envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
                         "@TradeId"]
                     bidding_result.trade_id = trade_id
                     # #print("TradeId", trade_id)
@@ -302,10 +358,30 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
+                    substantiation = \
+                        envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
+                            "ns1:LotList"]["ns1:LotTradeResult"][
+                            "ns1:FailureTradeResult"]["ns1:Substantiation"]
+                    failure_trade_result.substantiation = substantiation
+
+                    # #print("substantiation", substantiation)
+                except:
+                    pass
+                try:
                     price = \
                         envelope["SetBiddingResult"]["BiddingResult"][
                             "LotList"]["LotTradeResult"][
                             "FailureTradeResult"]["Price"]
+                    failure_trade_result.price = price
+
+                    # #print("price", price)
+                except:
+                    pass
+                try:
+                    price = \
+                        envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
+                            "ns1:LotList"]["ns1:LotTradeResult"][
+                            "ns1:FailureTradeResult"]["ns1:Price"]
                     failure_trade_result.price = price
 
                     # #print("price", price)
@@ -418,6 +494,35 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
+                    contract_number = \
+                        envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"]["ns1:LotContractSale"][
+                            "ns1:ContractInfo"][
+                            "ns1:ContractNumber"]
+                    contract_info.contract_number = contract_number
+                    # #print("ContractNumber", contract_number)
+                except:
+                    pass
+                try:
+                    date_contract = \
+                        envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"]["ns1:LotContractSale"][
+                            "ns1:ContractInfo"][
+                            "ns1:DateContract"]
+                    if len(date_contract.split("+")) > 1:
+                        date_contract = date_contract.split("+")[0]
+                    contract_info.date_contract = date_contract
+                    # #print("DateContract", date_contract)
+                except:
+                    pass
+
+                try:
+                    price = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"]["ns1:LotContractSale"][
+                        "ns1:ContractInfo"][
+                        "ns1:Price"]
+                    contract_info.price = price
+                    # #print("Price", price)
+                except:
+                    pass
+                try:
                     name = envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
                         "ContractParticipantList"][
                         "ContractParticipant"]["@Name"]
@@ -461,9 +566,60 @@ def update_products_xml(json_datafile):
                     # #print("IsBuyer", is_buyer)
                 except:
                     pass
+                try:
+                    name = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"]["ns1:LotContractSale"][
+                        "ns1:ContractParticipantList"][
+                        "ns1:ContractParticipant"]["@Name"]
+                    contract_participant.name = name
+                    # #print("Name", name)
+                except:
+                    pass
+                try:
+                    inn = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"]["ns1:LotContractSale"][
+                        "ns1:ContractParticipantList"][
+                        "ns1:ContractParticipant"]["@INN"]
+                    contract_participant.inn = inn
+                    # #print("inn", inn)
+                except:
+                    pass
+                try:
+                    ogrn = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"]["ns1:LotContractSale"][
+                        "ns1:ContractParticipantList"][
+                        "ns1:ContractParticipant"]["@OGRN"]
+                    contract_participant.ogrn = ogrn
+                    # #print("OGRN", ogrn)
+                except:
+                    pass
+                try:
+                    is_winner = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"]["ns1:LotContractSale"][
+                        "ns1:ContractParticipantList"][
+                        "ns1:ContractParticipant"]["@IsWinner"]
+                    # contract_participant.is_winner = is_winner
+                    contract_participant.is_winner = json.loads(is_winner)
+
+                    # #print("IsWinner", is_winner)
+                except:
+                    pass
+                try:
+                    is_buyer = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"]["ns1:LotContractSale"][
+                        "ns1:ContractParticipantList"][
+                        "ns1:ContractParticipant"]["@IsBuyer"]
+                    # contract_participant.is_buyer = is_buyer
+                    contract_participant.is_buyer = json.loads(is_buyer)
+
+                    # #print("IsBuyer", is_buyer)
+                except:
+                    pass
                 # ++++++---------------------------------------------------------------
                 try:
                     event_time = envelope["SetApplicationSessionStart"]["ApplicationSessionStart"][
+                        "@EventTime"]
+                    application_session_start.event_time = event_time
+                    # #print("EventTime", event_time)
+                except:
+                    pass
+                try:
+                    event_time = envelope["ns1:SetApplicationSessionStart"]["ns1:ApplicationSessionStart"][
                         "@EventTime"]
                     application_session_start.event_time = event_time
                     # #print("EventTime", event_time)
@@ -478,6 +634,13 @@ def update_products_xml(json_datafile):
                     pass
                 try:
                     event_time = envelope["SetBiddingResult"]["BiddingResult"][
+                        "@EventTime"]
+                    bidding_result.event_time = event_time
+                    # #print("EventTime", event_time)
+                except:
+                    pass
+                try:
+                    event_time = envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
                         "@EventTime"]
                     bidding_result.event_time = event_time
                     # #print("EventTime", event_time)
@@ -514,6 +677,15 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
+                    event_time = envelope["ns1:SetApplicationSessionStatistic"][
+                        "ns1:ApplicationSessionStatistic"][
+                        "@EventTime"]
+                    application_session_statistic.event_time = event_time
+                    # #print('EventTime', event_time)
+
+                except:
+                    pass
+                try:
                     event_time = envelope["SetBiddingFail"]["BiddingFail"][
                         "@EventTime"]
                     bidding_fail.event_time = event_time
@@ -540,6 +712,17 @@ def update_products_xml(json_datafile):
 
                 except:
                     pass
+                    try:
+                        date_begin = envelope["ns1:SetApplicationSessionStatistic"][
+                            "ns1:ApplicationSessionStatistic"][
+                            "ns1:DateBegin"]
+                        if len(date_begin.split("+")) > 1:
+                            date_begin = date_begin.split("+")[0]
+                        application_session_statistic.date_begin = date_begin
+                        # #print("DateBegin", date_begin)
+
+                    except:
+                        pass
                     # Содержимое LostLit/LotStatistic ниже
                 try:
                     lot_number = envelope["SetApplicationSessionStatistic"][
@@ -550,8 +733,24 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
+                    lot_number = envelope["ns1:SetApplicationSessionStatistic"][
+                        "ns1:ApplicationSessionStatistic"]["ns1:LotList"]["ns1:LotStatistic"]["@LotNumber"]
+                    lot_statistic.lot_number = lot_number
+                    # #print("LotNumber", lot_number)
+
+                except:
+                    pass
+                try:
                     lot_number = envelope["SetBiddingResult"][
                         "BiddingResult"]["LotList"]["LotTradeResult"]["@LotNumber"]
+                    lot_trade_result.lot_number = lot_number
+                    # #print("LotNumber", lot_number)
+
+                except:
+                    pass
+                try:
+                    lot_number = envelope["ns1:SetBiddingResult"][
+                        "ns1:BiddingResult"]["ns1:LotList"]["ns1:LotTradeResult"]["@LotNumber"]
                     lot_trade_result.lot_number = lot_number
                     # #print("LotNumber", lot_number)
 
@@ -567,10 +766,10 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
-                    reason = envelope["SetBiddingFail"]["BiddingFail"][
-                        "LotList"]["BiddingStateLotInfo"]["@Reason"]
-                    # #print("Reason", reason)
-                    bidding_state_lot_info.reason = reason
+                    lot_number = envelope["SetBiddingCancel"]["BiddingCancel"][
+                        "LotList"]["BiddingStateLotInfo"]["@LotNumber"]
+                    # #print("LotNumber", lot_number)
+                    bidding_state_lot_info.lot_number = lot_number
 
                 except:
                     pass
@@ -581,6 +780,16 @@ def update_products_xml(json_datafile):
 
                 except:
                     pass
+                try:
+                    reason = envelope["SetBiddingFail"]["BiddingFail"][
+                        "LotList"]["BiddingStateLotInfo"]["@Reason"]
+                    # #print("Reason", reason)
+                    bidding_state_lot_info.reason = reason
+
+                except:
+                    pass
+
+
                 try:
                     reason = envelope["SetBiddingFail"]["BiddingFail"]["@Reason"]
                     # #print("Reason", reason)
@@ -612,8 +821,24 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
+                    accept_count = envelope["ns1:SetApplicationSessionStatistic"][
+                        "ns1:ApplicationSessionStatistic"]["ns1:LotList"]["ns1:LotStatistic"]["@AcceptCount"]
+                    lot_statistic.accept_count = accept_count
+                    # #print("AcceptCount", accept_count)
+
+                except:
+                    pass
+                try:
                     entry_count = envelope["SetApplicationSessionStatistic"][
                         "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["@EntryCount"]
+                    lot_statistic.entry_count = entry_count
+                    # #print("EntryCount", entry_count)
+                    # "@EntryCount"
+                except:
+                    pass
+                try:
+                    entry_count = envelope["ns1:SetApplicationSessionStatistic"][
+                        "ns1:ApplicationSessionStatistic"]["ns1:LotList"]["ns1:LotStatistic"]["@EntryCount"]
                     lot_statistic.entry_count = entry_count
                     # #print("EntryCount", entry_count)
                     # "@EntryCount"
@@ -623,6 +848,24 @@ def update_products_xml(json_datafile):
                 try:
                     result = envelope["SetApplicationSessionStatistic"][
                         "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"]["ApplicationData"][
+                        "@Result"]
+                    application_dataa.result = result
+                    # #print("result", result)
+
+                except:
+                    pass
+                try:
+                    result = envelope["SetApplicationSessionStatistic"][
+                        "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"]["ApplicationData"][
+                        "@Result"]
+                    application_dataa.result = result
+                    # #print("result", result)
+
+                except:
+                    pass
+                try:
+                    result = envelope["ns1:SetApplicationSessionStatistic"][
+                        "ns1:ApplicationSessionStatistic"]["ns1:LotList"]["ns1:LotStatistic"]["ns1:ApplicationList"]["ns1:ApplicationData"][0][
                         "@Result"]
                     application_dataa.result = result
                     # #print("result", result)
@@ -658,7 +901,7 @@ def update_products_xml(json_datafile):
                     pass
                 try:
                     cause_of_refuse = envelope["SetApplicationSessionStatistic"][
-                        "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"]["ApplicationData"][
+                        "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"]["ApplicationData"][0][
                         "@CauseOfRefuse"]
                     application_dataa.cause_of_refuse = cause_of_refuse
                     # #print("CauseOfRefuse", cause_of_refuse)
@@ -667,6 +910,111 @@ def update_products_xml(json_datafile):
                     pass
 
                 # Содержимое Attach ниже
+                try:
+                    filename = \
+                        envelope["SetBiddingResult"]["BiddingResult"][
+                            "Attach"]["FileName"]
+                    # #print(envelope["SetBiddingResult"]["BiddingResult"])
+                    attach.file_name = filename
+
+                    # #print("filename", filename)
+                except:
+                    pass
+                try:
+                    filename = \
+                        envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
+                            "ns1:Attach"]["ns1:FileName"]
+                    # #print(envelope["SetBiddingResult"]["BiddingResult"])
+                    attach.file_name = filename
+
+                    # #print("filename", filename)
+                except:
+                    pass
+                try:
+                    Blob = \
+                        envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
+                            "ns1:Attach"]["ns1:Blob"]
+                    attach.blob = Blob
+                except:
+                    pass
+                try:
+                    trade_id = envelope["SetBiddingEnd"]["BiddingEnd"][
+                        "@TradeId"]
+                    bidding_end.trade_id = trade_id
+                    # print("BiddingEND" * 50, trade_id)
+                except:
+                    pass
+                try:
+                    trade_id = envelope["ns1:SetBiddingEnd"]["ns1:BiddingEnd"][
+                        "@TradeId"]
+                    bidding_end.trade_id = trade_id
+                    # print("BiddingEND" * 50, trade_id)
+                except:
+                    pass
+                try:
+                    event_time = envelope["SetBiddingEnd"]["BiddingEnd"][
+                        "@EventTime"]
+                    bidding_end.event_time = event_time
+                    # #print("EventTime", event_time)
+                except:
+                    pass
+                try:
+                    event_time = envelope["ns1:SetBiddingEnd"]["ns1:BiddingEnd"][
+                        "@EventTime"]
+                    bidding_end.event_time = event_time
+                    # #print("EventTime", event_time)
+                except:
+                    pass
+                try:
+                    Blob = \
+                        envelope["SetBiddingResult"]["BiddingResult"]["TradeInfo"][
+                            "Attach"]["Blob"]
+                    attach.blob = Blob
+                    # ##print("Blob", Blob)
+                except:
+                    pass
+                try:
+                    Blob = \
+                        envelope["SetBiddingResult"]["BiddingResult"][
+                            "Attach"]["Blob"]
+                    attach.blob = Blob
+                    # ##print("Blob", Blob)
+                except:
+                    pass
+                try:
+                    Type = \
+                        envelope["SetBiddingResult"]["BiddingResult"][
+                            "Attach"]["Type"]
+                    attach.type = Type
+
+                except:
+                    pass
+                try:
+                    Type = \
+                        envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
+                            "ns1:Attach"]["ns1:Type"]
+                    attach.type = Type
+
+                    # #print("Type", Type)
+                except:
+                    pass
+                try:
+                    Type = \
+                        envelope["SetBiddingResult"]["BiddingResult"]["TradeInfo"][
+                            "Attach"]["Type"]
+                    attach.type = Type
+
+                    # #print("Type", Type)
+                except:
+                    pass
+                try:
+                    Type = \
+                        envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"]["ns1:TradeInfo"][
+                            "ns1:Attach"]["ns1:Type"]
+                    attach.type = Type
+
+                except:
+                    pass
                 try:
                     filename = envelope["SetApplicationSessionStatistic"][
                         "ApplicationSessionStatistic"]["Attach"]["FileName"]
@@ -688,8 +1036,37 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
+                    filename = envelope["ns1:SetApplicationSessionStatistic"][
+                        "ns1:ApplicationSessionStatistic"]["ns1:Attach"]["ns1:FileName"]
+                    attach.file_name = filename
+                    # #print("FileName", filename)
+
+                except:
+                    pass
+                try:
+                    Type = envelope["ns1:SetApplicationSessionStatistic"][
+                        "ns1:ApplicationSessionStatistic"]["ns1:Attach"]["ns1:Type"]
+                    attach.type = Type
+                except:
+                    pass
+                try:
+                    Blob = envelope["ns1:SetApplicationSessionStatistic"][
+                        "ns1:ApplicationSessionStatistic"]["ns1:Attach"]["ns1:Blob"]
+                    attach.blob = Blob
+                except:
+                    pass
+                try:
                     filename = envelope["SetBiddingInvitation"][
                         "BiddingInvitation"]["Attach"]["FileName"]
+                    attach.file_name = filename
+                    #print(filename)
+                    # #print("FileName", filename)
+
+                except:
+                    pass
+                try:
+                    filename = envelope["ns1:SetBiddingInvitation"][
+                        "ns1:BiddingInvitation"]["ns1:Attach"]["ns1:FileName"]
                     attach.file_name = filename
                     #print(filename)
                     # #print("FileName", filename)
@@ -704,14 +1081,35 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
+                    Type = envelope["ns1:SetBiddingInvitation"][
+                        "ns1:BiddingInvitation"]["ns1:Attach"]["ns1:Type"]
+                    attach.type = Type
+                except:
+                    pass
+                try:
                     Blob = envelope["SetBiddingInvitation"][
                         "BiddingInvitation"]["Attach"]["Blob"]
                     attach.blob = Blob
                 except:
                     pass
                 try:
+                    Blob = envelope["ns1:SetBiddingInvitation"][
+                        "ns1:BiddingInvitation"]["ns1:Attach"]["ns1:Blob"]
+                    attach.blob = Blob
+                except:
+                    pass
+                try:
                     filename = envelope["SetBiddingInvitation"][
                         "BiddingInvitation"]["TradeInfo"]["Attach"]["FileName"]
+                    attach.file_name = filename
+                    #print(filename)
+                    # #print("FileName", filename)
+
+                except:
+                    pass
+                try:
+                    filename = envelope["ns1:SetBiddingInvitation"][
+                        "ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:Attach"]["ns1:FileName"]
                     attach.file_name = filename
                     #print(filename)
                     # #print("FileName", filename)
@@ -740,6 +1138,26 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
+                    Type = envelope["ns1:SetBiddingFail"][
+                        "ns1:BiddingFail"]["ns1:Attach"]["ns1:Type"]
+                    attach.type = Type
+                except:
+                    pass
+                try:
+                    Blob = envelope["ns1:SetBiddingFail"][
+                        "ns1:BiddingFail"]["ns1:Attach"]["ns1:Blob"]
+                    attach.blob = Blob
+                except:
+                    pass
+                try:
+                    filename = envelope["ns1:SetBiddingFail"][
+                        "ns1:BiddingFail"]["ns1:Attach"]["ns1:FileName"]
+                    attach.file_name = filename
+                    # #print("FileName", filename)
+
+                except:
+                    pass
+                try:
                     Type = envelope["SetBiddingFail"][
                         "BiddingFail"]["Attach"]["Type"]
                     attach.type = Type
@@ -748,6 +1166,46 @@ def update_products_xml(json_datafile):
                 try:
                     Blob = envelope["SetBiddingFail"][
                         "BiddingFail"]["Attach"]["Blob"]
+                    attach.blob = Blob
+                except:
+                    pass
+                try:
+                    filename = envelope["SetApplicationSessionEnd"][
+                        "ApplicationSessionEnd"]["Attach"]["FileName"]
+                    attach.file_name = filename
+                    # #print("FileName", filename)
+
+                except:
+                    pass
+                try:
+                    Type = envelope["SetApplicationSessionEnd"][
+                        "ApplicationSessionEnd"]["Attach"]["Type"]
+                    attach.type = Type
+                except:
+                    pass
+                try:
+                    Blob = envelope["SetApplicationSessionEnd"][
+                        "ApplicationSessionEnd"]["Attach"]["Blob"]
+                    attach.blob = Blob
+                except:
+                    pass
+                try:
+                    filename = envelope["ns1:SetApplicationSessionEnd"][
+                        "ns1:ApplicationSessionEnd"]["ns1:Attach"]["ns1:FileName"]
+                    attach.file_name = filename
+                    # #print("FileName", filename)
+
+                except:
+                    pass
+                try:
+                    Type = envelope["ns1:SetApplicationSessionEnd"][
+                        "ns1:ApplicationSessionEnd"]["ns1:Attach"]["ns1:Type"]
+                    attach.type = Type
+                except:
+                    pass
+                try:
+                    Blob = envelope["ns1:SetApplicationSessionEnd"][
+                        "ns1:ApplicationSessionEnd"]["ns1:Attach"]["ns1:Blob"]
                     attach.blob = Blob
                 except:
                     pass
@@ -834,7 +1292,6 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['FailureTradeResult'][
                             "BuyerPerson"]["@FirstName"]
                     buyer_person.first_name = first_name
-                    # buyer_company.save()
                     # #print("BuyerCompany FullName", full_name)
                 except:
                     pass
@@ -875,6 +1332,24 @@ def update_products_xml(json_datafile):
                     # #print("OGRN", ogrn)
                 except:
                     pass
+                try:
+                    phone = \
+                        envelope["SetBiddingResult"]["BiddingResult"][
+                            "LotList"]["LotTradeResult"]['FailureTradeResult'][
+                            "BuyerPerson"]["@Phone"]
+                    buyer_person.phone = phone
+                    # #print("BuyerCompany FullName", full_name)
+                except:
+                    pass
+                try:
+                    email = \
+                        envelope["SetBiddingResult"]["BiddingResult"][
+                            "LotList"]["LotTradeResult"]['FailureTradeResult'][
+                            "BuyerPerson"]["@Email"]
+                    buyer_person.email = email
+                    # #print("BuyerCompany FullName", full_name)
+                except:
+                    pass
                 ##
                 try:
                     full_name = \
@@ -882,7 +1357,6 @@ def update_products_xml(json_datafile):
                             "LotList"]["LotTradeResult"]['FailureTradeResult'][
                             "BuyerCompany"]["@FullName"]
                     buyer_company.full_name = full_name
-                    # buyer_company.save()
                     # #print("BuyerCompany FullName", full_name)
                 except:
                     pass
@@ -918,7 +1392,7 @@ def update_products_xml(json_datafile):
                     pass
                 try:
                     short_name = \
-                        envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:Debtor"]["ns1:DebtorPerson"][
+                        envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:Debtor"]["ns1:DebtorCompany"][
                             "@ShortName"]
                     debtor_company.short_name = short_name
                     # #print("DebtorCompanyShortName", short_name)
@@ -1060,12 +1534,13 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
-                    reg_num = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
-                        "@RegNum"]
-                    arbitr_manager.reg_num = reg_num
-                    # #print("RegNum", reg_num)
+                    sro_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
+                        "@SROName"]
+                    arbitr_manager.sro_name = sro_name
+                    # #print("SroName", sro_name)
                 except:
                     pass
+
                 try:
                     first_name = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
                         "@FirstName"]
@@ -1145,6 +1620,20 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
+                    is_repeat = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                        "ISRepeat"]
+                    trade_info.isrepeat = is_repeat
+                    # #print("AuctionType", auction_type)
+                except:
+                    pass
+                try:
+                    is_repeat = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                        "ISRepeat"]
+                    trade_info.isrepeat = is_repeat
+                    # #print("AuctionType", auction_type)
+                except:
+                    pass
+                try:
                     form_price = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
                         "@FormPrice"]
                     trade_info.form_price = form_price
@@ -1187,7 +1676,15 @@ def update_products_xml(json_datafile):
                 try:
                     time_end = \
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:OpenForm"][
-                            "@TimeEnd"]
+                            "TimeEnd"]
+                    open_form.time_end = time_end
+                    # #print("TimeBegin", time_end)
+                except:
+                    pass
+                try:
+                    time_end = \
+                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["OpenForm"][
+                            "TimeEnd"]
                     open_form.time_end = time_end
                     # #print("TimeBegin", time_end)
                 except:
@@ -1228,6 +1725,14 @@ def update_products_xml(json_datafile):
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:LotList"][
                             "ns1:Lot"]["@LotNumber"]
                     lot.lot_number = lot_number
+                    # #print("LotNumber", lot_number)
+                except:
+                    pass
+                try:
+                    step_price_percent = \
+                        envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:LotList"][
+                            "ns1:Lot"]["StepPricePercent"]
+                    lot.step_price_percent = step_price_percent
                     # #print("LotNumber", lot_number)
                 except:
                     pass
@@ -1284,6 +1789,15 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
+                    advance = \
+                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                            "Lot"]["Advance"]
+                    lot.advance = advance
+
+                    # #print("LotNumber", lot_number)
+                except:
+                    pass
+                try:
                     advance_percent = \
                         envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:LotList"][
                             "ns1:Lot"][
@@ -1299,6 +1813,16 @@ def update_products_xml(json_datafile):
                             "Lot"][
                             "AdvancePercent"]
                     lot.advance_percent = advance_percent
+
+                    # #print("ns1:TradeObjectHtml", trade_obj_html)
+                except:
+                    pass
+                try:
+                    step_price_percent = \
+                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                            "Lot"][
+                            "StepPricePercent"]
+                    lot.step_price_percent = step_price_percent
 
                     # #print("ns1:TradeObjectHtml", trade_obj_html)
                 except:
@@ -1417,21 +1941,7 @@ def update_products_xml(json_datafile):
                     # #print(bidding_invitation)
                 except:
                     pass
-                # try:
-                #     if bidding_invitation.trade_id is not None:
-                #         if trade_organizer.pk is not None:
-                #             bidding_invitation.trade_ogranizer = trade_organizer
-                #         if arbitr_manager.first_name is not None:
-                #             bidding_invitation.arbitr_manager = arbitr_manager
-                #         bidding_invitation.save()
-                #         set_bidding_invitation.bidding_invitations = bidding_invitation
-                #         set_bidding_invitation.save()
-                #         body.set_bidding_invitation = set_bidding_invitation
-                #
-                # except:
-                #     pass
 
-                # sleep(5)
                 try:
                     first_name = \
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"]["DebtorPerson"][
@@ -1493,13 +2003,7 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 # ArbitrManager
-                try:
-                    sro_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
-                        "@SROName"]
-                    # !
-                    # #print("SroName", sro_name)
-                except:
-                    pass
+
                 try:
                     first_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
                         "@FirstName"]
@@ -1530,7 +2034,15 @@ def update_products_xml(json_datafile):
                     # #print("RegNum", reg_num)
                 except:
                     pass
-                # arbitr_manager.reg_num = reg_num
+                try:
+                    reg_num = \
+                        envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
+                            "@RegNum"]
+                    arbitr_manager.reg_num = reg_num
+                    # #print("RegNum", reg_num)
+                except:
+                    pass
+
                 try:
                     inn = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"]["@INN"]
                     arbitr_manager.inn = inn
@@ -1622,15 +2134,8 @@ def update_products_xml(json_datafile):
                     # #print("TradeOrganizerOGRN", ogrn)
                 except:
                     pass
-                if trade_organizer_person.first_name is not None:
-                    trade_organizer_person.save()
-                    trade_organizer.trade_organizer_person = trade_organizer_person
-                    trade_organizer.save()
 
-                if trade_organizer_company.full_name is not None:
-                    trade_organizer_company.save()
-                    trade_organizer.trade_organizer_company = trade_organizer_company
-                    trade_organizer.save()
+
                 # _________
                 # TradeInfo
                 try:
@@ -1644,6 +2149,27 @@ def update_products_xml(json_datafile):
                     date_publish_smi = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
                         "DatePublishSMI"]
                     trade_info.date_publish_smi = date_publish_smi
+                    # #print("AuctionType", auction_type)
+                except:
+                    pass
+                try:
+                    date_publish_smi = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                        "ns1:DatePublishSMI"]
+                    trade_info.date_publish_smi = date_publish_smi
+                    # #print("AuctionType", auction_type)
+                except:
+                    pass
+                try:
+                    date_publish_efir = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                        "DatePublishEFIR"]
+                    trade_info.date_publish_efir = date_publish_efir
+                    # #print("AuctionType", auction_type)
+                except:
+                    pass
+                try:
+                    date_publish_efir = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                        "ns1:DatePublishEFIR"]
+                    trade_info.date_publish_efir = date_publish_efir
                     # #print("AuctionType", auction_type)
                 except:
                     pass
@@ -1687,12 +2213,83 @@ def update_products_xml(json_datafile):
                     # #print("ApplicationTimeEnd", rules)  # "ns1:LotList"
                 except:
                     pass
-                # lotlist
+                #
+                try:
+                    contract_number = \
+                        envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
+                            "ContractInfo"][
+                            "ContractNumber"]
+                    contract_info.contract_number = contract_number
+                    # #print("ContractNumber", contract_number)
+                except:
+                    pass
+                try:
+                    date_contract = \
+                        envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
+                            "ContractInfo"][
+                            "DateContract"]
+                    if len(date_contract.split("+")) > 1:
+                        date_contract = date_contract.split("+")[0]
+                    contract_info.date_contract = date_contract
+                    # #print("DateContract", date_contract)
+                except:
+                    pass
+
+                try:
+                    price = envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
+                        "ContractInfo"][
+                        "Price"]
+                    contract_info.price = price
+                    # #print("Price", price)
+                except:
+                    pass
+                try:
+                    contract_number = \
+                        envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"][
+                            "ns1:LotContractSale"][
+                            "ns1:ContractInfo"][
+                            "ns1:ContractNumber"]
+                    contract_info.contract_number = contract_number
+                    # #print("ContractNumber", contract_number)
+                except:
+                    pass
+                try:
+                    date_contract = \
+                        envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"][
+                            "ns1:LotContractSale"][
+                            "ns1:ContractInfo"][
+                            "ns1:DateContract"]
+                    if len(date_contract.split("+")) > 1:
+                        date_contract = date_contract.split("+")[0]
+                    contract_info.date_contract = date_contract
+                    # #print("DateContract", date_contract)
+                except:
+                    pass
+
+                try:
+                    price = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"][
+                        "ns1:LotContractSale"][
+                        "ns1:ContractInfo"][
+                        "ns1:Price"]
+                    contract_info.price = price
+                    # #print("Price", price)
+                except:
+                    pass
+                #
                 try:
                     lot_number = \
                         envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
                             "Lot"]["@LotNumber"]
                     lot.lot_number = lot_number
+
+                    # #print("LotNumber", lot_number)
+                except:
+                    pass
+                try:
+                    concours = \
+                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                            "Lot"]["Concours"]
+                    lot.concours = concours
 
                     # #print("LotNumber", lot_number)
                 except:
@@ -1704,6 +2301,16 @@ def update_products_xml(json_datafile):
                     lot.lot_number = lot_number
 
                     # #print("LotNumber", lot_number)
+                except:
+                    pass
+                try:
+                    step_price_percent = \
+                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["LotList"][
+                            "Lot"][
+                            "StepPricePercent"]
+                    lot.step_price_percent = step_price_percent
+
+                    # #print("ns1:TradeObjectHtml", trade_obj_html)
                 except:
                     pass
                 try:
@@ -1791,6 +2398,7 @@ def update_products_xml(json_datafile):
                 except Exception as ex:
                     #print("Attach EX" * 50)
                     pass
+
                 # try:
                 #     if step_price_model.nil is not None:
                 #         step_price_model.save()
@@ -1803,7 +2411,6 @@ def update_products_xml(json_datafile):
                         if classificaition.idclass:
                             lot.classificaition = classificaition
                         lot.save()
-                        #print(lot)
                         lot_list.lot = lot
                         lot_list.save()
                 except Exception as ex:
@@ -1902,6 +2509,16 @@ def update_products_xml(json_datafile):
                             except:
                                 pass
                             try:
+                                step_price_percent = \
+                                    envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                        "Lot"][lot_i][
+                                        "StepPricePercent"]
+                                lot.step_price_percent = step_price_percent
+
+                                # #print("ns1:TradeObjectHtml", trade_obj_html)
+                            except:
+                                pass
+                            try:
                                 nil = \
                                     envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
                                         "Lot"][lot_i][
@@ -1920,6 +2537,15 @@ def update_products_xml(json_datafile):
                                 lot.trade_object_html = trade_obj_html
 
                                 #print("TradeObjectHtml", trade_obj_html)
+                            except:
+                                pass
+                            try:
+                                advance = \
+                                    envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                        "Lot"][lot_i]["Advance"]
+                                lot.advance = advance
+
+                                # #print("LotNumber", lot_number)
                             except:
                                 pass
                             try:
@@ -1980,6 +2606,36 @@ def update_products_xml(json_datafile):
                             except:
                                 pass
                             try:
+                                date_publish_smi = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                                    "DatePublishSMI"]
+                                trade_info.date_publish_smi = date_publish_smi
+                                # #print("AuctionType", auction_type)
+                            except:
+                                pass
+                            try:
+                                date_publish_smi = \
+                                envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                                    "ns1:DatePublishSMI"]
+                                trade_info.date_publish_smi = date_publish_smi
+                                # #print("AuctionType", auction_type)
+                            except:
+                                pass
+                            try:
+                                date_publish_efir = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                                    "DatePublishEFIR"]
+                                trade_info.date_publish_efir = date_publish_efir
+                                # #print("AuctionType", auction_type)
+                            except:
+                                pass
+                            try:
+                                date_publish_efir = \
+                                envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                                    "ns1:DatePublishEFIR"]
+                                trade_info.date_publish_efir = date_publish_efir
+                                # #print("AuctionType", auction_type)
+                            except:
+                                pass
+                            try:
                                 advance_percent = \
                                     envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
                                         "Lot"][
@@ -1989,12 +2645,16 @@ def update_products_xml(json_datafile):
                                 # #print("ns1:TradeObjectHtml", trade_obj_html)
                             except:
                                 pass
-                            classificaition.save()
-                            lot.classificaition = classificaition
-                            lot.save()
-                            lot_list.lot = lot
-                            lot_list.save()
-                            #print(lot)
+                            try:
+                                if classificaition.idclass is not None:
+                                    classificaition.save()
+                                    lot.classificaition = classificaition
+                                    lot.save()
+                                    lot_list.lot = lot
+                                    lot_list.save()
+                                #print(lot)
+                            except Exception as ex:
+                                pass
 
                 except Exception as ex:
                     pass
@@ -2043,6 +2703,270 @@ def update_products_xml(json_datafile):
                 except Exception as ex:
                     pass
                 try:
+                    lottraderesult = envelope["SetBiddingResult"]["BiddingResult"]["LotList"][
+                        "LotTradeResult"]
+                    for i in lottraderesult:
+                        print(type(i))
+                        print(type(lottraderesult))
+                        # print(envelope["SetBiddingResult"]["BiddingResult"]["LotList"][
+                        # "LotTradeResult"][i])
+                        try:
+                            lot_number = lottraderesult["@LotNumber"]
+                            lot_trade_result.lot_number = lot_number
+                            lot_trade_result = LotTradeResult()
+                            # #print("LotNumber", lot_number)
+
+                        except:
+                            pass
+                        try:
+                            lot_number = lottraderesult["LotNumber"]
+                            lot_trade_result.lot_number = lot_number
+                            # #print("LotNumber", lot_number)
+
+                        except:
+                            pass
+                        try:
+                            price = lottraderesult["SuccessTradeResult"]["@Price"]
+                            success_trade_result.price = price
+                            # #print("Price", price)
+
+                        except:
+                            pass
+                        try:
+                            price = lottraderesult["ns1:SuccessTradeResult"]["@Price"]
+                            success_trade_result.price = price
+                            # #print("Price", price)
+
+                        except:
+                            pass
+
+                        try:
+
+                            first_name = lottraderesult["SuccessTradeResult"]["WinnerPerson"]["@FirstName"]
+                            winner_person = WinnerPerson()
+
+                            winner_person.first_name = first_name
+                            # winner_person.save()
+                            # #print(first_name, "winner")
+
+
+                        except:
+                            pass
+
+                        try:
+                            last_name = \
+                                lottraderesult["SuccessTradeResult"]["WinnerPerson"][
+                                    "@LastName"]
+                            winner_person.last_name = last_name
+                            # #print(last_name)
+                        except:
+                            pass
+                        try:
+                            middle_name = \
+                                lottraderesult["SuccessTradeResult"]["WinnerPerson"][
+                                    "@MiddleName"]
+                            winner_person.middle_name = middle_name
+                            # #print(middle_name)
+                        except:
+                            pass
+                        try:
+                            inn = \
+                                lottraderesult["SuccessTradeResult"]["WinnerPerson"][
+                                    "@INN"]
+                            winner_person.inn = inn
+                            # #print(inn)
+                        except:
+                            pass
+                        try:
+                            address = \
+                                lottraderesult["SuccessTradeResult"]["WinnerPerson"][
+                                    "@Address"]
+                            winner_person.address = address
+                            # #print(address)
+                        except:
+                            pass
+                        try:
+                            phone = \
+                                lottraderesult["SuccessTradeResult"]["WinnerPerson"][
+                                    "@Phone"]
+                            winner_person.phone = phone
+                            # #print(phone)
+                        except:
+                            pass
+                        try:
+                            email = \
+                                lottraderesult["SuccessTradeResult"]["WinnerPerson"][
+                                    "@Email"]
+                            winner_person.email = email
+                            # #print(email)
+                        except:
+                            pass
+
+                        # try:
+                        #     if winner_person.first_name:
+                        #         winner_person.save(zzz)
+                        #         success_trade_result.winner_person = winner_person
+                        #         #print("pre save")
+                        #         #print(success_trade_result)
+                        #         success_trade_result.save()
+                        #         #print(success_trade_result.pk)
+                        #         #print("after save")
+                        #         #print(">"*50)
+                        # except Exception as ex:
+                        #     pass
+                        #     #print("E"*50)
+                        # try:
+                        #     #print(lottraderesult["Participants"])
+                        # except:
+                        #     pass
+                        try:
+
+                            first_name = lottraderesult["SuccessTradeResult"]["Participants"]["Participant"][
+                                "ParticipantPerson"]["@FirstName"]
+                            participant_person.first_name = first_name
+                            # #print(first_name, "Participant ")
+
+                        except:
+                            pass
+
+                        try:
+                            last_name = \
+                                lottraderesult["SuccessTradeResult"]["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@LastName"]
+                            participant_person.last_name = last_name
+                            # #print(last_name)
+                        except:
+                            pass
+                        try:
+                            middle_name = \
+                                lottraderesult["SuccessTradeResult"]["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@MiddleName"]
+                            participant_person.middle_name = middle_name
+                            # #print(middle_name)
+                        except:
+                            pass
+                        try:
+                            inn = \
+                                lottraderesult["SuccessTradeResult"]["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@INN"]
+                            participant_person.inn = inn
+                            # #print(inn)
+                        except:
+                            pass
+                        try:
+                            address = \
+                                lottraderesult["SuccessTradeResult"]["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@Address"]
+                            participant_person.address = address
+                            # #print(address)
+                        except:
+                            pass
+                        try:
+                            phone = \
+                                lottraderesult["SuccessTradeResult"]["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@Phone"]
+                            participant_person.phone = phone
+                            # #print(phone)
+                        except:
+                            pass
+                        try:
+                            email = \
+                                lottraderesult["SuccessTradeResult"]["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@Email"]
+                            participant_person.email = email
+                            # #print(email)
+                        except:
+                            pass
+                        # ===============================
+                        try:
+
+                            first_name = lottraderesult["Participants"]["Participant"][
+                                "ParticipantPerson"]["@FirstName"]
+                            participant_person.first_name = first_name
+                            # #print(first_name, "Participant ")
+
+                        except:
+                            pass
+
+                        try:
+                            last_name = \
+                                lottraderesult["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@LastName"]
+                            participant_person.last_name = last_name
+                            # #print(last_name)
+                        except:
+                            pass
+                        try:
+                            middle_name = \
+                                lottraderesult["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@MiddleName"]
+                            participant_person.middle_name = middle_name
+                            # #print(middle_name)
+                        except:
+                            pass
+                        try:
+                            inn = \
+                                lottraderesult["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@INN"]
+                            participant_person.inn = inn
+                            # #print(inn)
+                        except:
+                            pass
+                        try:
+                            address = \
+                                lottraderesult["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@Address"]
+                            participant_person.address = address
+                            # #print(address)
+                        except:
+                            pass
+                        try:
+                            phone = \
+                                lottraderesult["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@Phone"]
+                            participant_person.phone = phone
+                            # #print(phone)
+                        except:
+                            pass
+                        try:
+                            email = \
+                                lottraderesult["Participants"]["Participant"][
+                                    "ParticipantPerson"][
+                                    "@Email"]
+                            participant_person.email = email
+                            # #print(email)
+                        except:
+                            pass
+
+                        if winner_person.first_name or winner_person.inn is not None:
+                            winner_person.save()
+                        # lot_trade_result.save()
+
+                except Exception as ex:
+                    pass
+                try:
+                    if trade_organizer_person.first_name is not None:
+                        trade_organizer_person.save()
+                        trade_organizer.trade_organizer_person = trade_organizer_person
+                    if trade_organizer_company.full_name is not None:
+                        trade_organizer_company.save()
+                        trade_organizer.trade_organizer_company = trade_organizer_company
+                    if trade_organizer_person.first_name is not None or trade_organizer_company.full_name is not None:
+                        trade_organizer.save()
+                except:
+                    pass
+                try:
                     if debtor_person.first_name is not None:
                         debtor_person.save()
                         debtor.debtor_person = debtor_person
@@ -2055,14 +2979,28 @@ def update_products_xml(json_datafile):
                 except:
                     pass
                 try:
-                    if debtor_company.full_name is not None:
+                    if debtor_company.full_name is not None or debtor_company.short_name is not None or debtor_company.inn is not None:
                         debtor_company.save()
                         debtor.debtor_company = debtor_company
                         debtor.save()
                 except:
                     pass
                 try:
+                    if buyer_person.first_name is not None:
+                        buyer_person.save()
+                except:
+                    pass
+                try:
+                    if buyer_company.inn is not None or buyer_company.ogrn is not None:
+                        buyer_company.save()
+                except Exception as ex:
+                    pass
+                try:
                     if failure_trade_result.substantiation is not None:
+                        if buyer_person.first_name is not None:
+                            failure_trade_result.buyer_person = buyer_person
+                        if buyer_company.inn is not None or buyer_company.ogrn is not None:
+                            failure_trade_result.buyer_company = buyer_company
                         failure_trade_result.save()
                 except:
                     pass
@@ -2097,6 +3035,8 @@ def update_products_xml(json_datafile):
                     # #print(lot_list)
                     if application_session_start.trade_id is not None:
                         if lot_info.lot_number is not None:
+                            lot_info.save()
+                            lot_list.lot_info = lot_info
                             application_session_start.lot_list = lot_list
 
                         application_session_start.save()
@@ -2111,6 +3051,8 @@ def update_products_xml(json_datafile):
 
                 try:
                     if lot_statistic.lot_number is not None:
+                        if application_dataa.result is not None:
+                            lot_statistic.application_list = application_list
                         lot_statistic.save()
                         lot_list.lot_statistic = lot_statistic
                         lot_list.save()
@@ -2120,7 +3062,8 @@ def update_products_xml(json_datafile):
                     if application_session_statistic.trade_id is not None:
                         if lot_statistic.lot_number is not None:
                             application_session_statistic.lot_list = lot_list
-                        application_session_statistic.attach = attach
+                        if attach.file_name is not None:
+                            application_session_statistic.attach = attach
                         application_session_statistic.save()
                         set_application_session_statistic.application_session_statistic = application_session_statistic
                         set_application_session_statistic.save()
@@ -2163,42 +3106,26 @@ def update_products_xml(json_datafile):
                 try:
                     if buyer_company.full_name is not None:
                         buyer_company.save()
-                        #print(buyer_company)
-                        #print(">" * 50)
+
                 except Exception as ex:
                     pass
                     #print(">" * 50)
                 try:
                     if success_trade_result.price is not None:
                         if winner_company.full_name is not None:
+                            winner_company.save()
                             success_trade_result.winner_company = winner_company
-                        if winner_person.first_name is not None:
+                        if winner_person.first_name is not None :
+                            winner_person.save()
                             success_trade_result.winner_person = winner_person
                         success_trade_result.save()
                 except:
                     pass
-                try:
-                    if trade_organizer_person.first_name is not None:
-                        trade_organizer_person.save()
-                        trade_organizer.trade_organizer_person = trade_organizer_person
-                        trade_organizer.save()
-                except:
-                    pass
-                try:
-                    if trade_organizer_company.full_name is not None:
-                        trade_organizer_company.save()
-                        trade_organizer.trade_organizer_company = trade_organizer_company
-                        trade_organizer.save()
-                except:
-                    pass
 
-                # trade_organizer.trade_organizer_person = trade_organizer_person
-                # if trade_organizer.trade_organizer_person is not None or trade_organizer.trade_organizer_company is not None:
-                # trade_organizer.save()
-                # contract_number_model.save()
-                # contract_info.contract_number = contract_number_model
+
+
                 try:
-                    if contract_info.contract_number is not None:
+                    if contract_info.contract_number is not None or contract_info.date_contract is not None:
                         contract_info.save()
                 except:
                     pass
@@ -2207,16 +3134,21 @@ def update_products_xml(json_datafile):
                         contract_participant.save()
                         contract_participant_list.contract_participant = contract_participant
                         contract_participant_list.save()
-                        lot_contract_sale.contract_participant_list = contract_participant_list
+                        lot_contract_sale.contract_participant = contract_participant_list
                         lot_contract_sale.contract_info = contract_info
                 except:
                     pass
                 try:
                     if lot_contract_sale.lot_number is not None:
+                        if contract_participant.name is not None:
+                            contract_participant.save()
+                            contract_participant_list.contract_participant = contract_participant
+                            lot_contract_sale.contract_participant = contract_participant_list
                         lot_contract_sale.save()
                         lot_contract_sale_list.lot_contract_sale = lot_contract_sale
                         lot_contract_sale_list.save()
                         contract_sale.lot_contract_sale_list = lot_contract_sale_list
+                        contract_sale.save()
                         body.set_contract_sale = set_contract_sale
 
 
@@ -2242,19 +3174,21 @@ def update_products_xml(json_datafile):
                         bidding_state_lot_info.save()
                 except:
                     pass
-                # if bidding_invitation.trade_id is not None:
                 try:
                     if bidding_fail.trade_id is not None:
                         if attach.file_name is not None:
                             bidding_fail.attach = attach
                         if bidding_state_lot_info.lot_number is not None:
+                            bidding_state_lot_info.save()
+                            lot_list.bidding_state_lot_info = bidding_state_lot_info
+                            lot_list.save()
                             bidding_fail.lot_list = lot_list
                         bidding_fail.save()
                         set_bidding_fail.bidding_fail = bidding_fail
                         set_bidding_fail.save()
                         body.set_bidding_fail = set_bidding_fail
 
-                except:
+                except Exception as ex:
                     pass
                 try:
                     if annulment.trade_id is not None:
@@ -2267,8 +3201,8 @@ def update_products_xml(json_datafile):
                     #print(":" * 50)
                 try:
                     if bidding_end.trade_id is not None:
-                        # lot_list.save()
-                        # bidding_end.lot_list = lot_list
+                        if lot_info.lot_number is not None:
+                            bidding_end.lot_list = lot_list
                         bidding_end.save()
                         set_bidding_end.bidding_end = bidding_end
                         set_bidding_end.save()
@@ -2277,10 +3211,14 @@ def update_products_xml(json_datafile):
                 except:
                     pass
 
+
                 try:
                     if bidding_cancel.trade_id is not None:
-                        # lot_list.save()
-                        # bidding_cancel.lot_list = lot_list
+                        if bidding_state_lot_info.lot_number is not None:
+                            bidding_state_lot_info.save()
+                            lot_list.bidding_state_lot_info = bidding_state_lot_info
+                            lot_list.save()
+                            bidding_cancel.lot_list = lot_list
                         bidding_cancel.save()
                         set_bidding_cancel.bidding_cancel = bidding_cancel
                         set_bidding_cancel.save()
@@ -2291,20 +3229,29 @@ def update_products_xml(json_datafile):
 
                 try:
                     if application_session_end.trade_id is not None:
-                        # lot_list.save()
                         if lot_info.lot_number is not None:
+                            lot_info.save()
+                            lot_list.lot_info = lot_info
+                            lot_list.save()
                             application_session_end.lot_list = lot_list
                         application_session_end.save()
                         set_application_session_end.application_session_end = application_session_end
                         set_application_session_end.save()
                         body.set_application_session_end = set_application_session_end
 
-                except:
+                except Exception as ex:
                     pass
+
                 try:
                     if bidding_start.trade_id is not None:
+                        if lot.lot_number is not None:
+                            lot.save()
+                            lot_list.lot = lot
+                            lot_list.save()
+                            bidding_start.lot_list = lot_list
                         bidding_start.save()
                         set_bidding_start.bidding_start = bidding_start
+                        set_bidding_start.save()
                 except:
                     pass
                 try:
@@ -2323,38 +3270,13 @@ def update_products_xml(json_datafile):
                         body.set_bidding_process_info = set_bidding_proccess_info
 
                 except Exception as ex:
-                    print(ex,flush=True)
-                try:
-                    if bidding_invitation.trade_id is not None:
-                        if trade_organizer.pk is not None:
-                            bidding_invitation.trade_ogranizer = trade_organizer
-                        if arbitr_manager.first_name is not None:
-                            bidding_invitation.arbitr_manager = arbitr_manager
-                        if legal_case.case_number is not None:
-                            bidding_invitation.legal_case = legal_case
-                        if trade_info.auction_type is not None:
-                            bidding_invitation.trade_info = trade_info
-                        if debtor.pk is not None:
-                            bidding_invitation.debtor = debtor
-
-                        if lot.lot_number is not None:
-                            if classificaition.idclass is not None:
-                                classificaition.save()
-                                lot.classification = classificaition
-                            lot.save()
-                            lot_list.lot = lot
-                            lot_list.save()
-                            bidding_invitation.lot_list = lot_list
-
-                        bidding_invitation.save()
-                        set_bidding_invitation.bidding_invitations = bidding_invitation
-                        set_bidding_invitation.save()
-                        body.set_bidding_invitation = set_bidding_invitation
-
-                except:
                     pass
                 try:
                     if lot_trade_result.lot_number is not None:
+                        if failure_trade_result.pk is not None:
+                            lot_trade_result.failure_trade_result = failure_trade_result
+                        if success_trade_result.pk is not None:
+                            lot_trade_result.success_trade_result = success_trade_result
                         lot_trade_result.save()
                         lot_list.lot_trade_result = lot_trade_result
                         lot_list.save()
@@ -2372,7 +3294,9 @@ def update_products_xml(json_datafile):
                         set_bidding_result.save()
                         body.set_bidding_result = set_bidding_result
 
-                except:
+
+                except Exception as ex:
+
                     pass
                 try:
                     if bidding_invitation.trade_id is not None:
@@ -2386,32 +3310,26 @@ def update_products_xml(json_datafile):
                             bidding_invitation.trade_info = trade_info
                         if debtor.pk is not None:
                             bidding_invitation.debtor = debtor
+                        try:
+                            if lot.lot_number is not None:
+                                if classificaition.idclass is not None:
+                                    classificaition.save()
+                                    lot.classification = classificaition
+                                lot.save()
+                                lot_list.lot = lot
+                                lot_list.save()
+                                bidding_invitation.lot_list = lot_list
 
-                        if lot.lot_number is not None:
-                            if classificaition.idclass is not None:
-                                classificaition.save()
-                                lot.classification = classificaition
-                            lot.save()
-                            lot_list.lot = lot
-                            lot_list.save()
-                            bidding_invitation.lot_list = lot_list
-
-                        bidding_invitation.save()
-                        set_bidding_invitation.bidding_invitations = bidding_invitation
-                        set_bidding_invitation.save()
-                        body.set_bidding_invitation = set_bidding_invitation
+                            bidding_invitation.save()
+                            set_bidding_invitation.bidding_invitations = bidding_invitation
+                            set_bidding_invitation.save()
+                            body.set_bidding_invitation = set_bidding_invitation
+                        except Exception as ex:
+                            pass
 
                 except:
                     pass
-                # body.set_contract_sale = set_contract_sale
-                # set_bidding_fail.save()
-                # body.set_bidding_fail = set_bidding_fail
-                # body.set_bidding_end = set_bidding_end
-                # body.set_bidding_cancel = set_bidding_cancel
-                # body.set_application_session_start = set_application_session_start
-                # body.set_application_session_statistic = set_application_session_statistic
-                # body.set_bidding_invitation = set_bidding_invitation
-                # body.set_application_session_end = set_application_session_end
+
                 try:
                     body.save()
                 except Exception as ex:
@@ -2564,6 +3482,9 @@ def update_products_xml(json_datafile):
                     set_bidding_invitation = SetBiddingInvitation()
                     trade_organizer = TradeOrganizer()
                     legal_case = LegalCase()
+                    lot_contract_sale = LotContractSale()
+                    lot_contract_sale_list = LotContractSaleList()
+                    contract_info = ContractInfo()
                     arbitr_manager = ArbitrManager()
                     trade_organizer_person = TradeOrganizerPerson()
                     trade_organizer_company = TradeOrganizerCompany()
@@ -2608,6 +3529,10 @@ def update_products_xml(json_datafile):
                     step_price_model = StepPrice()
                     annulment = AnnullmentMessage()
                     set_annulment = SetAnnulment()
+                    contract_participant_list = ContractParticipantList()
+                    contract_participant = ContractParticipant()
+                    contract_sale = ContractSale()
+                    set_contract_sale = SetContractSale()
                     try:
                         id_efrsb = trade["Trade"]["@ID_EFRSB"]
                         # #print(id_efrsb)
@@ -2694,6 +3619,14 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
+                        trade_id = envelope["ns1:SetApplicationSessionEnd"]["ns1:ApplicationSessionEnd"]["@TradeId"]
+
+                        application_session_end.trade_id = trade_id
+                        # #print('tradeid', trade_id)
+
+                    except:
+                        pass
+                    try:
                         trade_id = envelope["SetBiddingProcessInfo"]["BiddingProccesInfo"]["@TradeId"]
                         bidding_proccess_info.trade_id = trade_id
                         # #print('tradeid', trade_id)
@@ -2714,7 +3647,21 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
+                        trade_id = envelope["ns1:SetBiddingEnd"]["ns1:BiddingEnd"][
+                            "@TradeId"]
+                        bidding_end.trade_id = trade_id
+                        #print("BiddingEND" * 50, trade_id)
+                    except:
+                        pass
+                    try:
                         trade_id = envelope["SetBiddingFail"]["BiddingFail"]["@TradeId"]
+                        # #print(trade_id)
+                        bidding_fail.trade_id = trade_id
+                        # #print("TradeId", trade_id)
+                    except:
+                        pass
+                    try:
+                        trade_id = envelope["ns1:SetBiddingFail"]["ns1:BiddingFail"]["@TradeId"]
                         # #print(trade_id)
                         bidding_fail.trade_id = trade_id
                         # #print("TradeId", trade_id)
@@ -2746,8 +3693,57 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     #
+                    #TradeOrganizer
+                    try:
+                        first_name = \
+                        envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeOrganizer"][
+                            "ns1:TradeOrganizerPerson"][
+                            "@FirstName"]
+                        trade_organizer_person.first_name = first_name
+                        # #print("TradeOrganizerFirstName", first_name)
+                    except:
+                        pass
+                    try:
+                        last_name = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeOrganizer"][
+                            "ns1:TradeOrganizerPerson"][
+                            "@LastName"]
+                        trade_organizer_person.last_name = last_name
+                        # #print("TradeOrganizerLastName", last_name)
+                    except:
+                        pass
+                    try:
+                        middle_name = \
+                        envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeOrganizer"][
+                            "ns1:TradeOrganizerPerson"][
+                            "@MiddleName"]
+                        trade_organizer_person.middle_name = middle_name
+                        # #print("TradeOrganizerMiddleName", middle_name)
+                    except:
+                        pass
+                    try:
+                        inn = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeOrganizer"][
+                            "ns1:TradeOrganizerPerson"]["@INN"]
+                        trade_organizer_person.inn = inn
+                        # #print("TradeOrganizerINN", inn)
+                    except:
+                        pass
+                    try:
+                        snils = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeOrganizer"][
+                            "ns1:TradeOrganizerPerson"][
+                            "@SNILS"]
+                        trade_organizer_person.snils = snils
+                        # #print("TradeOrganizerSnils", snils)
+                    except:
+                        pass
+                    ####
                     try:
                         trade_id = envelope["SetBiddingResult"]["BiddingResult"]["@TradeId"]
+                        bidding_result.trade_id = trade_id
+                        # #print('tradeid', trade_id)
+                    except:
+                        pass
+                    try:
+                        trade_id = envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"]["@TradeId"]
                         bidding_result.trade_id = trade_id
                         # #print('tradeid', trade_id)
                     except:
@@ -2769,6 +3765,15 @@ def update_products_xml(json_datafile):
                             "@TradeId"]
                         application_session_statistic.trade_id = trade_id
                         # #print('tradeid', trade_id)
+                    except:
+                        pass
+                    try:
+                        trade_id = envelope["ns1:SetApplicationSessionStatistic"]["ns1:ApplicationSessionStatistic"][
+                            "@TradeId"]
+                        application_session_statistic.trade_id = trade_id
+                        # print('TradeID', trade_id)
+
+
                     except:
                         pass
                     try:
@@ -2800,7 +3805,21 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
+                        event_time = envelope["ns1:SetBiddingEnd"]["ns1:BiddingEnd"][
+                            "@EventTime"]
+                        bidding_end.event_time = event_time
+                        # #print("EventTime", event_time)
+                    except:
+                        pass
+                    try:
                         event_time = envelope["SetApplicationSessionEnd"]["ApplicationSessionEnd"][
+                            "@EventTime"]
+                        application_session_end.event_time = event_time
+                        # #print("eventtimeEnd", event_time2)
+                    except:
+                        pass
+                    try:
+                        event_time = envelope["ns1:SetApplicationSessionEnd"]["ns1:ApplicationSessionEnd"][
                             "@EventTime"]
                         application_session_end.event_time = event_time
                         # #print("eventtimeEnd", event_time2)
@@ -2877,7 +3896,22 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
+                        event_time = envelope["ns1:SetApplicationSessionStatistic"][
+                            "ns1:ApplicationSessionStatistic"][
+                            "@EventTime"]
+                        application_session_statistic.event_time = event_time
+                        # #print('EventTime', event_time)
+
+                    except:
+                        pass
+                    try:
                         event_time = envelope["SetBiddingResult"]["BiddingResult"]["@EventTime"]
+                        bidding_result.event_time = event_time
+                        # #print('eventtime', event_time)
+                    except:
+                        pass
+                    try:
+                        event_time = envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"]["@EventTime"]
                         bidding_result.event_time = event_time
                         # #print('eventtime', event_time)
                     except:
@@ -2895,12 +3929,6 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
-                        event_time = envelope["SetBiddingEnd"]["BiddingEnd"]["@EventTime"]
-                        bidding_end.event_time = event_time
-                        # #print('eventtime', event_time)
-                    except:
-                        pass
-                    try:
                         lot_number = envelope["SetBiddingEnd"]["BiddingEnd"]["LotList"]["LotInfo"][
                             "@LotNumber"]
                         lot_info.lot_number = lot_number
@@ -2908,13 +3936,28 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
-                        date_begin = envelope["SetApplicationSessionStatistic"]["ApplicationSessionStatistic"][
+                        date_begin = envelope["SetApplicationSessionStatistic"][
+                            "ApplicationSessionStatistic"][
                             "DateBegin"]
-
+                        if len(date_begin.split("+")) > 1:
+                            date_begin = date_begin.split("+")[0]
                         application_session_statistic.date_begin = date_begin
                         # #print("DateBegin", date_begin)
+
                     except:
                         pass
+                        try:
+                            date_begin = envelope["ns1:SetApplicationSessionStatistic"][
+                                "ns1:ApplicationSessionStatistic"][
+                                "ns1:DateBegin"]
+                            if len(date_begin.split("+")) > 1:
+                                date_begin = date_begin.split("+")[0]
+                            application_session_statistic.date_begin = date_begin
+                            # #print("DateBegin", date_begin)
+
+                        except:
+                            pass
+
                     try:
                         lot_number = \
                             envelope["SetApplicationSessionEnd"]["ApplicationSessionEnd"]["LotList"][
@@ -2936,8 +3979,26 @@ def update_products_xml(json_datafile):
                         pass
                     try:
                         lot_number = \
+                            envelope["ns1:SetApplicationSessionStatistic"]["ns1:ApplicationSessionStatistic"][
+                                "ns1:LotList"]["ns1:LotStatistic"][
+                                "@LotNumber"]
+                        lot_statistic.lot_number = lot_number
+                        # #print("LotNumber", lot_number)
+                    except:
+                        pass
+                    try:
+                        lot_number = \
                             envelope["SetBiddingResult"]["BiddingResult"][
                                 "LotList"]["LotTradeResult"][
+                                "@LotNumber"]
+                        lot_trade_result.lot_number = lot_number
+                        # #print("LotNumber", lot_number)
+                    except:
+                        pass
+                    try:
+                        lot_number = \
+                            envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
+                                "ns1:LotList"]["ns1:LotTradeResult"][
                                 "@LotNumber"]
                         lot_trade_result.lot_number = lot_number
                         # #print("LotNumber", lot_number)
@@ -2972,6 +4033,16 @@ def update_products_xml(json_datafile):
                             envelope["SetBiddingResult"]["BiddingResult"][
                                 "LotList"]["LotTradeResult"][
                                 "FailureTradeResult"]["Price"]
+                        failure_trade_result.price = price
+
+                        # #print("price", price)
+                    except:
+                        pass
+                    try:
+                        price = \
+                            envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
+                                "ns1:LotList"]["ns1:LotTradeResult"][
+                                "ns1:FailureTradeResult"]["ns1:Price"]
                         failure_trade_result.price = price
 
                         # #print("price", price)
@@ -3127,6 +4198,38 @@ def update_products_xml(json_datafile):
                     ##ParticipantPerson
 
                     # #print("Participant", i)
+                    #############
+                    try:
+                        full_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"][
+                            "DebtorCompany"]["@FullName"]
+                        debtor_company.full_name = full_name
+                        # #print("DebtorCompanyFullName", full_name)
+                    except:
+                        pass
+                    try:
+                        short_name = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"]["DebtorCompany"][
+                                "@ShortName"]
+                        debtor_company.short_name = short_name
+                        # #print("DebtorCompanyShortName", short_name)
+                    except:
+                        pass
+
+                    try:
+                        inn = envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"][
+                            "DebtorCompany"]["@INN"]
+                        debtor_company.inn = inn
+                        # #print("DebtorCompanyINN", inn)
+                    except:
+                        pass
+                    try:
+                        ogrn = envelope["SetBiddingInvitation"]["BiddingInvitation"]["Debtor"][
+                            "DebtorCompany"]["@OGRN"]
+                        debtor_company.ogrn = ogrn
+                        # #print("DebtorOGRN", ogrn)
+                    except:
+                        pass
+                    ######
                     try:
                         first_name = \
                             envelope["SetBiddingResult"]["BiddingResult"][
@@ -3292,10 +4395,10 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['FailureTradeResult'][
                                 "BuyerPerson"]["@FirstName"]
                         buyer_person.first_name = first_name
-                        # buyer_company.save()
                         # #print("BuyerCompany FullName", full_name)
                     except:
                         pass
+
                     try:
                         middle_name = \
                             envelope["SetBiddingResult"]["BiddingResult"][
@@ -3333,6 +4436,24 @@ def update_products_xml(json_datafile):
                         # #print("OGRN", ogrn)
                     except:
                         pass
+                    try:
+                        phone = \
+                            envelope["SetBiddingResult"]["BiddingResult"][
+                                "LotList"]["LotTradeResult"]['FailureTradeResult'][
+                                "BuyerPerson"]["@Phone"]
+                        buyer_person.phone = phone
+                        # #print("BuyerCompany FullName", full_name)
+                    except:
+                        pass
+                    try:
+                        email = \
+                            envelope["SetBiddingResult"]["BiddingResult"][
+                                "LotList"]["LotTradeResult"]['FailureTradeResult'][
+                                "BuyerPerson"]["@Email"]
+                        buyer_person.email = email
+                        # #print("BuyerCompany FullName", full_name)
+                    except:
+                        pass
                     ##
                     try:
                         full_name = \
@@ -3340,7 +4461,6 @@ def update_products_xml(json_datafile):
                                 "LotList"]["LotTradeResult"]['FailureTradeResult'][
                                 "BuyerCompany"]["@FullName"]
                         buyer_company.full_name = full_name
-                        # buyer_company.save()
                         # #print("BuyerCompany FullName", full_name)
                     except:
                         pass
@@ -3400,53 +4520,154 @@ def update_products_xml(json_datafile):
                     except:
                         pass
 
-                    # #TradeOrganizer
-                    # try:
-                    #     first_name = \
-                    #         envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
-                    #             "TradeOrganizerPerson"][
-                    #             "@FirstName"]
-                    #     trade_organizer_person.first_name = first_name
-                    #     ##print("TradeOrganizerFirstName", first_name)
-                    # except:
-                    #     pass
-                    # try:
-                    #     last_name = \
-                    #         envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
-                    #             "TradeOrganizerPerson"][
-                    #             "@LastName"]
-                    #     trade_organizer_person.last_name = last_name
-                    #     ##print("TradeOrganizerLastName", last_name)
-                    # except:
-                    #     pass
-                    # try:
-                    #     middle_name = \
-                    #         envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
-                    #             "TradeOrganizerPerson"][
-                    #             "@MiddleName"]
-                    #     trade_organizer_person.middle_name = middle_name
-                    #     ##print("TradeOrganizerMiddleName", middle_name)
-                    # except:
-                    #     pass
-                    # try:
-                    #     inn = \
-                    #         envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
-                    #             "TradeOrganizerPerson"][
-                    #             "@INN"]
-                    #     trade_organizer_person.inn = inn
-                    #     ##print("TradeOrganizerINN", inn)
-                    # except:
-                    #     pass
-                    # try:
-                    #     snils = \
-                    #         envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
-                    #             "TradeOrganizerPerson"][
-                    #             "@SNILS"]
-                    #     trade_organizer_person.snils = snils
-                    #     ##print("TradeOrganizerSnils", snils)
-                    # except:
-                    #     pass
-                    # #_________
+                    #TradeOrganizer
+                    try:
+                        first_name = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
+                                "TradeOrganizerPerson"][
+                                "@FirstName"]
+                        trade_organizer_person.first_name = first_name
+                        ##print("TradeOrganizerFirstName", first_name)
+                    except:
+                        pass
+                    try:
+                        last_name = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
+                                "TradeOrganizerPerson"][
+                                "@LastName"]
+                        trade_organizer_person.last_name = last_name
+                        ##print("TradeOrganizerLastName", last_name)
+                    except:
+                        pass
+                    try:
+                        middle_name = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
+                                "TradeOrganizerPerson"][
+                                "@MiddleName"]
+                        trade_organizer_person.middle_name = middle_name
+                        ##print("TradeOrganizerMiddleName", middle_name)
+                    except:
+                        pass
+                    try:
+                        inn = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
+                                "TradeOrganizerPerson"][
+                                "@INN"]
+                        trade_organizer_person.inn = inn
+                        ##print("TradeOrganizerINN", inn)
+                    except:
+                        pass
+                    try:
+                        snils = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
+                                "TradeOrganizerPerson"][
+                                "@SNILS"]
+                        trade_organizer_person.snils = snils
+                        ##print("TradeOrganizerSnils", snils)
+                    except:
+                        pass
+
+                    #
+                    try:
+                        contract_number = \
+                            envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
+                                "ContractInfo"][
+                                "ContractNumber"]
+                        contract_info.contract_number = contract_number
+                        # #print("ContractNumber", contract_number)
+                    except:
+                        pass
+                    try:
+                        date_contract = \
+                            envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
+                                "ContractInfo"][
+                                "DateContract"]
+                        if len(date_contract.split("+")) > 1:
+                            date_contract = date_contract.split("+")[0]
+                        contract_info.date_contract = date_contract
+                        # #print("DateContract", date_contract)
+                    except:
+                        pass
+
+                    try:
+                        price = envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
+                            "ContractInfo"][
+                            "Price"]
+                        contract_info.price = price
+                        # #print("Price", price)
+                    except:
+                        pass
+                    try:
+                        contract_number = \
+                            envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"][
+                                "ns1:LotContractSale"][
+                                "ns1:ContractInfo"][
+                                "ns1:ContractNumber"]
+                        contract_info.contract_number = contract_number
+                        # #print("ContractNumber", contract_number)
+                    except:
+                        pass
+                    try:
+                        date_contract = \
+                            envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"][
+                                "ns1:LotContractSale"][
+                                "ns1:ContractInfo"][
+                                "ns1:DateContract"]
+                        if len(date_contract.split("+")) > 1:
+                            date_contract = date_contract.split("+")[0]
+                        contract_info.date_contract = date_contract
+                        # #print("DateContract", date_contract)
+                    except:
+                        pass
+
+                    try:
+                        price = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"][
+                            "ns1:LotContractSale"][
+                            "ns1:ContractInfo"][
+                            "ns1:Price"]
+                        contract_info.price = price
+                        # #print("Price", price)
+                    except:
+                        pass
+                    #TradeOrganizerCompany
+
+                    try:
+                        full_name = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
+                                "TradeOrganizerCompany"][
+                                "@FullName"]
+                        trade_organizer_company.full_name = full_name
+                        # #print("TradeOrganizerFirstName", full_name)
+                    except:
+                        pass
+                    try:
+                        short_name = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
+                                "TradeOrganizerCompany"][
+                                "@ShortName"]
+                        trade_organizer_company.short_name = short_name
+                        # #print("TradeOrganizerShortName", short_name)
+                    except:
+                        pass
+                    try:
+                        inn = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
+                                "TradeOrganizerCompany"][
+                                "@INN"]
+                        trade_organizer_company.inn = inn
+                        # #print("TradeOrganizerCompanyINN", inn)
+                    except:
+                        pass
+                    try:
+                        ogrn = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeOrganizer"][
+                                "TradeOrganizerCompany"][
+                                "@OGRN"]
+                        trade_organizer_company.ogrn = ogrn
+                        # #print("TradeOrganizerOGRN", ogrn)
+                    except:
+                        pass
+                    #_________
                     try:
                         full_name = \
                             envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:Debtor"][
@@ -3460,7 +4681,7 @@ def update_products_xml(json_datafile):
                     try:
                         short_name = \
                             envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:Debtor"][
-                                "ns1:DebtorPerson"][
+                                "ns1:DebtorCompany"][
                                 "@ShortName"]
                         debtor_company.short_name = short_name
                         # #print("DebtorCompanyShortName", short_name)
@@ -3696,7 +4917,16 @@ def update_products_xml(json_datafile):
                         time_end = \
                             envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
                                 "ns1:OpenForm"][
-                                "@TimeEnd"]
+                                "TimeEnd"]
+                        open_form.time_end = time_end
+                        # #print("TimeBegin", time_end)
+                    except:
+                        pass
+                    try:
+                        time_end = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                                "OpenForm"][
+                                "TimeEnd"]
                         open_form.time_end = time_end
                         # #print("TimeBegin", time_end)
                     except:
@@ -3937,15 +5167,45 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
-                        for lottraderesult in envelope["SetBiddingResult"]["BiddingResult"]["LotList"][
-                            "LotTradeResult"]:
-                            # ##print(j)
-                            # for i in///// range(len(
-                            #         envelope["soap:Body"]["SetBiddingResult"]["BiddingResult"]["LotList"]["LotTradeResult"][
-                            #             "Participants"]["Participant"])):
-                            # ##print("Participant", i)
+                        lot_number = envelope["SetBiddingCancel"]["BiddingCancel"][
+                            "LotList"]["BiddingStateLotInfo"]["@LotNumber"]
+                        # #print("LotNumber", lot_number)
+                        bidding_state_lot_info.lot_number = lot_number
+
+                    except:
+                        pass
+                    try:
+                        reason = envelope["SetBiddingCancel"]["BiddingCancel"]["@Reason"]
+                        # #print("Reason", reason)
+                        bidding_cancel.reason = reason
+
+                    except:
+                        pass
+
+                    try:
+                        lottraderesult_ = envelope["SetBiddingResult"]["BiddingResult"]["LotList"][
+                            "LotTradeResult"][0]
+                        print(lottraderesult_)
+                        exit()
+                        for i in range(len(lottraderesult_)):
+                            lottraderesult = lottraderesult_[i]
+
+
+                            # print(envelope["SetBiddingResult"]["BiddingResult"]["LotList"][
+                            # "LotTradeResult"][i])
+
                             try:
                                 lot_number = lottraderesult["@LotNumber"]
+                                lot_trade_result = LotTradeResult()
+                                lot_trade_result.lot_number = lot_number
+
+
+                                # #print("LotNumber", lot_number)
+
+                            except:
+                                pass
+                            try:
+                                lot_number = lottraderesult["LotNumber"]
                                 lot_trade_result.lot_number = lot_number
                                 # #print("LotNumber", lot_number)
 
@@ -3969,6 +5229,7 @@ def update_products_xml(json_datafile):
                             try:
 
                                 first_name = lottraderesult["SuccessTradeResult"]["WinnerPerson"]["@FirstName"]
+                                winner_person = WinnerPerson()
                                 winner_person.first_name = first_name
                                 # winner_person.save()
                                 # #print(first_name, "winner")
@@ -4172,9 +5433,13 @@ def update_products_xml(json_datafile):
                                 # #print(email)
                             except:
                                 pass
+                            if winner_person.first_name or winner_person.inn is not None:
+                                winner_person.save()
+                            lot_trade_result.save()
 
-                    except:
-                        pass
+
+                    except Exception as ex:
+                        print(ex)
                     # =================================================
 
                     try:
@@ -4196,6 +5461,24 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
+                        accept_count = \
+                            envelope["ns1:SetApplicationSessionStatistic"]["ns1:ApplicationSessionStatistic"][
+                                "ns1:LotList"]["ns1:LotStatistic"][
+                                "@AcceptCount"]
+                        lot_statistic.accept_count = accept_count
+                        # #print("accept_count", accept_count)
+                    except:
+                        pass
+                    try:
+                        entry_count = \
+                            envelope["ns1:SetApplicationSessionStatistic"]["ns1:ApplicationSessionStatistic"][
+                                "ns1:LotList"]["ns1:LotStatistic"][
+                                "@EntryCount"]
+                        lot_statistic.entry_count = entry_count
+                        # #print("EntryCount", entry_count)
+                    except:
+                        pass
+                    try:
                         result = \
                             envelope["SetApplicationSessionStatistic"]["ApplicationSessionStatistic"][
                                 "LotList"]["LotStatistic"]["ApplicationList"]["ApplicationData"]["@Result"]
@@ -4204,7 +5487,65 @@ def update_products_xml(json_datafile):
                         # #print("result", result)
                     except:
                         pass
+                    try:
+                        result = \
+                            envelope["SetApplicationSessionStatistic"]["ApplicationSessionStatistic"][
+                                "LotList"]["LotStatistic"]["ApplicationList"]["ApplicationData"][0]["@Result"]
+                        application_dataa.result = result
 
+                        # #print("result", result)
+                    except:
+                        pass
+                    try:
+                        cause_of_refuse = envelope["SetApplicationSessionStatistic"][
+                            "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"][
+                            "ApplicationData"][
+                            "@CauseOfRefuse"]
+                        application_dataa.cause_of_refuse = cause_of_refuse
+                        # #print("CauseOfRefuse", cause_of_refuse)
+
+                    except:
+                        pass
+                    try:
+                        cause_of_refuse = envelope["SetApplicationSessionStatistic"][
+                            "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"][
+                            "ApplicationData"][0][
+                            "@CauseOfRefuse"]
+                        application_dataa.cause_of_refuse = cause_of_refuse
+                        # #print("CauseOfRefuse", cause_of_refuse)
+
+                    except:
+                        pass
+                    try:
+                        trade_id = envelope["SetApplicationSessionStart"]["ApplicationSessionStart"][
+                            "@TradeId"]
+                        application_session_start.trade_id = trade_id
+                        # print("TradeId", trade_id)
+                        # print("_" * 50)
+                    except:
+                        pass
+                    try:
+                        trade_id = envelope["ns1:SetApplicationSessionStart"]["ns1:ApplicationSessionStart"][
+                            "@TradeId"]
+                        application_session_start.trade_id = trade_id
+                        # print("TradeId", trade_id)
+                        # print("_" * 50)
+                    except:
+                        pass
+                    try:
+                        event_time = envelope["SetApplicationSessionStart"]["ApplicationSessionStart"][
+                            "@EventTime"]
+                        application_session_start.event_time = event_time
+                        # #print("EventTime", event_time)
+                    except:
+                        pass
+                    try:
+                        event_time = envelope["ns1:SetApplicationSessionStart"]["ns1:ApplicationSessionStart"][
+                            "@EventTime"]
+                        application_session_start.event_time = event_time
+                        # #print("EventTime", event_time)
+                    except:
+                        pass
                     # try:
                     #     result = envelope["SetApplicationSessionStatistic"][
                     #         "ApplicationSessionStatistic"]["LotList"]["LotStatistic"]["ApplicationList"][
@@ -4218,12 +5559,109 @@ def update_products_xml(json_datafile):
                     #
                     # except:
                     #     pass
+                    ###
+                    try:
+                        name = envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
+                            "ContractParticipantList"][
+                            "ContractParticipant"]["@Name"]
+                        contract_participant.name = name
+                        # #print("Name", name)
+                    except:
+                        pass
+                    try:
+                        inn = envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
+                            "ContractParticipantList"][
+                            "ContractParticipant"]["@INN"]
+                        contract_participant.inn = inn
+                        # #print("inn", inn)
+                    except:
+                        pass
+                    try:
+                        ogrn = envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
+                            "ContractParticipantList"][
+                            "ContractParticipant"]["@OGRN"]
+                        contract_participant.ogrn = ogrn
+                        # #print("OGRN", ogrn)
+                    except:
+                        pass
+                    try:
+                        is_winner = \
+                        envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
+                            "ContractParticipantList"][
+                            "ContractParticipant"]["@IsWinner"]
+                        # contract_participant.is_winner = is_winner
+                        contract_participant.is_winner = json.loads(is_winner)
+
+                        # #print("IsWinner", is_winner)
+                    except:
+                        pass
+                    try:
+                        is_buyer = \
+                        envelope["SetContractSale"]["ContractSale"]["LotContractSaleList"]["LotContractSale"][
+                            "ContractParticipantList"][
+                            "ContractParticipant"]["@IsBuyer"]
+                        # contract_participant.is_buyer = is_buyer
+                        contract_participant.is_buyer = json.loads(is_buyer)
+
+                        # #print("IsBuyer", is_buyer)
+                    except:
+                        pass
+                    try:
+                        name = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"][
+                            "ns1:LotContractSale"][
+                            "ns1:ContractParticipantList"][
+                            "ns1:ContractParticipant"]["@Name"]
+                        contract_participant.name = name
+                        # #print("Name", name)
+                    except:
+                        pass
+                    try:
+                        inn = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"][
+                            "ns1:LotContractSale"][
+                            "ns1:ContractParticipantList"][
+                            "ns1:ContractParticipant"]["@INN"]
+                        contract_participant.inn = inn
+                        # #print("inn", inn)
+                    except:
+                        pass
+                    try:
+                        ogrn = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"][
+                            "ns1:LotContractSale"][
+                            "ns1:ContractParticipantList"][
+                            "ns1:ContractParticipant"]["@OGRN"]
+                        contract_participant.ogrn = ogrn
+                        # #print("OGRN", ogrn)
+                    except:
+                        pass
+                    try:
+                        is_winner = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"][
+                            "ns1:LotContractSale"][
+                            "ns1:ContractParticipantList"][
+                            "ns1:ContractParticipant"]["@IsWinner"]
+                        # contract_participant.is_winner = is_winner
+                        contract_participant.is_winner = json.loads(is_winner)
+
+                        # #print("IsWinner", is_winner)
+                    except:
+                        pass
+                    try:
+                        is_buyer = envelope["ns1:SetContractSale"]["ns1:ContractSale"]["ns1:LotContractSaleList"][
+                            "ns1:LotContractSale"][
+                            "ns1:ContractParticipantList"][
+                            "ns1:ContractParticipant"]["@IsBuyer"]
+                        # contract_participant.is_buyer = is_buyer
+                        contract_participant.is_buyer = json.loads(is_buyer)
+
+                        # #print("IsBuyer", is_buyer)
+                    except:
+                        pass
+                    ###
                     try:
                         filename = envelope["SetBiddingInvitation"][
                             "BiddingInvitation"]["TradeInfo"]["Attach"]["FileName"]
                         attach.file_name = filename
                         #print(filename)
-                        # #print("FileName", filename)
+                        # #print("FileName", filename)ns1:
 
                     except Exception as ex:
                         pass
@@ -4237,6 +5675,28 @@ def update_products_xml(json_datafile):
                     try:
                         Blob = envelope["SetBiddingInvitation"][
                             "BiddingInvitation"]["TradeInfo"]["Attach"]["Blob"]
+                        attach.blob = Blob
+                    except:
+                        pass
+                    try:
+                        filename = envelope["ns1:SetBiddingInvitation"][
+                            "ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:Attach"]["ns1:FileName"]
+                        attach.file_name = filename
+                        #print(filename)
+                        # #print("FileName", filename)ns1:
+
+                    except Exception as ex:
+                        pass
+
+                    try:
+                        Type = envelope["ns1:SetBiddingInvitation"][
+                            "ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:Attach"]["ns1:Type"]
+                        attach.type = Type
+                    except:
+                        pass
+                    try:
+                        Blob = envelope["ns1:SetBiddingInvitation"][
+                            "ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:Attach"]["ns1:Blob"]
                         attach.blob = Blob
                     except:
                         pass
@@ -4261,9 +5721,37 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
+                        filename = envelope["ns1:SetBiddingInvitation"][
+                            "ns1:BiddingInvitation"]["ns1:Attach"]["ns1:FileName"]
+                        attach.file_name = filename
+                        # #print("FileName", filename)
+
+                    except:
+                        pass
+                    try:
+                        Type = envelope["ns1:SetBiddingInvitation"][
+                            "ns1:BiddingInvitation"]["ns1:Attach"]["ns1:Type"]
+                        attach.type = Type
+                    except:
+                        pass
+                    try:
+                        Blob = envelope["ns1:SetBiddingInvitation"][
+                            "ns1:BiddingInvitation"]["ns1:Attach"]["ns1:Blob"]
+                        attach.blob = Blob
+                    except:
+                        pass
+                    try:
                         filename = \
                             envelope["SetApplicationSessionStatistic"]["ApplicationSessionStatistic"][
                                 "Attach"]["FileName"]
+
+                        attach.file_name = filename
+                    except:
+                        pass
+                    try:
+                        filename = \
+                            envelope["ns1:SetApplicationSessionStatistic"]["ns1:ApplicationSessionStatistic"][
+                                "ns1:Attach"]["ns1:FileName"]
 
                         attach.file_name = filename
                     except:
@@ -4281,8 +5769,258 @@ def update_products_xml(json_datafile):
                         pass
                     try:
                         filename = \
+                            envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
+                                "ns1:Attach"]["ns1:FileName"]
+                        # #print(envelope["SetBiddingResult"]["BiddingResult"])
+                        attach.file_name = filename
+
+                        # #print("filename", filename)
+                    except:
+                        pass
+                    try:
+                        filename = envelope["SetApplicationSessionEnd"][
+                            "ApplicationSessionEnd"]["Attach"]["FileName"]
+                        attach.file_name = filename
+                        # #print("FileName", filename)
+
+                    except:
+                        pass
+                    try:
+                        Type = envelope["SetApplicationSessionEnd"][
+                            "ApplicationSessionEnd"]["Attach"]["Type"]
+                        attach.type = Type
+                    except:
+                        pass
+                    try:
+                        Blob = envelope["SetApplicationSessionEnd"][
+                            "ApplicationSessionEnd"]["Attach"]["Blob"]
+                        attach.blob = Blob
+                    except:
+                        pass
+                    try:
+                        filename = envelope["ns1:SetApplicationSessionEnd"][
+                            "ns1:ApplicationSessionEnd"]["ns1:Attach"]["ns1:FileName"]
+                        attach.file_name = filename
+                        # #print("FileName", filename)
+
+                    except:
+                        pass
+                    try:
+                        Type = envelope["ns1:SetApplicationSessionEnd"][
+                            "ns1:ApplicationSessionEnd"]["ns1:Attach"]["ns1:Type"]
+                        attach.type = Type
+                    except:
+                        pass
+                    try:
+                        Blob = envelope["ns1:SetApplicationSessionEnd"][
+                            "ns1:ApplicationSessionEnd"]["ns1:Attach"]["ns1:Blob"]
+                        attach.blob = Blob
+                    except:
+                        pass
+                        # TradeInfo
+                    try:
+                        is_repeat = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                            "ISRepeat"]
+                        trade_info.isrepeat = is_repeat
+                        # #print("AuctionType", auction_type)
+                    except:
+                        pass
+                    try:
+                        is_repeat = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                            "ISRepeat"]
+                        trade_info.isrepeat = is_repeat
+                        # #print("AuctionType", auction_type)
+                    except:
+                        pass
+                    try:
+                        auction_type = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                            "@AuctionType"]
+                        trade_info.auction_type = auction_type
+                        # #print("AuctionType", auction_type)
+                    except:
+                        pass
+                    try:
+                        date_publish_smi = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                            "DatePublishSMI"]
+                        trade_info.date_publish_smi = date_publish_smi
+                        # #print("AuctionType", auction_type)
+                    except:
+                        pass
+                    try:
+                        date_publish_smi = \
+                        envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                            "ns1:DatePublishSMI"]
+                        trade_info.date_publish_smi = date_publish_smi
+                        # #print("AuctionType", auction_type)
+                    except:
+                        pass
+                    try:
+                        date_publish_efir = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                            "DatePublishEFIR"]
+                        trade_info.date_publish_efir = date_publish_efir
+                        # #print("AuctionType", auction_type)
+                    except:
+                        pass
+                    try:
+                        date_publish_efir = \
+                        envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                            "ns1:DatePublishEFIR"]
+                        trade_info.date_publish_efir = date_publish_efir
+                        # #print("AuctionType", auction_type)
+                    except:
+                        pass
+                    try:
+                        form_price = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                            "@FormPrice"]
+                        trade_info.form_price = form_price
+                        # #print("FormPrice", form_price)
+                    except:
+                        pass
+                    try:
+                        time_begin = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["OpenForm"][
+                                "@TimeBegin"]
+                        open_form.time_begin = time_begin
+                        # #print("TimeBegin", time_begin)
+                    except:
+                        pass
+                    try:
+                        time_begin_appl = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                                "Application"]["@TimeBegin"]
+                        application.time_begin = time_begin_appl
+
+                        # #print("ApplicationTimeBegin", time_begin_appl)
+                    except:
+                        pass
+                    try:
+                        time_end_appl = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                            "Application"]["@TimeEnd"]
+                        application.time_end = time_end_appl
+
+                        # #print("ApplicationTimeEnd", time_end_appl)
+                    except:
+                        pass
+                    try:
+                        rules = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                            "Application"]["Rules"]
+                        application.rules = rules
+
+                        # #print("ApplicationTimeEnd", rules)  # "ns1:LotList"
+                    except:
+                        pass
+                    try:
+                        auction_type = \
+                        envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                            "@AuctionType"]
+                        trade_info.auction_type = auction_type
+                        # #print("AuctionType", auction_type)
+                    except:
+                        pass
+                    try:
+                        form_price = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                            "@FormPrice"]
+                        trade_info.form_price = form_price
+                        # #print("FormPrice", form_price)
+                    except:
+                        pass
+                    try:
+                        time_begin = \
+                            envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                                "ns1:OpenForm"][
+                                "@TimeBegin"]
+                        open_form.time_begin = time_begin
+                        # #print("TimeBegin", time_begin)
+                    except:
+                        pass
+                    try:
+                        time_result = \
+                            envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                                "ns1:CloseForm"][
+                                "@TimeResult"]
+                        close_form.time_result = time_result
+                        # #print("TimeBegin", time_result)
+                    except:
+                        pass
+                    try:
+                        time_begin = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["OpenForm"][
+                                "@TimeBegin"]
+                        open_form.time_begin = time_begin
+                        # #print("TimeBegin", time_begin)
+                    except:
+                        pass
+                    try:
+                        time_result = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["CloseForm"][
+                                "@TimeResult"]
+                        close_form.time_result = time_result
+                        # #print("TimeBegin", time_result)
+                    except:
+                        pass
+
+                    try:
+                        time_end = \
+                            envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                                "ns1:OpenForm"][
+                                "TimeEnd"]
+                        open_form.time_end = time_end
+                        # #print("TimeBegin", time_end)
+                    except:
+                        pass
+                    try:
+                        time_end = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["OpenForm"][
+                                "TimeEnd"]
+                        open_form.time_end = time_end
+                        # #print("TimeBegin", time_end)
+                    except:
+                        pass
+                    try:
+                        time_begin_appl = \
+                            envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                                "ns1:Application"][
+                                "@TimeBegin"]
+                        application.time_begin = time_begin_appl
+
+                        # #print("ApplicationTimeBegin", time_begin_appl)
+                    except:
+                        pass
+                    try:
+                        time_end_appl = \
+                            envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                                "ns1:Application"][
+                                "@TimeEnd"]
+                        application.time_end = time_end_appl
+
+                        # #print("ApplicationTimeEnd", time_end_appl)
+                    except:
+                        pass
+                    try:
+                        rules = \
+                            envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                                "ns1:Application"][
+                                "ns1:Rules"]
+                        application.rules = rules
+
+                        # #print("ApplicationTimeEnd", rules)  # "ns1:LotList"
+                    except:
+                        pass
+                    ####################
+                    try:
+                        filename = \
                             envelope["SetBiddingResult"]["BiddingResult"]["TradeInfo"][
                                 "Attach"]["FileName"]
+                        #print("filename", filename)
+                        attach.file_name = filename
+
+                        # #print("filename", filename)
+                    except:
+                        pass
+                    try:
+                        filename = \
+                            envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"]["ns1:TradeInfo"][
+                                "ns1:Attach"]["ns1:FileName"]
                         #print("filename", filename)
                         attach.file_name = filename
 
@@ -4299,11 +6037,29 @@ def update_products_xml(json_datafile):
 
                     except:
                         pass
+                    try:
+                        Type = \
+                            envelope["ns1:SetApplicationSessionStatistic"]["ns1:ApplicationSessionStatistic"][
+                                "ns1:Attach"]["ns1:Type"]
+                        attach.type = Type
+
+                        # #print("Type", Type)
+
+                    except:
+                        pass
 
                     try:
                         Type = \
                             envelope["SetBiddingResult"]["BiddingResult"][
                                 "Attach"]["Type"]
+                        attach.type = Type
+
+                    except:
+                        pass
+                    try:
+                        Type = \
+                            envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
+                                "ns1:Attach"]["ns1:Type"]
                         attach.type = Type
 
                         # #print("Type", Type)
@@ -4316,6 +6072,14 @@ def update_products_xml(json_datafile):
                         attach.type = Type
 
                         # #print("Type", Type)
+                    except:
+                        pass
+                    try:
+                        Type = \
+                            envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"]["ns1:TradeInfo"][
+                                "ns1:Attach"]["ns1:Type"]
+                        attach.type = Type
+
                     except:
                         pass
                     try:
@@ -4323,7 +6087,14 @@ def update_products_xml(json_datafile):
                             envelope["SetApplicationSessionStatistic"]["ApplicationSessionStatistic"][
                                 "Attach"]["Blob"]
                         attach.blob = Blob
-                        # attach.save()
+                        # ##print("Blob", Blob)
+                    except:
+                        pass
+                    try:
+                        Blob = \
+                            envelope["ns1:SetApplicationSessionStatistic"]["ns1:ApplicationSessionStatistic"][
+                                "ns1:Attach"]["ns1:Blob"]
+                        attach.blob = Blob
                         # ##print("Blob", Blob)
                     except:
                         pass
@@ -4337,8 +6108,23 @@ def update_products_xml(json_datafile):
                         pass
                     try:
                         Blob = \
+                            envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"][
+                                "ns1:Attach"]["ns1:Blob"]
+                        attach.blob = Blob
+                    except:
+                        pass
+                    try:
+                        Blob = \
                             envelope["SetBiddingResult"]["BiddingResult"]["TradeInfo"][
                                 "Attach"]["Blob"]
+                        attach.blob = Blob
+                        # ##print("Blob", Blob)
+                    except:
+                        pass
+                    try:
+                        Blob = \
+                            envelope["ns1:SetBiddingResult"]["ns1:BiddingResult"]["ns1:TradeInfo"][
+                                "ns1:Attach"]["ns1:Blob"]
                         attach.blob = Blob
                         # ##print("Blob", Blob)
                     except:
@@ -4352,8 +6138,22 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
+                        filename = envelope["ns1:SetBiddingFail"][
+                            "ns1:BiddingFail"]["ns1:Attach"]["ns1:FileName"]
+                        attach.file_name = filename
+                        # #print("FileName", filename)
+
+                    except:
+                        pass
+                    try:
                         Type = envelope["SetBiddingFail"][
                             "BiddingFail"]["Attach"]["Type"]
+                        attach.type = Type
+                    except:
+                        pass
+                    try:
+                        Type = envelope["ns1:SetBiddingFail"][
+                            "ns1:BiddingFail"]["ns1:Attach"]["ns1:Type"]
                         attach.type = Type
                     except:
                         pass
@@ -4364,18 +6164,21 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
+                        Blob = envelope["ns1:SetBiddingFail"][
+                            "ns1:BiddingFail"]["ns1:Attach"]["ns1:Blob"]
+                        attach.blob = Blob
+                    except:
+                        pass
+                    try:
                         if buyer_person.first_name is not None:
                             buyer_person.save()
                     except:
                         pass
                     try:
-                        if buyer_company.full_name is not None:
+                        if buyer_company.inn is not None or buyer_company.ogrn is not None:
                             buyer_company.save()
-                            #print(buyer_company)
-                            #print(">" * 50)
                     except Exception as ex:
                         pass
-                        #print(">" * 50)
 
                     try:
                         if success_trade_result.price is not None:
@@ -4390,13 +6193,30 @@ def update_products_xml(json_datafile):
                         pass
                     # #print("?"*50)
                     try:
+                        if contract_info.contract_number is not None or contract_info.date_contract is not None:
+                            contract_info.save()
+                    except:
+                        pass
+                    # try:
+                    #     if contract_participant.name is not None:
+                    #         contract_participant.save()
+                    #         contract_participant_list.contract_participant = contract_participant
+                    #         contract_participant_list.save()
+                    #         lot_contract_sale.contract_participant_list = contract_participant_list
+                    #         lot_contract_sale.contract_info = contract_info
+                    # except:
+                    #     pass
+                    try:
                         if attach.file_name is not None:
                             attach.save()
                     except:
                         pass
                     try:
                         if failure_trade_result.substantiation is not None:
-                            # failure_trade_result.buyer_company = buyer_company
+                            if buyer_company.inn is not None or buyer_company.ogrn is not None:
+                                failure_trade_result.buyer_company = buyer_company
+                            if buyer_person.inn is not None or buyer_person.first_name is not None:
+                                failure_trade_result.buyer_person = buyer_person
                             failure_trade_result.save()
                     except Exception as ex:
                         pass
@@ -4466,6 +6286,26 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
+                        step_price_percent = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                "Lot"][
+                                "StepPricePercent"]
+                        lot.step_price_percent = step_price_percent
+
+                        # #print("ns1:TradeObjectHtml", trade_obj_html)
+                    except:
+                        pass
+                    try:
+                        step_price_percent = \
+                            envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"]["ns1:LotList"][
+                                "ns1:Lot"][
+                                "ns1:StepPricePercent"]
+                        lot.step_price_percent = step_price_percent
+
+                        # #print("ns1:TradeObjectHtml", trade_obj_html)
+                    except:
+                        pass
+                    try:
                         advance_percent = \
                             envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
                                 "ns1:LotList"][
@@ -4486,6 +6326,98 @@ def update_products_xml(json_datafile):
                         # #print("ns1:TradeObjectHtml", trade_obj_html)
                     except:
                         pass
+                    #ArbitrManager
+                    try:
+                        first_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
+                            "@FirstName"]
+                        arbitr_manager.first_name = first_name
+                        # #print("ArbitrManagerFirsName", first_name)
+                    except:
+                        pass
+                    try:
+                        last_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
+                            "@LastName"]
+                        arbitr_manager.last_name = last_name
+                        # #print("ArbitrManagerLastName", last_name)
+                    except:
+                        pass
+                    try:
+                        middle_name = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
+                                "@MiddleName"]
+                        arbitr_manager.middle_name = middle_name
+                        # #print("ArbitrManagerMiddleName", middle_name)
+                    except:
+                        pass
+                    try:
+                        reg_num = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
+                                "@RegNum"]
+                        arbitr_manager.reg_num = reg_num
+                        # #print("RegNum", reg_num)
+                    except:
+                        pass
+                    try:
+                        reg_num = \
+                            envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
+                                "@RegNum"]
+                        arbitr_manager.reg_num = reg_num
+                        # #print("RegNum", reg_num)
+                    except:
+                        pass
+                    try:
+                        inn = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"]["@INN"]
+                        arbitr_manager.inn = inn
+                        # #print("ArbitrINN", inn)
+                    except:
+                        pass
+
+
+
+                    try:
+                        first_name = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
+                            "@FirstName"]
+                        arbitr_manager.first_name = first_name
+                        # #print("ArbitrManagerFirsName", first_name)
+                    except:
+                        pass
+                    try:
+                        last_name = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
+                            "@LastName"]
+                        arbitr_manager.last_name = last_name
+                        # #print("ArbitrManagerLastName", last_name)
+                    except:
+                        pass
+                    try:
+                        middle_name = \
+                            envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
+                                "@MiddleName"]
+                        arbitr_manager.middle_name = middle_name
+                        # #print("ArbitrManagerMiddleName", middle_name)
+                    except:
+                        pass
+
+                    try:
+                        inn = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"]["@INN"]
+                        arbitr_manager.inn = inn
+                        # #print("ArbitrINN", inn)
+                    except:
+                        pass
+                    try:
+                        sro_name = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:ArbitrManager"][
+                            "@SROName"]
+                        arbitr_manager.sro_name = sro_name
+                        # #print("SroName", sro_name)
+                    except:
+                        pass
+                    try:
+                        sro_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["ArbitrManager"][
+                            "@SROName"]
+                        arbitr_manager.sro_name = sro_name
+                        # #print("SroName", sro_name)
+                    except:
+                        pass
+                    ####################
                     try:
                         trade_obj_html = \
                             envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
@@ -4495,6 +6427,24 @@ def update_products_xml(json_datafile):
                         lot.trade_object_html = trade_obj_html
 
                         # #print("ns1:TradeObjectHtml", trade_obj_html)
+                    except:
+                        pass
+                    try:
+                        concours = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                "Lot"]["Concours"]
+                        lot.concours = concours
+
+                        # #print("LotNumber", lot_number)
+                    except:
+                        pass
+                    try:
+                        advance = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                "Lot"]["Advance"]
+                        lot.advance = advance
+
+                        # #print("LotNumber", lot_number)
                     except:
                         pass
                     try:
@@ -4559,7 +6509,255 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
-                        if debtor_company.full_name is not None:
+                        case_number = envelope["SetBiddingInvitation"]["BiddingInvitation"]["LegalCase"][
+                            "@CaseNumber"]
+                        legal_case.case_number = case_number
+                        # #print("CaseNumber", case_number)
+                    except:
+                        pass
+                    try:
+                        court_name = envelope["SetBiddingInvitation"]["BiddingInvitation"]["LegalCase"][
+                            "@CourtName"]
+                        legal_case.court_name = court_name
+                        # #print("CourtName", court_name)
+                    except:
+                        pass
+                    try:
+                        base = envelope["SetBiddingInvitation"]["BiddingInvitation"]["LegalCase"]["@Base"]
+                        legal_case.base = base
+                        # #print("Base", base)
+                    except:
+                        pass
+                    try:
+                        case_number = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:LegalCase"][
+                            "@CaseNumber"]
+                        legal_case.case_number = case_number
+                        # #print("CaseNumber", case_number)
+                    except:
+                        pass
+                    try:
+                        court_name = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:LegalCase"][
+                            "@CourtName"]
+                        legal_case.court_name = court_name
+                        # #print("CourtName", court_name)
+                    except:
+                        pass
+                    try:
+                        base = envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:LegalCase"]["@Base"]
+                        legal_case.base = base
+                        # #print("Base", base)
+                    except:
+                        pass
+                    try:
+                        lot_type = \
+                            envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                "Lot"]
+                        # print("SAVE POINT" * 50)
+                        if type(lot_type) == type([]):
+                            for lot_i in range(len(lot_type)):
+                                lot = Lot()
+                                lot_list = LotList()
+                                trade_info = TradeInfo()
+
+                                try:
+                                    auction_type = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                                        "@AuctionType"]
+                                    trade_info.auction_type = auction_type
+                                    # #print("AuctionType", auction_type)
+                                except:
+                                    pass
+                                try:
+                                    form_price = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                                        "@FormPrice"]
+                                    trade_info.form_price = form_price
+                                    # #print("FormPrice", form_price)
+                                except:
+                                    pass
+                                try:
+                                    time_begin = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["OpenForm"][
+                                            "@TimeBegin"]
+                                    open_form.time_begin = time_begin
+                                    # #print("TimeBegin", time_begin)
+                                except:
+                                    pass
+                                try:
+                                    time_begin_appl = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                                            "Application"]["@TimeBegin"]
+                                    application.time_begin = time_begin_appl
+
+                                    # #print("ApplicationTimeBegin", time_begin_appl)
+                                except:
+                                    pass
+                                try:
+                                    time_end_appl = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                                        "Application"]["@TimeEnd"]
+                                    application.time_end = time_end_appl
+
+                                    # #print("ApplicationTimeEnd", time_end_appl)
+                                except:
+                                    pass
+                                try:
+                                    rules = envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"][
+                                        "Application"]["Rules"]
+                                    application.rules = rules
+
+                                    # #print("ApplicationTimeEnd", rules)  # "ns1:LotList"
+                                except:
+                                    pass
+                                try:
+                                    lot_number = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][lot_i]["@LotNumber"]
+                                    lot.lot_number = lot_number
+                                    # print("LotNumber", lot_number)
+                                except:
+                                    pass
+                                try:
+                                    start_price = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][lot_i]["StartPrice"]
+                                    lot.start_price = start_price
+
+                                    # print("StartPrice", start_price)
+                                except:
+                                    pass
+                                try:
+                                    step_price = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][lot_i][
+                                            "StepPrice"]
+                                    lot.step_price = step_price
+
+                                    # print("StepPrice", step_price)
+                                except:
+                                    pass
+                                try:
+                                    nil = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][lot_i][
+                                            "StepPrice"]["@xsi:nil"]
+                                    step_price_model.nil = json.loads(nil)
+
+
+                                except:
+                                    pass
+                                try:
+                                    step_price_percent = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][lot_i][
+                                            "StepPricePercent"]
+                                    lot.step_price_percent = step_price_percent
+
+                                    # #print("ns1:TradeObjectHtml", trade_obj_html)
+                                except:
+                                    pass
+
+                                try:
+                                    trade_obj_html = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][lot_i][
+                                            "TradeObjectHtml"]
+                                    lot.trade_object_html = trade_obj_html
+
+                                    # print("TradeObjectHtml", trade_obj_html)
+                                except:
+                                    pass
+                                try:
+                                    price_reduction = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][lot_i][
+                                            "PriceReduction"]
+                                    lot.price_reduction = price_reduction
+                                except:
+                                    pass
+                                try:
+                                    participants = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][lot_i][
+                                            "Participants"]
+                                    lot.participants = participants
+
+                                    # print("Participants", participants)
+                                except:
+                                    pass
+                                try:
+                                    payment_info = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][lot_i][
+                                            "PaymentInfo"]
+                                    lot.payment_info = payment_info
+
+                                    # print("PaymentInfo", payment_info)
+                                except:
+                                    pass
+                                try:
+                                    sale_agreement = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][lot_i][
+                                            "SaleAgreement"]
+                                    lot.sale_agreement = sale_agreement
+                                except:
+                                    pass
+                                try:
+                                    id_class = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][lot_i][
+                                            "Classification"]["IDClass"]
+                                    classificaition.idclass = id_class
+                                    # #print("ns1:IDClass", id_class)
+                                except:
+                                    pass
+                                # print(lot)
+                                # exit()
+                                try:
+                                    advance_percent = \
+                                        envelope["ns1:SetBiddingInvitation"]["ns1:BiddingInvitation"]["ns1:TradeInfo"][
+                                            "ns1:LotList"][
+                                            "ns1:Lot"][
+                                            "ns1:AdvancePercent"]
+                                    lot.advance_percent = advance_percent
+
+                                    # #print("ns1:TradeObjectHtml", trade_obj_html)
+                                except:
+                                    pass
+                                try:
+                                    advance_percent = \
+                                        envelope["SetBiddingInvitation"]["BiddingInvitation"]["TradeInfo"]["LotList"][
+                                            "Lot"][
+                                            "AdvancePercent"]
+                                    lot.advance_percent = advance_percent
+
+                                    # #print("ns1:TradeObjectHtml", trade_obj_html)
+                                except:
+                                    pass
+                                try:
+                                    if classificaition.idclass is not None:
+                                        classificaition.save()
+                                        lot.classificaition = classificaition
+                                        lot.save()
+                                        lot_list.lot = lot
+                                        lot_list.save()
+                                    # print(lot)
+                                except Exception as ex:
+                                    print(ex, flush=True)
+
+                    except Exception as ex:
+                        pass
+                    try:
+                        if trade_organizer_person.first_name is not None:
+                            trade_organizer_person.save()
+                            trade_organizer.trade_organizer_person = trade_organizer_person
+                        if trade_organizer_company.full_name is not None:
+                            trade_organizer_company.save()
+                            trade_organizer.trade_organizer_company = trade_organizer_company
+                        if trade_organizer_person.first_name is not None or trade_organizer_company.full_name is not None:
+                            trade_organizer.save()
+                    except:
+                        pass
+                    try:
+                        if debtor_company.full_name is not None or debtor_company.short_name is not None or debtor_company.inn is not None:
                             debtor_company.save()
                             debtor.debtor_company = debtor_company
                             debtor.save()
@@ -4593,7 +6791,12 @@ def update_products_xml(json_datafile):
                         pass
                     try:
                         if bidding_start.trade_id is not None:
-                            # bidding_start.lot_list = lot_list
+                            if lot.lot_number is not None:
+                                lot.save()
+                                lot_list.lot = lot
+                                lot_list.save()
+                                bidding_start.lot_list = lot_list
+
                             bidding_start.save()
                             set_bidding_start.bidding_start = bidding_start
                             set_bidding_start.save()
@@ -4601,7 +6804,7 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
-                        if trade_info.auction_type is not None:
+                        if trade_info.auction_type is not None or trade_info.date_publish_smi is not None:
                             if attach.file_name is not None:
                                 trade_info.attach = attach
                             trade_info.lot_list = lot_list
@@ -4614,18 +6817,53 @@ def update_products_xml(json_datafile):
                     except:
                         pass
                     try:
-                        # lot_list.save()
-                        if bidding_fail.trade_id:
-                            # bidding_fail.lot_list = lot_list
+                        if contract_participant.name is not None:
+                            contract_participant.save()
+                            contract_participant_list.contract_participant = contract_participant
+                            contract_participant_list.save()
+                            lot_contract_sale.contract_participant = contract_participant_list
+                            lot_contract_sale.contract_info = contract_info
+                    except Exception as ex:
+                        print(ex, flush=True)
+                    try:
+                        if lot_contract_sale.lot_number is not None:
+                            if contract_participant.name is not None:
+
+                                lot_contract_sale.contract_participant = contract_participant_list
+                            lot_contract_sale.save()
+                            lot_contract_sale_list.lot_contract_sale = lot_contract_sale
+                            lot_contract_sale_list.save()
+                            contract_sale.lot_contract_sale_list = lot_contract_sale_list
+
+
+
+
+                    except Exception as ex:
+                        pass
+                    try:
+                        if contract_sale.trade_id is not None:
+                            contract_sale.save()
+                            set_contract_sale.contract_sale = contract_sale
+                            set_contract_sale.save()
+                            body.set_contract_sale = set_contract_sale
+                    except:
+                        pass
+                    try:
+                        if bidding_fail.trade_id is not None:
+                            if attach.file_name is not None:
+
+                                bidding_fail.attach = attach
                             if bidding_state_lot_info.lot_number is not None:
+                                bidding_state_lot_info.save()
+                                lot_list.bidding_state_lot_info = bidding_state_lot_info
+                                lot_list.save()
                                 bidding_fail.lot_list = lot_list
                             bidding_fail.save()
                             set_bidding_fail.bidding_fail = bidding_fail
                             set_bidding_fail.save()
                             body.set_bidding_fail = set_bidding_fail
 
-
-                    except:
+                    except Exception as ex:
                         pass
                     try:
                         if annulment.trade_id is not None:
@@ -4637,13 +6875,11 @@ def update_products_xml(json_datafile):
                     except:
                         pass
 
-                    # ##print(bidding_fail)
-                    # ##print("create bidding fail in list")
-                    # sleep(5)
-                    # success_trade_result.save()
-
-                    # #print("SUCCESSTRADE")
-                    # sleep(5)
+                    try:
+                        if arbitr_manager.first_name is not None:
+                            arbitr_manager.save()
+                    except:
+                        pass
                     try:
                         if bidding_proccess_info.trade_id is not None:
                             if price_info.new_price is not None:
@@ -4653,6 +6889,11 @@ def update_products_xml(json_datafile):
                             set_bidding_proccess_info.bidding_process_info = bidding_proccess_info
                             set_bidding_proccess_info.save()
                             body.set_bidding_process_info = set_bidding_proccess_info
+                    except:
+                        pass
+                    try:
+                        if legal_case.case_number is not None:
+                            legal_case.save()
                     except:
                         pass
                     try:
@@ -4667,20 +6908,22 @@ def update_products_xml(json_datafile):
                                 bidding_invitation.trade_info = trade_info
                             if debtor.pk is not None:
                                 bidding_invitation.debtor = debtor
+                            try:
+                                if lot.lot_number is not None:
+                                    if classificaition.idclass is not None:
+                                        classificaition.save()
+                                        lot.classification = classificaition
+                                    lot.save()
+                                    lot_list.lot = lot
+                                    lot_list.save()
+                                    bidding_invitation.lot_list = lot_list
 
-                            if lot.lot_number is not None:
-                                if classificaition.idclass is not None:
-                                    classificaition.save()
-                                    lot.classification = classificaition
-                                lot.save()
-                                lot_list.lot = lot
-                                lot_list.save()
-                                bidding_invitation.lot_list = lot_list
-
-                            bidding_invitation.save()
-                            set_bidding_invitation.bidding_invitations = bidding_invitation
-                            set_bidding_invitation.save()
-                            body.set_bidding_invitation = set_bidding_invitation
+                                bidding_invitation.save()
+                                set_bidding_invitation.bidding_invitations = bidding_invitation
+                                set_bidding_invitation.save()
+                                body.set_bidding_invitation = set_bidding_invitation
+                            except Exception as ex:
+                                pass
 
                     except:
                         pass
@@ -4695,13 +6938,14 @@ def update_products_xml(json_datafile):
                             set_bidding_result.bidding_result = bidding_result
                             set_bidding_result.save()
                             body.set_bidding_result = set_bidding_result
-                    except:
+                    except Exception as ex:
                         pass
 
                     try:
                         if bidding_end.trade_id is not None:
                             if lot_info.lot_number is not None:
                                 bidding_end.lot_list = lot_list
+
                             bidding_end.save()
 
                             set_bidding_end.bidding_end = bidding_end
@@ -4731,6 +6975,9 @@ def update_products_xml(json_datafile):
                     try:
                         if application_session_start.trade_id is not None:
                             if lot_info.lot_number is not None:
+                                lot_info.save()
+                                lot_list.lot_info = lot_info
+                                lot_list.save()
                                 application_session_start.lot_list = lot_list
                             application_session_start.save()
                             set_application_session_start.application_session_start = application_session_start
@@ -4740,17 +6987,24 @@ def update_products_xml(json_datafile):
 
                     except:
                         pass
-
-                    if application_session_end.trade_id is not None:
-                        # lot_list.save()
-                        if lot_info.lot_number is not None:
-                            application_session_end.lot_list = lot_list
-                        application_session_end.save()
-                        set_application_session_end.application_session_end = application_session_end
-                        set_application_session_end.save()
-                        body.set_application_session_end = set_application_session_end
+                    try:
+                        if application_session_end.trade_id is not None:
+                            # lot_list.save()
+                            if lot_info.lot_number is not None:
+                                lot_info.save()
+                                lot_list.lot_info = lot_info
+                                lot_list.save()
+                                application_session_end.lot_list = lot_list
+                            application_session_end.save()
+                            set_application_session_end.application_session_end = application_session_end
+                            set_application_session_end.save()
+                            body.set_application_session_end = set_application_session_end
+                    except Exception as ex:
+                        print(ex, flush=True)
                     try:
                         if lot_statistic.lot_number is not None:
+                            if application_dataa.result is not None:
+                                lot_statistic.application_list = application_list
                             lot_statistic.save()
                             lot_list.lot_statistic = lot_statistic
                             lot_list.save()
@@ -4760,7 +7014,8 @@ def update_products_xml(json_datafile):
                         if application_session_statistic.trade_id is not None:
                             if lot_statistic.lot_number is not None:
                                 application_session_statistic.lot_list = lot_list
-                            application_session_statistic.attach = attach
+                            if attach.file_name is not None:
+                                application_session_statistic.attach = attach
                             application_session_statistic.save()
                             set_application_session_statistic.application_session_statistic = application_session_statistic
                             set_application_session_statistic.save()
@@ -4769,31 +7024,9 @@ def update_products_xml(json_datafile):
 
                     except:
                         pass
-                        # #print( "in LIST")
-                        # sleep(5
-                        # )
-                        # #print("^" * 50)
 
-                        # body.set_bidding_proccess_info = set_bidding_proccess_info
-                        # body.set_bidding_fail = set_bidding_fail
-                        # body.set_bidding_end = set_bidding_end
-                        # body.set_bidding_cancel = set_bidding_cancel
-                        # try:
-                        #     body.set_application_session_start = set_application_session_start
-                        # except:
-                        #     pass
-                        # try:
-                        #     # body.set_application_session_end = set_application_session_end
-                        # except:
-                        pass
-                    # try:
-                    #     body.set_application_session_statistic = set_application_session_statistic
-                    # except:
-                    #     pass
-                    #print("*" * 50)
-                    #print(body)
+
                     body.save()
-                    #print(body)
 
                     envelope_model.body = body
                     envelope_model.save()
