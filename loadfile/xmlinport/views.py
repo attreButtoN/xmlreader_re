@@ -56,36 +56,36 @@ def list_xml(request):
 
             files = os.listdir("media/put_xml_here/")
             for file in files:
-                try:
-                    with open(f"media/put_xml_here/{file}", "r", encoding="utf-16-le") as xml_file:
-                        data_dict = xmltodict.parse(xml_file.read())
-                        xml_file.close()
-                        name = file
-                        json_data = json.dumps(data_dict)
-                        os.remove(f"media/put_xml_here/{file}")
-                        with open("media/xml/data.json", "w") as json_file:
-                            json_file.write(json_data)
-                            json_file.close()
-                    file = open("media/xml/data.json", "r")
-                    json_datafile = file.read()
-                    file.close()
+                # try:
+                with open(f"media/put_xml_here/{file}", "r", encoding="utf-16-le") as xml_file:
+                    data_dict = xmltodict.parse(xml_file.read())
+                    xml_file.close()
+                    name = file
+                    json_data = json.dumps(data_dict)
+                    os.remove(f"media/put_xml_here/{file}")
+                    with open("media/xml/data.json", "w") as json_file:
+                        json_file.write(json_data)
+                        json_file.close()
+                file = open("media/xml/data.json", "r")
+                json_datafile = file.read()
+                file.close()
 
-                    json_datafile = json.loads(json_datafile)
-                    global counter
-                    counter +=1
-                    file = open("file_view_log.txt", "a")
-                    file.write(f"В процессе: Файл №{counter},Имя:{name},Файлов осталось {len(files)-counter}    {datetime.now()} \n")
-                    file.close()
-                    print(f"В процессе: Файл №{counter},Имя:{name},Файлов осталось {len(files)-counter} {datetime.now()}", flush=True)
-                    update_products_xml(json_datafile)
+                json_datafile = json.loads(json_datafile)
+                global counter
+                counter +=1
+                file = open("file_view_log.txt", "a")
+                file.write(f"В процессе: Файл №{counter},Имя:{name},Файлов осталось {len(files)-counter}    {datetime.now()} \n")
+                file.close()
+                print(f"В процессе: Файл №{counter},Имя:{name},Файлов осталось {len(files)-counter} {datetime.now()}", flush=True)
+                update_products_xml(json_datafile)
 
-                except Exception as ex:
-                    file = open("file_view_log.txt", "a")
-                    file.write(f"Ошибка: {ex},Имя:{name}    {datetime.now()} \n")
-
-                    file.close()
-                    print(f"Ошибка: {ex},Имя:{name}    {datetime.now()}",flush=True)
-                    print(f"Ошибка: {ex},Имя:{name}    {datetime.now()}",flush=True)
+                # except Exception as ex:
+                #     file = open("file_view_log.txt", "a")
+                #     file.write(f"Ошибка: {ex},Имя:{name}    {datetime.now()} \n")
+                #
+                #     file.close()
+                #     print(f"Ошибка: {ex},Имя:{name}    {datetime.now()}",flush=True)
+                #     print(f"Ошибка: {ex},Имя:{name}    {datetime.now()}",flush=True)
 
         # return HttpResponseRedirect(reverse("xml_list"))
 # else:
