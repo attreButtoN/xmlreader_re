@@ -4048,7 +4048,7 @@ def update_products_xml(json_datafile):
                             set_bidding_invitation.save()
                             body.set_bidding_invitation = set_bidding_invitation
                         except Exception as ex:
-                            print(ex,flush=True)
+                            pass
 
                 except:
                     pass
@@ -4818,8 +4818,7 @@ def update_products_xml(json_datafile):
                                         trade_place_list.trade_place = trade_place
                                         trade_place_list.save()
                                     except Exception as ex:
-                                        print(ex, flush=True)
-                                        exit()
+                                        pass
                                     # try:
 
                             except Exception as ex:
@@ -8326,7 +8325,7 @@ def update_products_xml(json_datafile):
                                     set_bidding_invitation.save()
                                     body.set_bidding_invitation = set_bidding_invitation
                                 except Exception as ex:
-                                    print(ex, flush=True)
+                                    pass
 
                         except:
                             pass
